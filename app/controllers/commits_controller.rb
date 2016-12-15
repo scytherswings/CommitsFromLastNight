@@ -1,11 +1,13 @@
+require 'yaml'
+require 'uuidtools'
 class CommitsController < ApplicationController
   before_action :set_commit, only: [:show, :edit, :update, :destroy]
+  @@config_file = YAML.load_file('config.yml')
+  @@bitbucket = BitBucket.new basic_auth: @@config_file['username'] + ':' + @@config_file['password']
 
   # GET /commits
   # GET /commits.json
   def index
-    bitbucket = BitBucket.new basic_auth: ''
-
     @commits = Commit.all
   end
 
@@ -19,8 +21,23 @@ class CommitsController < ApplicationController
     @commit = Commit.new
   end
 
-  # GET /commits/1/edit
-  def edit
+
+  def fetch_latest
+    repos = @@bitbucket.repos.list
+    logger.debug repos.to_json
+    # repos.each do |repo|
+    #   logger.debug (@@bitbucket.repos.changesets.all repo['owner'], repo['slug']).to_json
+    # end
+    repos.each do |repo|
+      logger.debug 'Working on repo: ' + repo['slug']
+      changesets = @@bitbucket.repos.changesets.all repo['owner'], repo['slug']
+      logger.debug changesets.to_json
+      changesets['changesets'].each do |changeset|
+        Commit.create!(username: changeset['author'], user_avatar: nil, message: changeset['message'], commit_time: changeset['utctimestamp'], repository: repo['slug'], branch: changeset['branch'], raw_node: changeset['raw_node'])
+      end
+    end
+
+    redirect_to '#'
   end
 
   # POST /commits
@@ -64,13 +81,13 @@ class CommitsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_commit
-      @commit = Commit.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_commit
+    @commit = Commit.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def commit_params
-      params.require(:commit).permit(:username, :user_avatar, :message, :commit_time, :repository, :branch)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def commit_params
+    params.require(:commit).permit(:username, :user_avatar, :message, :commit_time, :repository, :branch, :raw_node)
+  end
 end
