@@ -25,9 +25,6 @@ class CommitsController < ApplicationController
   def fetch_latest
     repos = @@bitbucket.repos.list
     logger.debug repos.to_json
-    # repos.each do |repo|
-    #   logger.debug (@@bitbucket.repos.changesets.all repo['owner'], repo['slug']).to_json
-    # end
     repos.each do |repo|
       logger.debug 'Working on repo: ' + repo['slug']
       changesets = @@bitbucket.repos.changesets.all repo['owner'], repo['slug']
