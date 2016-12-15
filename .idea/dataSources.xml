@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="Rails CommitsFromLastNight: test" uuid="ee9a2b48-4838-460b-859a-d431c1f24616">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/config/database.yml</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1/CommitsFromLastNight_test</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="Rails CommitsFromLastNight: production" uuid="23d8eb1f-99a7-4a87-94ad-964f9202eb99">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/config/database.yml</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1/CommitsFromLastNight_production</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="Rails CommitsFromLastNight: development" uuid="dc01625f-2827-4a1a-a660-9f00eeeebbc1">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/config/database.yml</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1/CommitsFromLastNight_development</jdbc-url>
+    </data-source>
+  </component>
+</project>
