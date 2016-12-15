@@ -33,7 +33,7 @@ class CommitsController < ApplicationController
       changesets = @@bitbucket.repos.changesets.all repo['owner'], repo['slug']
       logger.debug changesets.to_json
       changesets['changesets'].each do |changeset|
-        Commit.create!(username: changeset['author'], user_avatar: nil, message: changeset['message'], commit_time: changeset['utctimestamp'], repository: repo['slug'], branch: changeset['branch'], raw_node: changeset['raw_node'])
+        Commit.create(username: changeset['author'], user_avatar: nil, message: changeset['message'], commit_time: changeset['utctimestamp'], repository: repo['slug'], branch: changeset['branch'], raw_node: changeset['raw_node'])
       end
     end
 
