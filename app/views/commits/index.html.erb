@@ -11,9 +11,9 @@
 
     <tbody>
       <%= content_tag_for(:tr, @commits) do |commit| %>
-            <td><%= commit.username %></td>
+            <td><%= commit.user.author_name %></td>
             <td><%= commit.message %></td>
-            <td><%= commit.repository %></td>
+            <td><%= commit.repo_name %></td>
             <td><%= commit.branch %></td>
       <% end %>
     </tbody>
