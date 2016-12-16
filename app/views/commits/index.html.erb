@@ -7,9 +7,7 @@
     <thead>
       <tr>
             <th>Username</th>
-            <th>User avatar</th>
             <th>Message</th>
-            <th>Commit time</th>
             <th>Repository</th>
             <th>Branch</th>
       </tr>
@@ -18,9 +16,7 @@
     <tbody>
       <%= content_tag_for(:tr, @commits) do |commit| %>
             <td><%= commit.username %></td>
-            <td><%= commit.user_avatar %></td>
             <td><%= commit.message %></td>
-            <td><%= commit.commit_time %></td>
             <td><%= commit.repository %></td>
             <td><%= commit.branch %></td>
       <% end %>
