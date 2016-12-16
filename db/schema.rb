@@ -11,23 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161215035716) do
+ActiveRecord::Schema.define(version: 20161216070038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "commits", force: :cascade do |t|
-    t.string   "username"
-    t.string   "user_avatar"
     t.string   "message"
-    t.datetime "commit_time"
-    t.string   "repository"
     t.string   "branch"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.string   "raw_node"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "user_id"
+    t.string   "sha"
+    t.string   "url"
+    t.datetime "timestamp"
+    t.string   "repo_name"
   end
 
-  add_index "commits", ["raw_node"], name: "index_commits_on_raw_node", using: :btree
+  add_index "commits", ["sha"], name: "index_commits_on_sha", unique: true, using: :btree
+  add_index "commits", ["user_id"], name: "index_commits_on_user_id", using: :btree
+
+  create_table "users", force: :cascade do |t|
+    t.string   "author_name"
+    t.string   "email"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
 end

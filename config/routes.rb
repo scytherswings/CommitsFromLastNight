@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :users
   root 'commits#index'
   resources :commits
   get 'fetch_latest' => 'commits#fetch_latest'
