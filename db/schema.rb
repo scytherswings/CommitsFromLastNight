@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161216070038) do
+ActiveRecord::Schema.define(version: 20161216070236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,12 +19,12 @@ ActiveRecord::Schema.define(version: 20161216070038) do
   create_table "commits", force: :cascade do |t|
     t.string   "message"
     t.string   "branch"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.integer  "user_id"
     t.string   "sha"
     t.string   "url"
-    t.datetime "timestamp"
+    t.datetime "utc_commit_time"
     t.string   "repo_name"
   end
 
