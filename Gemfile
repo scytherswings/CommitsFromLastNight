@@ -50,8 +50,8 @@ group :test do
   # gem 'poltergeist', '~> 1.9.0'
   # gem 'phantomjs', require: 'phantomjs/poltergeist'
   # gem 'capybara-screenshot'
-  gem 'vcr', '~> 3.0.1'
-  gem 'minitest-vcr', '~> 1.4.0'
+  # gem 'vcr', '~> 3.0.1'
+  # gem 'minitest-vcr', '~> 1.4.0'
   gem 'faker', '~> 1.6.1'
   gem 'fabrication', '~> 2.14.1'
 end
