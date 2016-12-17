@@ -11,7 +11,7 @@
 
     <tbody>
       <%= content_tag_for(:tr, @commits) do |commit| %>
-            <td><%= commit.user.account_name%></td>
+            <td><%= link_to commit.user.account_name, user_path(commit.user.id) %></td>
             <td><%= commit.message %></td>
             <td><%= commit.repo_name %></td>
             <td><%= commit.branch_name %></td>

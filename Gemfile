@@ -25,6 +25,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bitbucket_rest_api', '~> 0.1.7'
 gem 'bootstrap-generators', '~> 3.3.4'
 gem 'simple_form', '~> 3.1.1'
+gem 'obscenity', '~> 1.0', '>= 1.0.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

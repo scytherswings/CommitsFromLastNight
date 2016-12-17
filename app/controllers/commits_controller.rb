@@ -7,7 +7,8 @@ class CommitsController < ApplicationController
   # GET /commits
   # GET /commits.json
   def index
-    @commits = Commit.all
+    unfiltered_commits = Commit.all
+    @commits = Rails.cache.fetch(filter_commits unfiltered_commits)
   end
 
   # GET /commits/1
@@ -90,4 +91,9 @@ class CommitsController < ApplicationController
   def commit_params
     params.require(:commit).permit(:username, :user_avatar, :message, :commit_time, :repository, :branch, :raw_node)
   end
+
+  def filter_commits commits
+
+  end
+
 end
