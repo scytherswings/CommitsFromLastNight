@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161217183709) do
+ActiveRecord::Schema.define(version: 20161217233717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "black_list_words", force: :cascade do |t|
+    t.string   "word_id"
+    t.string   "filterset_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "black_list_words", ["filterset_id"], name: "index_black_list_words_on_filterset_id", using: :btree
+  add_index "black_list_words", ["word_id"], name: "index_black_list_words_on_word_id", using: :btree
 
   create_table "commits", force: :cascade do |t|
     t.string   "message"
@@ -41,6 +51,22 @@ ActiveRecord::Schema.define(version: 20161217183709) do
 
   add_index "email_addresses", ["user_id"], name: "index_email_addresses_on_user_id", using: :btree
 
+  create_table "filtered_messages", force: :cascade do |t|
+    t.string   "filterset_id"
+    t.string   "commit_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "filtered_messages", ["commit_id"], name: "index_filtered_messages_on_commit_id", using: :btree
+  add_index "filtered_messages", ["filterset_id"], name: "index_filtered_messages_on_filterset_id", using: :btree
+
+  create_table "filtersets", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "user_names", force: :cascade do |t|
     t.string   "name",       null: false
     t.integer  "user_id"
@@ -58,5 +84,21 @@ ActiveRecord::Schema.define(version: 20161217183709) do
   end
 
   add_index "users", ["account_name"], name: "index_users_on_account_name", using: :btree
+
+  create_table "white_list_words", force: :cascade do |t|
+    t.string   "word_id"
+    t.string   "filterset_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "white_list_words", ["filterset_id"], name: "index_white_list_words_on_filterset_id", using: :btree
+  add_index "white_list_words", ["word_id"], name: "index_white_list_words_on_word_id", using: :btree
+
+  create_table "words", force: :cascade do |t|
+    t.string   "word"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end
