@@ -20,8 +20,7 @@ class CommitsController < ApplicationController
 
     if @commits.nil? || @commits.length < 1
       logger.warn "The cached value of 'filtered_commits' was nil or less than one. Running the filter on the available unfiltered commits."
-      @commits = filter_commits(unfiltered_commits)
-      return
+      @commits = filter_commits unfiltered_commits
     end
   end
 
@@ -111,14 +110,18 @@ class CommitsController < ApplicationController
     params.require(:commit).permit(:username, :user_avatar, :message, :commit_time, :repository, :branch, :raw_node)
   end
 
-  def filter_commits commits
+  def filter_commits(commits)
+    start = Time.now
     filtered_commits = Array.new
-    commits.try(:each) do |commit|
-      if Obscenity.profane? commit.message
-        filtered_commits << commit
-      end
+    Parallel.each(commits, in_threads: 1) do |commit|
+        if Obscenity.profane? commit.message
+          filtered_commits << commit
+        end
     end
+    finish = Time.now
+    logger.debug "Filtering #{commits.length} commits took #{(finish - start).round(2)} seconds."
     filtered_commits
+    # commits
   end
 
 end

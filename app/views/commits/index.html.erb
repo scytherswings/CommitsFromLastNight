@@ -1,24 +1,32 @@
 <div class="table-responsive">
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th>Username</th>
-      <th>Message</th>
-      <th>Repository</th>
-      <th>Branch</th>
-    </tr>
-    </thead>
+  <% if @commits.empty? %>
+    <div class="jumbotron">
+      <h1>Well this is disappointing...</h1>
+      <h2>It looks like your developers aren't as angry as you thought.</h2>
+    </div>
+  <% else %>
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>Username</th>
+        <th>Message</th>
+        <th>Repository</th>
+        <th>Branch</th>
+      </tr>
+      </thead>
 
-    <tbody>
-    <%= content_tag_for(:tr, @commits) do |commit| %>
-      <td><%= link_to commit.user.account_name, user_path(commit.user.id) %></td>
-      <td><%= commit.message %></td>
-      <td><%= commit.repo_name %></td>
-      <td><%= commit.branch_name %></td>
-    <% end %>
-    </tbody>
-  </table>
-  <%= link_to 'Fetch Latest Commits', fetch_latest_from_bitbucket_path, class: 'btn btn-success' %>
-  <%= link_to 'Destroy all Commits', destroy_all_commits_path, method: :delete, class: 'btn btn-danger' %>
-  <%= link_to 'Clear Cache', clear_cache_path, method: :post, class: 'btn btn-default' %>
+      <tbody>
+      <%= content_tag_for(:tr, @commits) do |commit| %>
+        <td><%= link_to commit.user.account_name, user_path(commit.user.id) %></td>
+        <td><%= commit.message %></td>
+        <td><%= commit.repo_name %></td>
+        <td><%= commit.branch_name %></td>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
+  <%= button_to 'Fetch Latest Commits', fetch_latest_from_bitbucket_path, class: 'btn btn-success' %>
+  <%= button_to 'Destroy all Commits', destroy_all_commits_path, method: :delete, class: 'btn btn-danger' %>
+  <%= button_to 'Clear Cache', clear_cache_path, method: :post, class: 'btn btn-default' %>
+
 </div>

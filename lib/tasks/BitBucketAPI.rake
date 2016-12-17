@@ -3,19 +3,17 @@ namespace :BitBucketAPI do
   desc 'Fetches the lastest commits based on the newest timestamp found in the database.'
   task fetch_latest_commits: :environment do
     # Rails.logger = Logger.new(STDOUT)
-    Rails.logger.debug 'Starting to fetch latest commits'
 
     config_file = YAML.load_file('config.yml')
     bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
-    repos = bitbucket.repos.list
 
-    Rails.logger.debug repos.to_json
+    Rails.logger.debug 'Starting to fetch data from BitBucket for repos and commits.'
+    repos = bitbucket.repos.list
 
     repos.each do |repo|
       Rails.logger.debug 'Working on repo: ' + repo['slug']
 
       changesets = bitbucket.repos.changesets.all repo['owner'], repo['slug']
-      Rails.logger.debug changesets.to_json
 
       changesets['changesets'].each do |changeset|
         user = find_or_create_new_users changeset
@@ -37,7 +35,7 @@ namespace :BitBucketAPI do
 
   end
 
-  def find_or_create_new_users changeset
+  def find_or_create_new_users(changeset)
     author_name = /\A(?:(?!\s<.*>\z).)+/.match(changeset['raw_author']).to_s
     email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s
     account_name = changeset['author']

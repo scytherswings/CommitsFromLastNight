@@ -84,5 +84,4 @@ test:
 production:
   <<: *default
   database: CommitsFromLastNight_production
-  username: CommitsFromLastNight
   password: <%= ENV['COMMITSFROMLASTNIGHT_DATABASE_PASSWORD'] %>

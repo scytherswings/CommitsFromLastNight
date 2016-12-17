@@ -26,7 +26,10 @@ gem 'bitbucket_rest_api', '~> 0.1.7'
 gem 'bootstrap-generators', '~> 3.3.4'
 gem 'simple_form', '~> 3.1.1'
 gem 'obscenity', '~> 1.0', '>= 1.0.2'
-
+gem 'parallel', '~> 1.10'
+gem 'sprockets-rails', '~> 3.0', '>= 3.0.4'
+gem 'jquery-turbolinks', '~> 2.1'
+gem 'bootstrap-sass', '~> 3.3.6'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
