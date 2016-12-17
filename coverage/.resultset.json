@@ -1,32 +1,32 @@
 {
   "Unit Tests": {
     "coverage": {
-      "/home/andrew/Documents/CommitsFromLastNight/app/models/commit.rb": [
-        0,
-        0,
-        0,
-        0,
-        0
+      "/home/andrew/Documents/CommitsFromLastNight/app/models/user.rb": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        null
       ],
-      "/home/andrew/Documents/CommitsFromLastNight/app/models/email_address.rb": [
-        0,
-        0,
-        0,
-        0
+      "/home/andrew/Documents/CommitsFromLastNight/app/models/commit.rb": [
+        1,
+        1,
+        1,
+        1,
+        null
       ],
       "/home/andrew/Documents/CommitsFromLastNight/app/models/user_name.rb": [
-        0,
-        0,
-        0,
-        0
+        1,
+        1,
+        1,
+        null
       ],
-      "/home/andrew/Documents/CommitsFromLastNight/app/models/user.rb": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+      "/home/andrew/Documents/CommitsFromLastNight/app/models/email_address.rb": [
+        1,
+        1,
+        1,
+        null
       ],
       "/home/andrew/Documents/CommitsFromLastNight/app/helpers/users_helper.rb": [
         0,
@@ -37,6 +37,34 @@
         0
       ],
       "/home/andrew/Documents/CommitsFromLastNight/app/helpers/application_helper.rb": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         0,
         0
       ],
@@ -210,9 +238,27 @@
         0,
         0,
         0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
-    "timestamp": 1481948886
+    "timestamp": 1481954796
   }
 }

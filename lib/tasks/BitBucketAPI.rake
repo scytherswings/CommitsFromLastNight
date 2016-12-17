@@ -45,6 +45,7 @@ namespace :BitBucketAPI do
     user = User.find_or_create_by!(account_name: account_name)
     UserName.find_or_create_by!(name: author_name, user: user)
     EmailAddress.find_or_create_by!(email: email, user: user)
-    return user
+
+    user
   end
 end

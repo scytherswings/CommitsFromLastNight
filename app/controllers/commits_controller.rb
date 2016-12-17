@@ -1,5 +1,5 @@
 require 'yaml'
-
+require 'obscenity'
 class CommitsController < ApplicationController
   before_action :set_commit, only: [:show, :edit, :update, :destroy]
 
@@ -7,8 +7,22 @@ class CommitsController < ApplicationController
   # GET /commits
   # GET /commits.json
   def index
-    unfiltered_commits = Rails.cache.fetch(Commit.all, expire_in: 10)
-    @commits = Rails.cache.fetch(filter_commits unfiltered_commits)
+    unfiltered_commits = Rails.cache.fetch(Commit.all, expire_in: 30)
+
+    if unfiltered_commits.nil? || unfiltered_commits.length < 1
+      logger.warn "The cached value of 'unfiltered_commits' was nil or less than one. Fetching unfiltered commits from database."
+      unfiltered_commits = Commit.all
+      @commits = filter_commits unfiltered_commits
+      return
+    end
+
+    @commits = Rails.cache.fetch(filter_commits(unfiltered_commits), expire_in: 60)
+
+    if @commits.nil? || @commits.length < 1
+      logger.warn "The cached value of 'filtered_commits' was nil or less than one. Running the filter on the available unfiltered commits."
+      @commits = filter_commits(unfiltered_commits)
+      return
+    end
   end
 
   # GET /commits/1
@@ -19,6 +33,11 @@ class CommitsController < ApplicationController
   # GET /commits/new
   def new
     @commit = Commit.new
+  end
+
+  def clear_cache
+    Rails.cache.clear
+    redirect_to '#'
   end
 
 
@@ -93,7 +112,13 @@ class CommitsController < ApplicationController
   end
 
   def filter_commits commits
-
+    filtered_commits = Array.new
+    commits.try(:each) do |commit|
+      if Obscenity.profane? commit.message
+        filtered_commits << commit
+      end
+    end
+    filtered_commits
   end
 
 end
