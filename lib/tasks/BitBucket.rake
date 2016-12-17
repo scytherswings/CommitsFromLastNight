@@ -23,15 +23,9 @@ namespace :BitBucket do
         email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s
         account_name = changeset['author']
 
-        if account_name.nil? || email.nil? || account_name.nil?
-          puts changeset.to_json
-        end
-
-        user = User.find_or_create_by(author_name: author_name, email: email, account_name: account_name)
-
-        if user.id.nil?
-          puts 'fuck'
-        end
+        user = User.find_or_create_by!(account_name: account_name,
+                                       user_name: UserName.find_or_create_by!(name: author_name),
+                                       email: EmailAddress.find_or_create_by!(email: email))
 
         Commit.create(message: changeset['message'], utc_commit_time: changeset['utctimestamp'],
                       repo_name: repo['slug'], branch_name: changeset['branch'], sha: changeset['raw_node'], user: user)
