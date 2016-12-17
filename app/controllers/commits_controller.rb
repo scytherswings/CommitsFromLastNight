@@ -2,8 +2,7 @@ require 'yaml'
 require 'uuidtools'
 class CommitsController < ApplicationController
   before_action :set_commit, only: [:show, :edit, :update, :destroy]
-  @@config_file = YAML.load_file('config.yml')
-  @@bitbucket = BitBucket.new basic_auth: @@config_file['username'] + ':' + @@config_file['password']
+
 
   # GET /commits
   # GET /commits.json
@@ -22,17 +21,15 @@ class CommitsController < ApplicationController
   end
 
 
-  def fetch_latest
-    repos = @@bitbucket.repos.list
-    logger.debug repos.to_json
-    repos.each do |repo|
-      logger.debug 'Working on repo: ' + repo['slug']
-      changesets = @@bitbucket.repos.changesets.all repo['owner'], repo['slug']
-      logger.debug changesets.to_json
-      changesets['changesets'].each do |changeset|
-        Commit.create(username: changeset['author'], user_avatar: nil, message: changeset['message'], commit_time: changeset['utctimestamp'], repository: repo['slug'], branch: changeset['branch'], raw_node: changeset['raw_node'])
-      end
-    end
+  def fetch_latest_from_bitbucket
+    system 'rake RAILS_ENV=' + Rails.env + ' BitBucket:fetch_latest_commits &'
+
+    redirect_to '#'
+  end
+
+  #Placeholder for potential github stuff.
+  def fetch_latest_from_github
+    system 'rake RAILS_ENV=' + Rails.env + ' GitHub:fetch_latest_commits &'
 
     redirect_to '#'
   end

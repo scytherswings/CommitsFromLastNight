@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :users
   root 'commits#index'
   resources :commits
-  get 'fetch_latest' => 'commits#fetch_latest'
+  get 'fetch_latest_from_bitbucket' => 'commits#fetch_latest_from_bitbucket'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
