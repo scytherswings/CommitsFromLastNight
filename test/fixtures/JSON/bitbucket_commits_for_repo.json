@@ -1,0 +1,810 @@
+{
+  "count": 30,
+  "start": null,
+  "limit": 30,
+  "changesets": [
+    {
+      "node": "d74ffa02c824",
+      "files": [
+        {
+          "type": "added",
+          "file": "contributors.txt"
+        }
+      ],
+      "branches": [],
+      "raw_author": "DAMON PORCH <damonporch@gmail.com>",
+      "utctimestamp": "2015-05-09 23:38:21+00:00",
+      "author": "damonporch",
+      "timestamp": "2015-05-10 01:38:21",
+      "raw_node": "d74ffa02c82438ba5777035a5d517ff41e4ef5ed",
+      "parents": [],
+      "branch": null,
+      "message": "Initial commit with contributors\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "2ac13bf4cda7",
+      "files": [
+        {
+          "type": "removed",
+          "file": "contributors.txt"
+        }
+      ],
+      "branches": [],
+      "raw_author": "DAMON PORCH <damonporch@gmail.com>",
+      "utctimestamp": "2015-05-09 23:57:29+00:00",
+      "author": "damonporch",
+      "timestamp": "2015-05-10 01:57:29",
+      "raw_node": "2ac13bf4cda72038a8f6aec94cae0cb387fdb167",
+      "parents": [
+        "d74ffa02c824"
+      ],
+      "branch": null,
+      "message": "stuff\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "dfeecc071c93",
+      "files": [
+        {
+          "type": "added",
+          "file": ".gitignore"
+        },
+        {
+          "type": "added",
+          "file": "Makefile"
+        },
+        {
+          "type": "added",
+          "file": "app/__init__.py"
+        },
+        {
+          "type": "added",
+          "file": "app/forms.py"
+        },
+        {
+          "type": "added",
+          "file": "app/static/css/main.css"
+        },
+        {
+          "type": "added",
+          "file": "app/static/js/app.js"
+        },
+        {
+          "type": "added",
+          "file": "app/templates/index.html"
+        },
+        {
+          "type": "added",
+          "file": "app/templates/room.html"
+        },
+        {
+          "type": "added",
+          "file": "app/templates/signup.html"
+        },
+        {
+          "type": "added",
+          "file": "app/views.py"
+        },
+        {
+          "type": "added",
+          "file": "app_uwsgi.ini"
+        },
+        {
+          "type": "added",
+          "file": "config.py"
+        },
+        {
+          "type": "added",
+          "file": "requirements.txt"
+        },
+        {
+          "type": "added",
+          "file": "run.sh"
+        }
+      ],
+      "branches": [],
+      "raw_author": "DAMON PORCH <damonporch@gmail.com>",
+      "utctimestamp": "2015-05-10 00:01:29+00:00",
+      "author": "damonporch",
+      "timestamp": "2015-05-10 02:01:29",
+      "raw_node": "dfeecc071c936547aad1b71b1b32edb777f31c91",
+      "parents": [
+        "2ac13bf4cda7"
+      ],
+      "branch": null,
+      "message": "yo_dawg\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "ef2fe85d7dbe",
+      "files": [
+        {
+          "type": "added",
+          "file": "Vagrantfile"
+        },
+        {
+          "type": "modified",
+          "file": "run.sh"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-05-11 21:55:21+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-05-11 23:55:21",
+      "raw_node": "ef2fe85d7dbecfbb5f951c42de544915204513ac",
+      "parents": [
+        "dfeecc071c93"
+      ],
+      "branch": null,
+      "message": "acctually adds the vagrant file and run.sh from previous commit\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "732680deba10",
+      "files": [
+        {
+          "type": "modified",
+          "file": ".gitignore"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-05-11 22:20:31+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-05-12 00:20:31",
+      "raw_node": "732680deba10dc3610f29e5aa40a1e63c26b3eef",
+      "parents": [
+        "ef2fe85d7dbe"
+      ],
+      "branch": null,
+      "message": "fixes .gitignore to ignore the .vagrant folder when using vagrant in this repo\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "d4f44abdf3ea",
+      "files": [
+        {
+          "type": "modified",
+          "file": "Vagrantfile"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-05-11 22:21:23+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-05-12 00:21:23",
+      "raw_node": "d4f44abdf3ea701565bd7cbfa5a6591d290d34ee",
+      "parents": [
+        "732680deba10"
+      ],
+      "branch": null,
+      "message": "fixes vagrant file to use env instead of venv\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "2d4e4b3503a0",
+      "files": [
+        {
+          "type": "modified",
+          "file": ".gitignore"
+        },
+        {
+          "type": "added",
+          "file": "Vagrantfile"
+        },
+        {
+          "type": "modified",
+          "file": "run.sh"
+        }
+      ],
+      "branches": [],
+      "raw_author": "sunmark007 <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-05-14 01:51:46+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-05-14 03:51:46",
+      "raw_node": "2d4e4b3503a01934998ccc5f24c0eaaa0bf3a068",
+      "parents": [
+        "dfeecc071c93",
+        "d4f44abdf3ea"
+      ],
+      "branch": null,
+      "message": "Merged in MC_setup_vagrant (pull request #1)\n\nadds v1 vagrant file so we can vagrant up\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "241f398cdad2",
+      "files": [
+        {
+          "type": "modified",
+          "file": "Vagrantfile"
+        },
+        {
+          "type": "added",
+          "file": "config/nginx.conf"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-05-14 02:55:02+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-05-14 04:55:02",
+      "raw_node": "241f398cdad208bff58a1ec79a4013433dd73c09",
+      "parents": [
+        "2d4e4b3503a0"
+      ],
+      "branch": null,
+      "message": "fixes vagrant to work and adds a config directory for the nginx config\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "f14d60aa5913",
+      "files": [
+        {
+          "type": "modified",
+          "file": "Vagrantfile"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-05-29 03:00:03+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-05-29 05:00:03",
+      "raw_node": "f14d60aa591317c2b6fd3963c975fa90c1a43065",
+      "parents": [
+        "241f398cdad2"
+      ],
+      "branch": null,
+      "message": "change ram usage to 1024mb, and fixes ordering of vagrant commands\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "38ff21e8ffe6",
+      "files": [
+        {
+          "type": "modified",
+          "file": "Vagrantfile"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-05-29 04:21:14+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-05-29 06:21:14",
+      "raw_node": "38ff21e8ffe6382c0f27f40fe0b5ec427b1b6242",
+      "parents": [
+        "f14d60aa5913"
+      ],
+      "branch": null,
+      "message": "changes nginx reload to happen at the end for timing reasons\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "d6f3d18b2d44",
+      "files": [
+        {
+          "type": "modified",
+          "file": "Vagrantfile"
+        }
+      ],
+      "branches": [],
+      "raw_author": "sunmark007 <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-06-12 04:58:37+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-06-12 06:58:37",
+      "raw_node": "d6f3d18b2d44753d2caab1a8a6817d0b4f0ac805",
+      "parents": [
+        "241f398cdad2",
+        "38ff21e8ffe6"
+      ],
+      "branch": null,
+      "message": "Merged in MC_vagrant_update (pull request #2)\n\nchange ram usage to 1024mb, and fixes ordering of vagrant commands\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "5a3fc522acd7",
+      "files": [
+        {
+          "type": "modified",
+          "file": "config/nginx.conf"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-06-15 02:08:03+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-06-15 04:08:03",
+      "raw_node": "5a3fc522acd78de4bdccdb4d513eb4e2df2a3414",
+      "parents": [
+        "d6f3d18b2d44"
+      ],
+      "branch": null,
+      "message": "changes nginx config to give correct header for css\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "dd015bfb0951",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "scytherswings <scytherswings@gmail.com>",
+      "utctimestamp": "2015-06-17 01:55:49+00:00",
+      "author": "scytherswings",
+      "timestamp": "2015-06-17 03:55:49",
+      "raw_node": "dd015bfb09511b125da163529c660145196657da",
+      "parents": [
+        "d6f3d18b2d44"
+      ],
+      "branch": null,
+      "message": "fixed your shitty spelling\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "7b80c7aba1b6",
+      "files": [
+        {
+          "type": "modified",
+          "file": "config/nginx.conf"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Andrew Newell <scytherswings@gmail.com>",
+      "utctimestamp": "2015-06-17 03:08:07+00:00",
+      "author": "scytherswings",
+      "timestamp": "2015-06-17 05:08:07",
+      "raw_node": "7b80c7aba1b6df3e3294cb9371752b76f1bc2ab4",
+      "parents": [
+        "dd015bfb0951",
+        "5a3fc522acd7"
+      ],
+      "branch": null,
+      "message": "Merged in MC_nginx_change (pull request #3)\n\nchanges nginx config to give correct header for css\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "e8186ad8a118",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/static/css/main.css"
+        },
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-06-18 03:22:29+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-06-18 05:22:29",
+      "raw_node": "e8186ad8a11845c2d935e56927caba8384de231c",
+      "parents": [
+        "7b80c7aba1b6"
+      ],
+      "branch": null,
+      "message": "lets start with the new template\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "7e0ee7fb2fa5",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-06-18 03:36:48+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-06-18 05:36:48",
+      "raw_node": "7e0ee7fb2fa5253b38a72e0ea3e58f1b5a2f4a3c",
+      "parents": [
+        "e8186ad8a118"
+      ],
+      "branch": null,
+      "message": "fixes stuff\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "44b6e5120586",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-06-18 03:42:57+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-06-18 05:42:57",
+      "raw_node": "44b6e51205864c0eaafdd845f823564ef977039b",
+      "parents": [
+        "7e0ee7fb2fa5"
+      ],
+      "branch": null,
+      "message": "changes button to work\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "053d826e40e5",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-06-18 03:46:03+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-06-18 05:46:03",
+      "raw_node": "053d826e40e58f1caab9e1228d42b08491714623",
+      "parents": [
+        "44b6e5120586"
+      ],
+      "branch": null,
+      "message": "lets load a lot faster\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "3692c3980591",
+      "files": [
+        {
+          "type": "added",
+          "file": ".idea/.name"
+        },
+        {
+          "type": "added",
+          "file": ".idea/dictionaries/andrew.xml"
+        },
+        {
+          "type": "added",
+          "file": ".idea/echo.iml"
+        },
+        {
+          "type": "added",
+          "file": ".idea/misc.xml"
+        },
+        {
+          "type": "added",
+          "file": ".idea/modules.xml"
+        },
+        {
+          "type": "added",
+          "file": ".idea/vcs.xml"
+        },
+        {
+          "type": "added",
+          "file": ".idea/workspace.xml"
+        },
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "scytherswings <scytherswings@gmail.com>",
+      "utctimestamp": "2015-06-18 03:46:37+00:00",
+      "author": "scytherswings",
+      "timestamp": "2015-06-18 05:46:37",
+      "raw_node": "3692c3980591dce6035a4fcf1cf98cf7706937d8",
+      "parents": [
+        "44b6e5120586"
+      ],
+      "branch": null,
+      "message": "changed title\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "5d584fecc7b7",
+      "files": [
+        {
+          "type": "modified",
+          "file": ".gitignore"
+        }
+      ],
+      "branches": [],
+      "raw_author": "scytherswings <scytherswings@gmail.com>",
+      "utctimestamp": "2015-06-18 03:49:06+00:00",
+      "author": "scytherswings",
+      "timestamp": "2015-06-18 05:49:06",
+      "raw_node": "5d584fecc7b73df1b41d7cf4b33890b48e08ca8f",
+      "parents": [
+        "3692c3980591"
+      ],
+      "branch": null,
+      "message": "changed .gitignore and title in index.html\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "02e3299a5e91",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "scytherswings <scytherswings@gmail.com>",
+      "utctimestamp": "2015-06-18 03:49:27+00:00",
+      "author": "scytherswings",
+      "timestamp": "2015-06-18 05:49:27",
+      "raw_node": "02e3299a5e912b5920def11b516367755f66e3db",
+      "parents": [
+        "5d584fecc7b7",
+        "053d826e40e5"
+      ],
+      "branch": null,
+      "message": "Merge branch 'site_rewrite' of https://bitbucket.org/skiffco/echo into site_rewrite\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "911d24affbfb",
+      "files": [
+        {
+          "type": "removed",
+          "file": ".idea/.name"
+        },
+        {
+          "type": "removed",
+          "file": ".idea/dictionaries/andrew.xml"
+        },
+        {
+          "type": "removed",
+          "file": ".idea/echo.iml"
+        },
+        {
+          "type": "removed",
+          "file": ".idea/misc.xml"
+        },
+        {
+          "type": "removed",
+          "file": ".idea/modules.xml"
+        },
+        {
+          "type": "removed",
+          "file": ".idea/vcs.xml"
+        },
+        {
+          "type": "removed",
+          "file": ".idea/workspace.xml"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-06-18 03:57:22+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-06-18 05:57:22",
+      "raw_node": "911d24affbfb8568b9a63cdaefeb696014ee0d25",
+      "parents": [
+        "02e3299a5e91"
+      ],
+      "branch": null,
+      "message": "removing .idea\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "5ccce961102d",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "scytherswings <scytherswings@gmail.com>",
+      "utctimestamp": "2015-06-18 04:05:00+00:00",
+      "author": "scytherswings",
+      "timestamp": "2015-06-18 06:05:00",
+      "raw_node": "5ccce961102dc7b8dcfb75909fea61b25d578d1f",
+      "parents": [
+        "911d24affbfb"
+      ],
+      "branch": null,
+      "message": "changed words\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "9e21a1cfdc8b",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "scytherswings <scytherswings@gmail.com>",
+      "utctimestamp": "2015-06-18 04:08:11+00:00",
+      "author": "scytherswings",
+      "timestamp": "2015-06-18 06:08:11",
+      "raw_node": "9e21a1cfdc8b5b0f68a91d1ea7aedeafaebcb72a",
+      "parents": [
+        "5ccce961102d"
+      ],
+      "branch": null,
+      "message": "changed words\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "d1a7c1857933",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/templates/room.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-06-18 04:19:52+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-06-18 06:19:52",
+      "raw_node": "d1a7c1857933fa75fef9e9c6280d4878cda87add",
+      "parents": [
+        "9e21a1cfdc8b"
+      ],
+      "branch": null,
+      "message": "lets have the same stuff\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "65b47fe2968c",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/static/css/main.css"
+        },
+        {
+          "type": "modified",
+          "file": "app/templates/room.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-06-18 05:10:05+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-06-18 07:10:05",
+      "raw_node": "65b47fe2968c45f110d5f808a165ecd470e93c20",
+      "parents": [
+        "d1a7c1857933"
+      ],
+      "branch": null,
+      "message": "adds final stuff\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "2550ca4d1982",
+      "files": [
+        {
+          "type": "modified",
+          "file": ".gitignore"
+        },
+        {
+          "type": "modified",
+          "file": "app/static/css/main.css"
+        },
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        },
+        {
+          "type": "modified",
+          "file": "app/templates/room.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "sunmark007 <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-06-18 05:14:08+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-06-18 07:14:08",
+      "raw_node": "2550ca4d1982ef737216b926b07dd253de4a6b4c",
+      "parents": [
+        "7b80c7aba1b6",
+        "65b47fe2968c"
+      ],
+      "branch": null,
+      "message": "Merged in site_rewrite (pull request #5)\n\nnot this time\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "6cf1ded9af94",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-06-28 17:27:47+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-06-28 19:27:47",
+      "raw_node": "6cf1ded9af9426e96322fb578092bbcf7ae3b9ad",
+      "parents": [
+        "2550ca4d1982"
+      ],
+      "branch": null,
+      "message": "changes test on the page to be more about our site\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "55defda91254",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        }
+      ],
+      "branches": [],
+      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-07-03 19:37:51+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-07-03 21:37:51",
+      "raw_node": "55defda912548bf3c074a65c1afde7b476e25a57",
+      "parents": [
+        "6cf1ded9af94"
+      ],
+      "branch": null,
+      "message": "finishes up fixes to homepage\n",
+      "revision": null,
+      "size": -1
+    },
+    {
+      "node": "c2c8e34a20a3",
+      "files": [
+        {
+          "type": "modified",
+          "file": "app/templates/index.html"
+        }
+      ],
+      "raw_author": "sunmark007 <mark.allen.cordell@gmail.com>",
+      "utctimestamp": "2015-07-03 21:27:36+00:00",
+      "author": "sunmark007",
+      "timestamp": "2015-07-03 23:27:36",
+      "raw_node": "c2c8e34a20a3c5ed19df39550e4f606ed40faa34",
+      "parents": [
+        "2550ca4d1982",
+        "55defda91254"
+      ],
+      "branch": "master",
+      "message": "Merged in MC_homepage_v1.1 (pull request #6)\n\nMc_homepage_v1.1\n",
+      "revision": null,
+      "size": -1
+    }
+  ]
+}
