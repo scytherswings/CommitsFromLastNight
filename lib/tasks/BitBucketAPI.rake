@@ -13,10 +13,17 @@ namespace :BitBucketAPI do
     repos.each do |repo|
       Rails.logger.debug 'Working on repo: ' + repo['slug']
 
-      changesets = bitbucket.repos.changesets.all repo['owner'], repo['slug']
+      begin
+        changesets = bitbucket.repos.changesets.all repo['owner'], repo['slug']
+      rescue BitBucket::Error => error
+        Rails.logger.error "An error occurred trying to query the changesets for #{repo['slug']}. Error was #{error}"
+        next
+      end
 
       changesets['changesets'].each do |changeset|
         user = find_or_create_new_users changeset
+
+        find_or_set_user_avatar_uri bitbucket, user
 
         Commit.create(message: changeset['message'], utc_commit_time: changeset['utctimestamp'],
                       repo_name: repo['slug'], branch_name: changeset['branch'], sha: changeset['raw_node'], user: user)
@@ -37,7 +44,7 @@ namespace :BitBucketAPI do
 
   def find_or_create_new_users(changeset)
     author_name = /\A(?:(?!\s<.*>\z).)+/.match(changeset['raw_author']).to_s
-    email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s
+    email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s.downcase
     account_name = changeset['author']
 
     user = User.find_or_create_by!(account_name: account_name)
@@ -45,5 +52,13 @@ namespace :BitBucketAPI do
     EmailAddress.find_or_create_by!(email: email, user: user)
 
     user
+  end
+
+  def find_or_set_user_avatar_uri(bitbucket, user)
+    if user.account_name && (user.avatar_uri.empty? || user.avatar_uri.nil?)
+      logger.debug "Found a user: #{user.account_name} whose avatar_uri was nil or empty. Querying profile for avatar_uri."
+      user_profile = bitbucket.users.account.profile(user.account_name)
+      user.update(avatar_uri: user_profile['avatar'])
+    end
   end
 end

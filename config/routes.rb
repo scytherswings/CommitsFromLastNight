@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :users
   root 'commits#index'
   resources :commits
-  get 'fetch_latest_from_bitbucket' => 'commits#fetch_latest_from_bitbucket'
+  post 'fetch_latest_from_bitbucket' => 'commits#fetch_latest_from_bitbucket'
   post 'clear_cache' => 'commits#clear_cache'
   delete 'destroy_all_commits' => 'commits#destroy_all_commits'
   # The priority is based upon order of creation: first created -> highest priority.

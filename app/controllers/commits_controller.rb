@@ -113,7 +113,7 @@ class CommitsController < ApplicationController
   def filter_commits(commits)
     start = Time.now
     filtered_commits = Array.new
-    Parallel.each(commits, in_threads: 1) do |commit|
+    Parallel.each(commits, in_threads: 16) do |commit|
         if Obscenity.profane? commit.message
           filtered_commits << commit
         end
