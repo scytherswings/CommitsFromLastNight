@@ -1,32 +1,34 @@
-<div class="table-responsive">
-  <% if @commits.empty? %>
-    <div class="jumbotron">
-      <h1>Well this is disappointing...</h1>
-      <h2>It looks like your developers aren't as angry as you thought.</h2>
-    </div>
-  <% else %>
-    <table class="table table-hover">
-      <thead>
-      <tr>
-        <th>Username</th>
-        <th>Message</th>
-        <th>Repository</th>
-        <th>Branch</th>
-      </tr>
-      </thead>
+<div class="row">
+  <div class="table-responsive">
+    <% if @commits.empty? %>
+      <div class="jumbotron">
+        <h1>Well this is disappointing...</h1>
+        <h2>It looks like your developers aren't as angry as you thought.</h2>
+      </div>
+    <% else %>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Username</th>
+          <th>Message</th>
+          <th>Repository</th>
+          <th>Branch</th>
+        </tr>
+        </thead>
 
-      <tbody>
-      <%= content_tag_for(:tr, @commits) do |commit| %>
-        <td><%= link_to commit.user.account_name, user_path(commit.user.id) %></td>
-        <td><%= commit.message %></td>
-        <td><%= commit.repo_name %></td>
-        <td><%= commit.branch_name %></td>
-      <% end %>
-      </tbody>
-    </table>
-  <% end %>
-
+        <tbody>
+        <%= content_tag_for(:tr, @commits) do |commit| %>
+          <td><%= image_tag commit.user.avatar_uri %><%= link_to commit.user.account_name, user_path(commit.user.id) %></td>
+          <td><%= commit.message %></td>
+          <td><%= commit.repo_name %></td>
+          <td><%= commit.branch_name %></td>
+        <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
 </div>
+
 <div class="row">
   <div style="float: left; width: auto; padding-right: 2px;">
     <%= button_to 'Fetch Latest Commits', fetch_latest_from_bitbucket_path, method: :post, class: 'btn btn-success' %>

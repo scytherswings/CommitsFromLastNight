@@ -55,10 +55,11 @@ namespace :BitBucketAPI do
   end
 
   def find_or_set_user_avatar_uri(bitbucket, user)
-    if user.account_name && (user.avatar_uri.empty? || user.avatar_uri.nil?)
-      logger.debug "Found a user: #{user.account_name} whose avatar_uri was nil or empty. Querying profile for avatar_uri."
+    if user.account_name && !user.avatar_uri
+      Rails.logger.debug "Found a user: #{user.account_name} whose avatar_uri was nil or empty. Querying profile for avatar_uri."
       user_profile = bitbucket.users.account.profile(user.account_name)
-      user.update(avatar_uri: user_profile['avatar'])
+      Rails.logger.debug 'User profile: ' + user_profile.to_json
+      user.update(avatar_uri: user_profile['user']['avatar'])
     end
   end
 end
