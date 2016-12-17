@@ -25,7 +25,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bitbucket_rest_api', '~> 0.1.7'
 gem 'bootstrap-generators', '~> 3.3.4'
 gem 'simple_form', '~> 3.1.1'
-gem 'uuidtools', '~> 2.1', '>= 2.1.5'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -37,5 +37,21 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+end
+
+group :test do
+  gem 'simplecov', '~> 0.11.1'
+  gem 'coveralls', require: false
+  gem 'minitest-reporters', '~> 1.0.20'
+  gem 'mini_backtrace', '~> 0.1.3'
+  gem 'webmock', '~> 1.21.0'
+  # gem 'capybara', '~> 2.6.2'
+  # gem 'poltergeist', '~> 1.9.0'
+  # gem 'phantomjs', require: 'phantomjs/poltergeist'
+  # gem 'capybara-screenshot'
+  gem 'vcr', '~> 3.0.1'
+  gem 'minitest-vcr', '~> 1.4.0'
+  gem 'faker', '~> 1.6.1'
+  gem 'fabrication', '~> 2.14.1'
 end
 

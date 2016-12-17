@@ -1,5 +1,5 @@
 require 'yaml'
-require 'uuidtools'
+
 class CommitsController < ApplicationController
   before_action :set_commit, only: [:show, :edit, :update, :destroy]
 
@@ -22,14 +22,14 @@ class CommitsController < ApplicationController
 
 
   def fetch_latest_from_bitbucket
-    system 'rake RAILS_ENV=' + Rails.env + ' BitBucket:fetch_latest_commits &'
+    system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_latest_commits &'
 
     redirect_to '#'
   end
 
   #Placeholder for potential github stuff.
   def fetch_latest_from_github
-    system 'rake RAILS_ENV=' + Rails.env + ' GitHub:fetch_latest_commits &'
+    system 'rake RAILS_ENV=' + Rails.env + ' GitHubAPI:fetch_latest_commits &'
 
     redirect_to '#'
   end
@@ -73,6 +73,12 @@ class CommitsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def destroy_all_commits
+    Commit.destroy_all
+    redirect_to '#'
+  end
+
 
   private
   # Use callbacks to share common setup or constraints between actions.

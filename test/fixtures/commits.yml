@@ -1,17 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  username: MyString
-  user_avatar: MyString
-  message: MyString
-  commit_time: 2016-12-14 00:43:02
-  repository: MyString
-  branch: MyString
-
-two:
-  username: MyString
-  user_avatar: MyString
-  message: MyString
-  commit_time: 2016-12-14 00:43:02
-  repository: MyString
-  branch: MyString
+#one:
+#  message: MyString
+#  commit_time: 2016-12-14 00:43:02
+#  repo_name: MyString
+#  branch_name: MyString
+#
+#two:
+#  username: MyString
+#  user_avatar: MyString
+#  message: MyString
+#  commit_time: 2016-12-14 00:43:02
+#  repository: MyString
+#  branch: MyString
