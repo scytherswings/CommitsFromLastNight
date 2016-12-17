@@ -7,7 +7,7 @@ class CommitsController < ApplicationController
   # GET /commits
   # GET /commits.json
   def index
-    unfiltered_commits = Commit.all
+    unfiltered_commits = Rails.cache.fetch(Commit.all, expire_in: 10)
     @commits = Rails.cache.fetch(filter_commits unfiltered_commits)
   end
 

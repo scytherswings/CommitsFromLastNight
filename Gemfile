@@ -56,3 +56,7 @@ group :test do
   gem 'fabrication', '~> 2.14.1'
 end
 
+group :production do
+  gem 'puma', '~> 3.6', '>= 3.6.2'
+end
+
