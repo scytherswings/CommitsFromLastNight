@@ -14,4 +14,15 @@ class UserTest < ActiveSupport::TestCase
     end
 
   end
+
+
+  test 'a user with two names is valid' do
+
+  end
+
+  test 'a user with two emails is valid' do
+
+  end
+
+
 end
