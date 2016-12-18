@@ -3,7 +3,6 @@ class CreateRepositories < ActiveRecord::Migration
     create_table :repositories do |t|
       t.string :name
       t.integer :commit_id
-      t.string :commit_id
 
       t.timestamps null: false
     end

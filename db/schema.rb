@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(version: 20161218000301) do
   enable_extension "plpgsql"
 
   create_table "black_list_words", force: :cascade do |t|
-    t.string   "word_id"
-    t.string   "filterset_id"
+    t.integer  "word_id"
+    t.integer  "filterset_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
@@ -53,8 +53,8 @@ ActiveRecord::Schema.define(version: 20161218000301) do
   add_index "email_addresses", ["user_id"], name: "index_email_addresses_on_user_id", using: :btree
 
   create_table "filtered_messages", force: :cascade do |t|
-    t.string   "filterset_id"
-    t.string   "commit_id"
+    t.integer  "filterset_id"
+    t.integer  "commit_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 20161218000301) do
 
   create_table "repositories", force: :cascade do |t|
     t.string   "name"
-    t.string   "commit_id"
+    t.integer  "commit_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -96,8 +96,8 @@ ActiveRecord::Schema.define(version: 20161218000301) do
   add_index "users", ["account_name"], name: "index_users_on_account_name", using: :btree
 
   create_table "white_list_words", force: :cascade do |t|
-    t.string   "word_id"
-    t.string   "filterset_id"
+    t.integer  "word_id"
+    t.integer  "filterset_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end

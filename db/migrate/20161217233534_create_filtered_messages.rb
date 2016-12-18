@@ -3,8 +3,6 @@ class CreateFilteredMessages < ActiveRecord::Migration
     create_table :filtered_messages do |t|
       t.integer :filterset_id
       t.integer :commit_id
-      t.string :filterset_id
-      t.string :commit_id
 
       t.timestamps null: false
     end
