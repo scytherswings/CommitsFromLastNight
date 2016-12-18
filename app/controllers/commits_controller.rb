@@ -14,7 +14,6 @@ class CommitsController < ApplicationController
     @commits = Rails.cache.fetch('filtered_commits', expire_in: 60) do
       filter_commits(unfiltered_commits)
     end
-
   end
 
   def clear_cache
