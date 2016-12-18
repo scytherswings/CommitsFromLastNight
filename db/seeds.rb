@@ -5,3 +5,20 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+require 'faker'
+account_names = Array.new
+repository_names = Array.new
+50.times { account_names << Faker::Internet.user_name }
+20.times {repository_names << Faker::App.name }
+500.times do
+  user = User.find_or_create_by(account_name: account_names[rand(0..49)], avatar_uri: 'identicon.png')
+  UserName.find_or_create_by(name: Faker::GameOfThrones.character, user: user)
+  EmailAddress.find_or_create_by(email: Faker::Internet::email, user: user)
+
+  repository = Repository.create(name: repository_names[rand(0..19)], owner: Faker::Internet.user_name, first_commit_sha: Faker::Crypto.sha1)
+
+  message = Faker::Hacker.say_something_smart + ' ..Fuck!'
+  sha = Faker::Crypto.sha1
+  commit_time = Faker::Time.between(DateTime.now - 30, DateTime.now)
+  Commit.create(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
+end

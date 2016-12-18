@@ -1,0 +1,22 @@
+<div class="page-header">
+  <h1><%= @repository.name %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Owner:</dt>
+  <dd><%= @repository.owner %></dd>
+</dl>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>Users</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%= content_tag_for(:tr, @repository.users.uniq{|user| user.id}) do |user| %>
+      <td><%= link_to user.account_name, user_path(user.id) %></td>
+    <% end %>
+    </tbody>
+  </table>
+<%= link_to 'Back', :back , class: 'btn btn-default' %>
+

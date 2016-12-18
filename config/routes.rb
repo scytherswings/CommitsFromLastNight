@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :repositories
   resources :users
   root 'commits#index'
   resources :commits
