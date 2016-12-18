@@ -14,7 +14,7 @@ namespace :BitBucketAPI do
       Rails.logger.info "Working on repo: #{repo['owner']}:#{repo['slug']}."
 
       begin
-        repository = Repository.find_or_create_by!(name: repo['slug'], owner: repo['owner'])
+        repository = Repository.find_or_create_by!(name: repo['slug'].to_s, owner: repo['owner'].to_s)
 
         if repository.first_commit_sha
           Rails.logger.info "The first_commit_sha was set for #{repository.name}. Not querying further."
@@ -33,8 +33,8 @@ namespace :BitBucketAPI do
   end
 
   desc 'Fetches up to [n] old commits'
-  task :fetch_old_commits, [:commits_to_grab] => :environment do |_, args|
-    puts "I grabbed old stuff:  #{args[:commits_to_grab]}"
+  task :fetch_old_commits, [:commits_to_grab_from_each_repo] => :environment do |_, args|
+    puts "I grabbed old stuff:  #{args[:commits_to_grab_from_each_repo]}"
   end
 
   def grab_commits_from_bitbucket(commits_to_get, bitbucket, repository)
@@ -103,7 +103,7 @@ namespace :BitBucketAPI do
 
 
   def find_or_create_new_user(changeset)
-    account_name = changeset['author']
+    account_name = changeset['author'].to_s
     user = User.find_or_create_by!(account_name: account_name) #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
 
 

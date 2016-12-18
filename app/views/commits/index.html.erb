@@ -25,7 +25,7 @@
           <td><%= commit.branch_name %></td>
         <% end %>
         <% end_time = Time.now %>
-        <% logger.debug "Rendering all the commit messages took: #{(end_time - start_time).round(2)}" %>
+        <% logger.debug "Rendering all the commit messages took: #{(end_time - start_time).round(2)} seconds." %>
         </tbody>
       </table>
     <% end %>

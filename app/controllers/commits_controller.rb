@@ -7,9 +7,12 @@ class CommitsController < ApplicationController
   # GET /commits
   # GET /commits.json
   def index
-    unfiltered_commits = Rails.cache.fetch('commits/unfiltered_commits', expire_in: 30) do
+    start_time = Time.now
+    unfiltered_commits = Rails.cache.fetch('commits/unfiltered_commits', expire_in: 60) do
       Commit.all
     end
+    end_time = Time.now
+    logger.debug "Fetching all Commits took #{(end_time - start_time).round(2)} seconds."
 
     @commits = Rails.cache.fetch('commits/filtered_commits', expire_in: 60) do
       filter_commits(unfiltered_commits)
@@ -57,6 +60,7 @@ class CommitsController < ApplicationController
   end
 
   def filter_commits(commits)
+    logger.debug 'Entering into the commit filtering block. Hold on to your butts.'
     start = Time.now
     filtered_commits = Array.new
     Parallel.each(commits, in_threads: 16) do |commit|
