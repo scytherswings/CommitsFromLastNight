@@ -18,9 +18,15 @@
         <tbody>
         <% start_time = Time.now %>
         <%= content_tag_for(:tr, @commits) do |commit| %>
-          <td><p><%= image_tag commit.user.avatar_uri, class: 'avatar_wrapper' %></p><p><%= link_to commit.user.account_name, user_path(commit.user.id) %></p></td>
-          <td><%= commit.message %></td>
-          <td><%= commit.repository.name %></td>
+          <% cache commit do %>
+            <td>
+              <div><%= image_tag commit.user.avatar_uri, class: 'avatar_wrapper' %></div>
+              <br>
+              <div><%= link_to commit.user.account_name, user_path(commit.user.id), class: 'small' %></div>
+            </td>
+            <td><%= commit.message %></td>
+            <td><%= link_to commit.repository.name, repository_path(commit.repository.id) %></td>
+          <% end %>
         <% end %>
         <% end_time = Time.now %>
         <% logger.debug "Rendering all the commit messages took: #{(end_time - start_time).round(2)} seconds." %>

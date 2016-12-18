@@ -135,7 +135,7 @@ namespace :BitBucketAPI do
       end
 
       avatar_uri = user_profile['user']['avatar']
-
+      avatar_uri.gsub!(/\/avatar\/32\//, '/avatar/48/')
       Rails.logger.debug "User #{user.account_name}'s avatar_uri is going to be updated with: #{avatar_uri}"
       user.update!(avatar_uri: avatar_uri)
     end

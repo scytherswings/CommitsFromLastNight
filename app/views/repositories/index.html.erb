@@ -1,0 +1,33 @@
+<div class="page-header">
+  <%= link_to new_repository_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Repository
+  <% end %>
+  <h1>Listing repositories</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Name</th>
+            <th>Owner</th>
+            <th>First commit sha</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @repositories) do |repository| %>
+            <td><%= repository.name %></td>
+            <td><%= repository.owner %></td>
+            <td><%= repository.first_commit_sha %></td>
+            <td><%= link_to 'Show', repository %></td>
+        <td><%= link_to 'Edit', edit_repository_path(repository) %></td>
+        <td><%= link_to 'Destroy', repository, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

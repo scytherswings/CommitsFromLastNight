@@ -9,12 +9,14 @@ class CommitsController < ApplicationController
   def index
     start_time = Time.now
     unfiltered_commits = Rails.cache.fetch('commits/unfiltered_commits', expire_in: 60) do
+      logger.debug 'Cache for unfiltered_commits was unpopulated. Populating..'
       Commit.all
     end
     end_time = Time.now
-    logger.debug "Fetching all Commits took #{(end_time - start_time).round(2)} seconds."
+    logger.debug "Fetching #{unfiltered_commits.count} Commits took #{(end_time - start_time).round(2)} seconds."
 
     @commits = Rails.cache.fetch('commits/filtered_commits', expire_in: 60) do
+      logger.debug 'Cache for filtered_commits was unpopulated. Populating..'
       filter_commits(unfiltered_commits)
     end
   end

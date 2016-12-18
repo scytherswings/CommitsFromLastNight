@@ -2,10 +2,10 @@
 
 one:
   name: MyString
-  commit_id: 1
-  commit_id: MyString
+  owner: MyString
+  first_commit_sha: MyString
 
 two:
   name: MyString
-  commit_id: 1
-  commit_id: MyString
+  owner: MyString
+  first_commit_sha: MyString
