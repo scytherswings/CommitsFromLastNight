@@ -14,7 +14,9 @@ namespace :BitBucketAPI do
       Rails.logger.debug 'Working on repo: ' + repo['slug']
 
       begin
-        grab_commits_from_bitbucket(5, Repository.find_or_create_by!(name: repo['slug']))
+        repository = Repository.find_or_create_by!(name: repo['slug'])
+        grab_commits_from_bitbucket(5, bitbucket, repository, repo['owner'])
+
         changesets = bitbucket.repos.changesets.all repo['owner'], repo['slug']
       rescue BitBucket::Error => error
         Rails.logger.error "An error occurred trying to query the changesets for #{repo['slug']}. Error was #{error}"
@@ -41,29 +43,43 @@ namespace :BitBucketAPI do
     puts "I grabbed old stuff:  #{args[:commits_to_grab]}"
   end
 
-  def grab_commits_from_bitbucket(commits_to_get, repo)
-    oldest_commit = find_oldest_commit_in_repo repo
+  def grab_commits_from_bitbucket(commits_to_get, bitbucket, repository, repo_owner)
+    commits_to_get = commits_to_get < 50 ? commits_to_get : 50
 
+    oldest_commit = find_oldest_commit_in_repo repository
+    changelist = bitbucket.repos.changesets.list(repo_owner, repository.name, {'limit': commits_to_get, 'start': oldest_commit.sha})
+    if changelist['count']
 
+    end
   end
 
   def find_oldest_commit_in_repo(repo)
-    commits_from_repo = Commit.where(repository_id:repo.id).order('utc_commit_time ASC')
+    commits_from_repo = Commit.where(repository_id: repo.id).order('utc_commit_time ASC')
     commits_from_repo.first
   end
 
 
   def find_or_create_new_user(changeset)
+    account_name = changeset['author']
+    user = Rails.cache.fetch("users/#{account_name}", expire_in: 30.seconds) do
+      User.find_or_create_by!(account_name: account_name)
+    end
+
     author_name = /\A(?:(?!\s<.*>\z).)+/.match(changeset['raw_author']).to_s
     email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s.downcase
-    account_name = changeset['author']
 
     if /[\W_]/.match account_name
-      Rails.logger.error "Username: #{account_name} was found to contain a non-word character or number! WTF. #{changeset.to_json}"
+      Rails.logger.fatal "Username: #{account_name} was found to contain a non-word character or number! WTF. #{changeset.to_json}"
+      exit! 1
     end
-    user = User.find_or_create_by!(account_name: account_name)
-    UserName.find_or_create_by!(name: author_name, user: user)
-    EmailAddress.find_or_create_by!(email: email, user: user)
+
+    Rails.cache.fetch("users/#{account_name}/author_name/#{author_name}", expire_in: 30.seconds) do
+      User.find_or_create_by!(account_name: account_name)
+    end
+
+    Rails.cache.fetch("users/#{account_name}/email_address/#{author_name}", expire_in: 30.seconds) do
+      EmailAddress.find_or_create_by!(email: email, user: user)
+    end
 
     user
   end
