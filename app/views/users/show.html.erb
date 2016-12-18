@@ -1,13 +1,16 @@
-<div class="page-header">
-  <h1><%= image_tag @user.avatar_uri, class: 'avatar_wrapper' %><%= @user.account_name %></h1>
+<div class="row">
+  <div class="page-header">
+    <h1><%= image_tag @user.avatar_uri, class: 'avatar_wrapper' %><%= @user.account_name %></h1>
+
+  </div>
+
+  <dl class="dl-horizontal">
+    <dt>User's Aliases:</dt>
+    <dd><%= @user.user_names.uniq{|u| u.name}.map {|u| u.name}%></dd>
+
+    <dt>Email Addresses:</dt>
+    <dd><%= @user.email_addresses.uniq{|e| e.email}.map {|e| e.email}%></dd>
+  </dl>
+  <%= link_to 'Back', :back , class: 'btn btn-default' %>
 
 </div>
-
-<dl class="dl-horizontal">
-  <dt>User's Aliases:</dt>
-  <dd><%= @user.user_names.uniq{|u| u.name}.map {|u| u.name}%></dd>
-
-  <dt>Email Addresses:</dt>
-  <dd><%= @user.email_addresses.uniq{|e| e.email}.map {|e| e.email}%></dd>
-</dl>
-<%= link_to 'Back', :back , class: 'btn btn-default' %>

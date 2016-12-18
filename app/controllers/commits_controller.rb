@@ -10,7 +10,7 @@ class CommitsController < ApplicationController
     start_time = Time.now
     unfiltered_commits = Rails.cache.fetch('commits/unfiltered_commits', expire_in: 60) do
       logger.debug 'Cache for unfiltered_commits was unpopulated. Populating..'
-      Commit.all
+      Commit.order('utc_commit_time DESC').all
     end
     end_time = Time.now
     logger.debug "Fetching #{unfiltered_commits.count} Commits took #{(end_time - start_time).round(2)} seconds."
@@ -34,6 +34,12 @@ class CommitsController < ApplicationController
 
   def fetch_latest_from_bitbucket
     system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_latest_commits &'
+
+    redirect_to '#'
+  end
+
+  def fetch_all_knowable_repositories
+    system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_all_repositories &'
 
     redirect_to '#'
   end
@@ -65,7 +71,7 @@ class CommitsController < ApplicationController
     logger.debug 'Entering into the commit filtering block. Hold on to your butts.'
     start = Time.now
     filtered_commits = Array.new
-    Parallel.each(commits, in_threads: 16) do |commit|
+    commits.each do |commit|
         if Obscenity.profane? commit.message
           filtered_commits << commit
         end

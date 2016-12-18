@@ -13,10 +13,25 @@ namespace :BitBucketAPI do
     Rails.logger.info 'Starting to fetch commits from BitBucket for known repositories using the username: ' + config_file['username']
 
 
-
-
     Rails.logger.info 'Fetching latest commits finished'
   end
+
+  desc 'Grabs all the repositories that a user can know about.'
+  task fetch_all_repositories: :environment do
+    Rails.logger.debug 'Requesting repositories from BitBucket.'
+    config_file = YAML.load_file('config.yml')
+    bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
+
+    repos = bitbucket.repos.list
+
+    repos.each do |repo|
+      Rails.logger.info "Working on repo: #{repo['owner']}:#{repo['slug']}."
+      Repository.create(name: repo['slug'].to_s, owner: repo['owner'].to_s)
+    end
+
+    Rails.logger.debug 'Requesting repositories finished.'
+  end
+
 
   desc 'Fetches up to [n] old commits'
   task :fetch_old_commits, [:commits_to_grab_from_each_repo] => :environment do |_, args|
@@ -106,8 +121,8 @@ namespace :BitBucketAPI do
       find_or_set_user_avatar_uri bitbucket, user
 
       commit = Commit.create(sha: changeset['raw_node'], message: changeset['message'],
-                    utc_commit_time: changeset['utctimestamp'], branch_name: changeset['branch'],
-                    user: user, repository: repository)
+                             utc_commit_time: changeset['utctimestamp'], branch_name: changeset['branch'],
+                             user: user, repository: repository)
 
     end
   end
