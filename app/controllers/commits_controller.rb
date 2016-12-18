@@ -1,30 +1,20 @@
 require 'yaml'
 require 'obscenity'
 class CommitsController < ApplicationController
-  before_action :set_commit, only: [:show, :edit, :update, :destroy]
+  before_action :set_commit, only: [:show]
 
 
   # GET /commits
   # GET /commits.json
   def index
-    unfiltered_commits = Commit.all
-
-    @commits = Rails.cache.fetch(filter_commits(unfiltered_commits), expire_in: 60)
-
-    unless @commits
-      logger.warn "The cached value of 'filtered_commits' was nil or less than one. Running the filter on the available unfiltered commits."
-      @commits = filter_commits unfiltered_commits
+    unfiltered_commits = Rails.cache.fetch('unfiltered_commits', expire_in: 30) do
+      Commit.all
     end
-  end
 
-  # GET /commits/1
-  # GET /commits/1.json
-  def show
-  end
+    @commits = Rails.cache.fetch('filtered_commits', expire_in: 60) do
+      filter_commits(unfiltered_commits)
+    end
 
-  # GET /commits/new
-  def new
-    @commit = Commit.new
   end
 
   def clear_cache
@@ -32,6 +22,11 @@ class CommitsController < ApplicationController
     redirect_to '#'
   end
 
+  def destroy_all_commits
+    Rails.cache.clear
+    Commit.destroy_all
+    redirect_to '#'
+  end
 
   def fetch_latest_from_bitbucket
     system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_latest_commits &'
@@ -46,51 +41,10 @@ class CommitsController < ApplicationController
     redirect_to '#'
   end
 
-  # POST /commits
-  # POST /commits.json
-  def create
-    @commit = Commit.new(commit_params)
-
-    respond_to do |format|
-      if @commit.save
-        format.html { redirect_to @commit, notice: 'Commit was successfully created.' }
-        format.json { render :show, status: :created, location: @commit }
-      else
-        format.html { render :new }
-        format.json { render json: @commit.errors, status: :unprocessable_entity }
-      end
-    end
+  # GET /commits/1
+  # GET /commits/1.json
+  def show
   end
-
-  # PATCH/PUT /commits/1
-  # PATCH/PUT /commits/1.json
-  def update
-    respond_to do |format|
-      if @commit.update(commit_params)
-        format.html { redirect_to @commit, notice: 'Commit was successfully updated.' }
-        format.json { render :show, status: :ok, location: @commit }
-      else
-        format.html { render :edit }
-        format.json { render json: @commit.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /commits/1
-  # DELETE /commits/1.json
-  def destroy
-    @commit.destroy
-    respond_to do |format|
-      format.html { redirect_to commits_url, notice: 'Commit was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
-  def destroy_all_commits
-    Commit.destroy_all
-    redirect_to '#'
-  end
-
 
   private
   # Use callbacks to share common setup or constraints between actions.
