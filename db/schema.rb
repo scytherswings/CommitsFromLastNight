@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161217233717) do
+ActiveRecord::Schema.define(version: 20161218000301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,10 +35,11 @@ ActiveRecord::Schema.define(version: 20161217233717) do
     t.string   "sha"
     t.string   "url"
     t.datetime "utc_commit_time"
-    t.string   "repo_name"
     t.string   "type"
+    t.integer  "repository_id"
   end
 
+  add_index "commits", ["repository_id"], name: "index_commits_on_repository_id", using: :btree
   add_index "commits", ["sha"], name: "index_commits_on_sha", unique: true, using: :btree
   add_index "commits", ["user_id"], name: "index_commits_on_user_id", using: :btree
 
@@ -66,6 +67,15 @@ ActiveRecord::Schema.define(version: 20161217233717) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "repositories", force: :cascade do |t|
+    t.string   "name"
+    t.string   "commit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "repositories", ["commit_id"], name: "index_repositories_on_commit_id", using: :btree
 
   create_table "user_names", force: :cascade do |t|
     t.string   "name",       null: false
@@ -100,5 +110,7 @@ ActiveRecord::Schema.define(version: 20161217233717) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "words", ["word"], name: "index_words_on_word", using: :btree
 
 end
