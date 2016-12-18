@@ -112,7 +112,7 @@ namespace :BitBucketAPI do
 
 
     Rails.cache.fetch("users/#{account_name}/author_name/#{author_name}", expire_in: 30.seconds) do
-      UserName.create(name: author_name)
+      UserName.create(name: author_name, user: user)
     end
 
     Rails.cache.fetch("users/#{account_name}/email_address/#{email}", expire_in: 30.seconds) do
