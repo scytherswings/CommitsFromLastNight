@@ -2,6 +2,19 @@ namespace :BitBucketAPI do
 
   desc 'Fetches the lastest commits based on the newest timestamp found in the database.'
   task fetch_latest_commits: :environment do
+    repositories = Rails.cache.fetch('repositories', expire_in: 60.seconds) do
+      Rails.logger.debug 'Cache for repositories was empty, querying repositories from database.'
+      Repository.all
+    end
+
+    config_file = YAML.load_file('config.yml')
+    bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
+
+    Rails.logger.info 'Starting to fetch commits from BitBucket for known repositories using the username: ' + config_file['username']
+
+
+
+
     Rails.logger.info 'Fetching latest commits finished'
   end
 
@@ -87,7 +100,7 @@ namespace :BitBucketAPI do
 
       if /[\W]/.match user.account_name
         Rails.logger.debug "Username: #{user.account_name} was found to contain a non-word character. Can't fetch the avatar_uri. Setting it to the default."
-        user.update(avatar_uri: 'identicon.png')
+        user.update(avatar_uri: 'https://bitbucket.org/account/unknown/avatar/32/?ts=0')
       end
 
       find_or_set_user_avatar_uri bitbucket, user
@@ -133,7 +146,7 @@ namespace :BitBucketAPI do
 
       rescue BitBucket::Error::NotFound
         Rails.logger.warn "Query looking for #{user.account_name} resulted in a 404. Setting avatar to the default."
-        user.update(avatar_uri: 'identicon.png')
+        user.update(avatar_uri: 'https://bitbucket.org/account/unknown/avatar/48/?ts=0')
         return
       end
 
