@@ -12,7 +12,6 @@
           <th>Username</th>
           <th>Message</th>
           <th>Repository</th>
-          <th>Branch</th>
         </tr>
         </thead>
 
@@ -22,7 +21,6 @@
           <td><p><%= image_tag commit.user.avatar_uri, class: 'avatar_wrapper' %></p><p><%= link_to commit.user.account_name, user_path(commit.user.id) %></p></td>
           <td><%= commit.message %></td>
           <td><%= commit.repository.name %></td>
-          <td><%= commit.branch_name %></td>
         <% end %>
         <% end_time = Time.now %>
         <% logger.debug "Rendering all the commit messages took: #{(end_time - start_time).round(2)} seconds." %>
