@@ -11,11 +11,17 @@ namespace :BitBucketAPI do
     repos = bitbucket.repos.list
 
     repos.each do |repo|
-      Rails.logger.info 'Working on repo: ' + repo['slug']
+      Rails.logger.info "Working on repo: #{repo['owner']}:#{repo['slug']}."
 
       begin
-        repository = Repository.find_or_create_by!(name: repo['slug'])
-        grab_commits_from_bitbucket(100, bitbucket, repository, repo['owner'])
+        repository = Repository.find_or_create_by!(name: repo['slug'], owner: repo['owner'])
+
+        if repository.first_commit_sha
+          Rails.logger.info "The first_commit_sha was set for #{repository.name}. Not querying further."
+          next
+        end
+
+        grab_commits_from_bitbucket(100, bitbucket, repository)
 
       rescue BitBucket::Error => error
         Rails.logger.error "An error occurred trying to query the changesets for #{repo['slug']}. Error was #{error}"
@@ -31,7 +37,7 @@ namespace :BitBucketAPI do
     puts "I grabbed old stuff:  #{args[:commits_to_grab]}"
   end
 
-  def grab_commits_from_bitbucket(commits_to_get, bitbucket, repository, repo_owner)
+  def grab_commits_from_bitbucket(commits_to_get, bitbucket, repository)
     if commits_to_get <= 0
       Rails.logger.debug 'grab_commits_from_bitbucket was called with commits_to_get of 0 or less. Returning.'
       return
@@ -39,7 +45,6 @@ namespace :BitBucketAPI do
 
     commits_to_get = commits_to_get < 50 ? commits_to_get : 50
 
-    Rails.logger.debug "Fetching #{commits_to_get} commits from #{repository.name}."
 
     params = {'limit': commits_to_get}
     oldest_commit = find_oldest_commit_in_repo(repository)
@@ -48,25 +53,40 @@ namespace :BitBucketAPI do
       params = {'limit': commits_to_get, 'start': oldest_commit.sha}
     end
 
-    changeset_list = bitbucket.repos.changesets.list(repo_owner, repository.name, params)
+    Rails.logger.debug "Fetching #{commits_to_get} commits from #{repository.owner}:#{repository.name}."
+    begin
+      changeset_list = bitbucket.repos.changesets.list(repository.owner, repository.name, params)
+    rescue StandardError => error
+      Rails.logger.warn "Query to get changesets from #{repository.name} resulted in an error: #{error}"
+      return
+    end
+
     available_commits_count = changeset_list['count']
     add_commits_to_db(changeset_list, bitbucket, repository)
 
     total_records_fetched = changeset_list['changesets'].count
 
-    if commits_to_get < 50 && total_records_fetched < commits_to_get
+    if (commits_to_get < 50) || (total_records_fetched < commits_to_get)
       Rails.logger.debug "The number of records received: #{total_records_fetched} for repository: #{repository.name} was less than the number asked for: #{commits_to_get}. There are no more commits to grab."
+      earliest_commit_sha = Commit.where(repository_id: repository.id).order('utc_commit_time ASC').first.sha
+      repository.update!(first_commit_sha: earliest_commit_sha)
+      Rails.logger.info "The repository: #{repository.name} has had the first_commit_sha set to #{repository.first_commit_sha}. This will prevent historical queries on this repo from being run from now on."
       return
     end
 
     if total_records_fetched < commits_to_get && ((commits_to_get - total_records_fetched) < available_commits_count)
-      grab_commits_from_bitbucket(commits_to_get - total_records_fetched, bitbucket, repository, repo_owner)
+      grab_commits_from_bitbucket(commits_to_get - total_records_fetched, bitbucket, repository)
     end
   end
 
   def add_commits_to_db(changeset_list, bitbucket, repository)
     changeset_list['changesets'].each do |changeset|
       user = find_or_create_new_user changeset
+
+      if /[\W]/.match user.account_name
+        Rails.logger.debug "Username: #{user.account_name} was found to contain a non-word character. Can't fetch the avatar_uri. Setting it to the default."
+        user.update(avatar_uri: 'identicon.png')
+      end
 
       find_or_set_user_avatar_uri bitbucket, user
 
@@ -90,10 +110,6 @@ namespace :BitBucketAPI do
     author_name = /\A(?:(?!\s<.*>\z).)+/.match(changeset['raw_author']).to_s
     email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s.downcase
 
-    if /[\W]/.match account_name
-      Rails.logger.fatal "Username: #{account_name} was found to contain a non-word character or number! WTF. #{changeset.to_json}"
-      exit! 1
-    end
 
     Rails.cache.fetch("users/#{account_name}/author_name/#{author_name}", expire_in: 30.seconds) do
       UserName.create(name: author_name)
@@ -108,11 +124,14 @@ namespace :BitBucketAPI do
 
   def find_or_set_user_avatar_uri(bitbucket, user)
     if user.account_name && !user.avatar_uri
-      Rails.logger.debug "Found a user: #{user.account_name} whose avatar_uri was: #{user.avatar_uri}. Querying profile for avatar_uri."
+      Rails.logger.debug "Found a user: #{user.account_name} whose avatar_uri was empty or nil. Querying profile for avatar_uri."
+      begin
+        user_profile= bitbucket.users.account.profile(user.account_name)
 
-      user_profile = Rails.cache.fetch("users/#{user.account_name}/avatar_uri", expire_in: 30.seconds) do
-        Rails.logger.debug "User #{user.account_name}'s profile was not found in the cache. Querying BitBucket.'"
-        bitbucket.users.account.profile(user.account_name)
+      rescue BitBucket::Error::NotFound
+        Rails.logger.warn "Query looking for #{user.account_name} resulted in a 404. Setting avatar to the default."
+        user.update(avatar_uri: 'identicon.png')
+        return
       end
 
       avatar_uri = user_profile['user']['avatar']
