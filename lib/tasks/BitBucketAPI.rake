@@ -100,7 +100,7 @@ namespace :BitBucketAPI do
 
       if /[\W]/.match user.account_name
         Rails.logger.debug "Username: #{user.account_name} was found to contain a non-word character. Can't fetch the avatar_uri. Setting it to the default."
-        user.update(avatar_uri: 'https://bitbucket.org/account/unknown/avatar/32/?ts=0')
+        user.update(avatar_uri: 'https://bitbucket.org/account/unknown/avatar/48/?ts=0')
       end
 
       find_or_set_user_avatar_uri bitbucket, user
