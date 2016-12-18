@@ -25,7 +25,7 @@
               <div><%= link_to commit.user.account_name, user_path(commit.user.id), class: 'small' %></div>
             </td>
             <td><%= commit.message %></td>
-            <td><%= link_to commit.repository.name, repository_path(commit.repository.id) %></td>
+            <td><%= link_to commit.repository.name, repository_path(commit.repository.id), class: 'small' %></td>
           <% end %>
         <% end %>
         <% end_time = Time.now %>
