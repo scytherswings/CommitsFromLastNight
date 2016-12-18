@@ -26,12 +26,6 @@ class CommitsController < ApplicationController
     redirect_to '#'
   end
 
-  def destroy_all_commits
-    Rails.cache.clear
-    Commit.destroy_all
-    redirect_to '#'
-  end
-
   def fetch_latest_from_bitbucket
     system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_latest_commits &'
 
