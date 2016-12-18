@@ -2,7 +2,14 @@ namespace :BitBucketAPI do
 
   desc 'Fetches the lastest commits based on the newest timestamp found in the database.'
   task fetch_latest_commits: :environment do
-    # Rails.logger = Logger.new(STDOUT)
+    Rails.logger.info 'Fetching latest commits finished'
+  end
+
+  desc 'Fetches up to [n] old commits'
+  task :fetch_old_commits, [:commits_to_grab_from_each_repo] => :environment do |_, args|
+    puts "I grabbed old stuff:  #{args[:commits_to_grab_from_each_repo]}"
+
+    commits_to_get = args[:commits_to_grab_from_each_repo]
 
     config_file = YAML.load_file('config.yml')
     bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
@@ -21,7 +28,7 @@ namespace :BitBucketAPI do
           next
         end
 
-        grab_commits_from_bitbucket(100, bitbucket, repository)
+        grab_commits_from_bitbucket(commits_to_get, bitbucket, repository)
 
       rescue BitBucket::Error => error
         Rails.logger.error "An error occurred trying to query the changesets for #{repo['slug']}. Error was #{error}"
@@ -29,12 +36,7 @@ namespace :BitBucketAPI do
       end
     end
 
-    Rails.logger.info 'Fetching latest commits finished'
-  end
-
-  desc 'Fetches up to [n] old commits'
-  task :fetch_old_commits, [:commits_to_grab_from_each_repo] => :environment do |_, args|
-    puts "I grabbed old stuff:  #{args[:commits_to_grab_from_each_repo]}"
+    Rails.logger.info 'Fetching old commits finished'
   end
 
   def grab_commits_from_bitbucket(commits_to_get, bitbucket, repository)
@@ -90,9 +92,10 @@ namespace :BitBucketAPI do
 
       find_or_set_user_avatar_uri bitbucket, user
 
-      Commit.create(sha: changeset['raw_node'], message: changeset['message'],
+      commit = Commit.create(sha: changeset['raw_node'], message: changeset['message'],
                     utc_commit_time: changeset['utctimestamp'], branch_name: changeset['branch'],
                     user: user, repository: repository)
+
     end
   end
 
