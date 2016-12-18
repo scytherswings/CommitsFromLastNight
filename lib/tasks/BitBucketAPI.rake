@@ -21,12 +21,14 @@ namespace :BitBucketAPI do
       end
 
       changesets['changesets'].each do |changeset|
-        user = find_or_create_new_users changeset
+        user = find_or_create_new_user changeset
 
         find_or_set_user_avatar_uri bitbucket, user
+        repository = Repository.find_or_create_by!(name: repo['slug'])
 
-        Commit.create(message: changeset['message'], utc_commit_time: changeset['utctimestamp'],
-                      repo_name: repo['slug'], branch_name: changeset['branch'], sha: changeset['raw_node'], user: user)
+        Commit.find_or_create_by!(sha: changeset['raw_node'], message: changeset['message'],
+                                  utc_commit_time: changeset['utctimestamp'], branch_name: changeset['branch'],
+                                  user: user, repository: repository)
       end
     end
 
@@ -42,7 +44,7 @@ namespace :BitBucketAPI do
 
   end
 
-  def find_or_create_new_users(changeset)
+  def find_or_create_new_user(changeset)
     author_name = /\A(?:(?!\s<.*>\z).)+/.match(changeset['raw_author']).to_s
     email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s.downcase
     account_name = changeset['author']

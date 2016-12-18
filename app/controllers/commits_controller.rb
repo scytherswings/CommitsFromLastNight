@@ -7,18 +7,11 @@ class CommitsController < ApplicationController
   # GET /commits
   # GET /commits.json
   def index
-    unfiltered_commits = Rails.cache.fetch(Commit.all, expire_in: 30)
-
-    if unfiltered_commits.nil? || unfiltered_commits.length < 1
-      logger.warn "The cached value of 'unfiltered_commits' was nil or less than one. Fetching unfiltered commits from database."
-      unfiltered_commits = Commit.all
-      @commits = filter_commits unfiltered_commits
-      return
-    end
+    unfiltered_commits = Commit.all
 
     @commits = Rails.cache.fetch(filter_commits(unfiltered_commits), expire_in: 60)
 
-    if @commits.nil? || @commits.length < 1
+    unless @commits
       logger.warn "The cached value of 'filtered_commits' was nil or less than one. Running the filter on the available unfiltered commits."
       @commits = filter_commits unfiltered_commits
     end

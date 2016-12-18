@@ -23,7 +23,7 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bitbucket_rest_api', '~> 0.1.7'
-gem 'bootstrap-generators', '~> 3.3.4'
+gem 'bootstrap-generators', '~> 3.3', '>= 3.3.4'
 gem 'simple_form', '~> 3.1.1'
 gem 'obscenity', '~> 1.0', '>= 1.0.2'
 gem 'parallel', '~> 1.10'

@@ -20,7 +20,7 @@
         <%= content_tag_for(:tr, @commits) do |commit| %>
           <td><%= image_tag commit.user.avatar_uri %><%= link_to commit.user.account_name, user_path(commit.user.id) %></td>
           <td><%= commit.message %></td>
-          <td><%= commit.repo_name %></td>
+          <td><%= commit.repository.name %></td>
           <td><%= commit.branch_name %></td>
         <% end %>
         </tbody>
