@@ -8,14 +8,14 @@ class CommitsController < ApplicationController
   # GET /commits.json
   def index
     start_time = Time.now
-    unfiltered_commits = Rails.cache.fetch('commits/unfiltered_commits', expire_in: 60) do
+    unfiltered_commits = Rails.cache.fetch('commits/unfiltered_commits', expires_in: 60.seconds) do
       logger.debug 'Cache for unfiltered_commits was unpopulated. Populating..'
       Commit.order('utc_commit_time DESC').all
     end
     end_time = Time.now
     logger.debug "Fetching #{unfiltered_commits.count} Commits took #{(end_time - start_time).round(2)} seconds."
 
-    @commits = Rails.cache.fetch('commits/filtered_commits', expire_in: 60) do
+    @commits = Rails.cache.fetch('commits/filtered_commits', expires_in: 60.seconds) do
       logger.debug 'Cache for filtered_commits was unpopulated. Populating..'
       filter_commits(unfiltered_commits)
     end
@@ -71,15 +71,20 @@ class CommitsController < ApplicationController
   def filter_commits(commits)
     logger.debug 'Entering into the commit filtering block. Hold on to your butts.'
     start = Time.now
-    filtered_commits = Array.new
+    unordered_filtered_commits = Array.new
     commits.each do |commit|
         if Obscenity.profane? commit.message
-          filtered_commits << commit
+          unordered_filtered_commits << commit
         end
     end
     finish = Time.now
-    logger.debug "Filtering #{commits.length} commits took #{(finish - start).round(2)} seconds."
-    filtered_commits
+    logger.debug "Filtering #{commits.length} filtered commits took #{(finish - start).round(2)} seconds."
+
+    start = Time.now
+    ordered_filtered_commits = unordered_filtered_commits.sort_by {|commit| commit.utc_commit_time}
+    finish = Time.now
+    logger.debug "Sorting #{commits.length} filtered commits took #{(finish - start).round(2)} seconds."
+    ordered_filtered_commits
     # commits
   end
 

@@ -2,7 +2,7 @@ namespace :BitBucketAPI do
 
   desc 'Fetches the lastest commits based on the newest timestamp found in the database.'
   task fetch_latest_commits: :environment do
-    repositories = Rails.cache.fetch('repositories', expire_in: 60.seconds) do
+    repositories = Rails.cache.fetch('repositories', expires_in: 60.seconds) do
       Rails.logger.debug 'Cache for repositories was empty, querying repositories from database.'
       Repository.all
     end
@@ -143,11 +143,11 @@ namespace :BitBucketAPI do
     email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s.downcase
 
 
-    Rails.cache.fetch("users/#{account_name}/author_name/#{author_name}", expire_in: 30.seconds) do
+    Rails.cache.fetch("users/#{account_name}/author_name/#{author_name}", expires_in: 30.seconds) do
       UserName.create(name: author_name, user: user)
     end
 
-    Rails.cache.fetch("users/#{account_name}/email_address/#{email}", expire_in: 30.seconds) do
+    Rails.cache.fetch("users/#{account_name}/email_address/#{email}", expires_in: 30.seconds) do
       EmailAddress.create(email: email, user: user)
     end
 
