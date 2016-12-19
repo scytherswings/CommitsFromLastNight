@@ -37,6 +37,7 @@ namespace :BitBucketAPI do
   task :fetch_old_commits, [:commits_to_grab_from_each_repo] => :environment do |_, args|
     commits_to_get = Integer(args[:commits_to_grab_from_each_repo])
 
+    ActiveRecord::Base.logger = nil
     config_file = YAML.load_file('config.yml')
     bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
 
