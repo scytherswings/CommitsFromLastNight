@@ -1,58 +1,4 @@
 <div class="row">
-  <div class="table-responsive">
-    <% if @commits.empty? %>
-      <div class="jumbotron">
-        <h1>Well this is disappointing...</h1>
-        <h2>It looks like your developers aren't as angry as you thought.</h2>
-      </div>
-    <% else %>
-      <table class="table table-hover">
-        <thead>
-        <tr>
-          <th>Username</th>
-          <th>Message</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <% start_time = Time.now %>
-        <%= content_tag_for(:tr, @commits) do |commit| %>
-          <% cache commit do %>
-            <td>
-              <table>
-                <tr>
-                  <td>
-                    <%= image_tag commit.user.avatar_uri, class: 'avatar_wrapper' %>
-                  </td>
-                  <td>
-                    <table>
-                      <tr>
-                        <td>
-                          <%= link_to commit.user.account_name, user_path(commit.user.id) %>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p class="small">in <%= link_to commit.repository.name, repository_path(commit.repository.id) %></p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-            <td><%= commit.message %></td>
-          <% end %>
-        <% end %>
-        <% end_time = Time.now %>
-        <% logger.debug "Rendering all the commit messages took: #{(end_time - start_time).round(2)} seconds." %>
-        </tbody>
-      </table>
-    <% end %>
-  </div>
-</div>
-
-<div class="row">
   <div style="float: left; width: auto; padding-right: 2px;">
     <%= button_to 'Fetch All Repositories', fetch_all_repositories_path, method: :post, class: 'btn btn-success' %>
   </div>
@@ -64,3 +10,33 @@
   </div>
 </div>
 
+<div class="row" id="commits">
+  <div class="table-responsive">
+    <% if @commits.empty? %>
+      <div class="jumbotron">
+        <h1>Well this is disappointing...</h1>
+        <h2>It looks like your developers aren't as angry as you thought.</h2>
+      </div>
+    <% else %>
+      <table class="table table-hover">
+        <tbody>
+        <div>
+          <% start_time = Time.now %>
+          <%= render @commits %>
+          <% end_time = Time.now %>
+          <% logger.debug "Rendering all the commit messages took: #{(end_time - start_time).round(2)} seconds." %>
+        </div>
+
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+
+</div>
+<% unless @commits.empty? %>
+  <% begin %>
+    <%= will_paginate @commits %>
+  <% rescue Exception => e %>
+    <% logger.error "Exception was encountered because of the shitty paginatino gem. Fuck this. #{e}" %>
+  <% end %>
+<% end %>

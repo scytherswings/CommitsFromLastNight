@@ -1,0 +1,26 @@
+<tr id="commit_id:<%= commit.id%>"  data-no-turbolink>
+  <td>
+    <table>
+      <tr>
+        <td>
+          <%= image_tag commit.user.avatar_uri, class: 'avatar_wrapper' %>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <%= link_to commit.user.account_name, user_path(commit.user.id) %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p class="small">in <%= link_to commit.repository.name, repository_path(commit.repository.id) %></p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td><%= commit.message %></td>
+</tr>

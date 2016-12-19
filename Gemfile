@@ -28,6 +28,8 @@ gem 'parallel', '~> 1.10'
 gem 'sprockets-rails', '~> 3.0', '>= 3.0.4'
 gem 'jquery-turbolinks', '~> 2.1'
 gem 'bootstrap-sass', '~> 3.3.6'
+gem 'will_paginate'
+gem 'will_paginate-bootstrap'
 
 group :development do
   gem 'spring'

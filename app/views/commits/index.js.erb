@@ -1,0 +1,2 @@
+$('#commits').append('<%= escape_javascript render(@commits) %>');
+$('.pagination').replaceWith('<%= escape_javascript will_paginate(@commits) %>');
