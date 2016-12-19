@@ -5,5 +5,5 @@ class Commit < ActiveRecord::Base
   validates_presence_of :sha, :message, :utc_commit_time, :user, :repository
   validates_uniqueness_of :sha
 
-  self.per_page = 20
+  self.per_page = 30
 end

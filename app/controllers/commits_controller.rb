@@ -7,7 +7,7 @@ class CommitsController < ApplicationController
   # GET /commits
   # GET /commits.json
   def index
-    # ActiveRecord::Base.logger = nil
+    ActiveRecord::Base.logger = nil
 
     start_time = Time.now
     unfiltered_commits = Rails.cache.fetch("commits/unfiltered_commits/page/#{params[:page]}", expires_in: 60.seconds) do
