@@ -54,10 +54,10 @@
 
 <div class="row">
   <div style="float: left; width: auto; padding-right: 2px;">
-    <%= button_to 'Fetch All Known Repository Commits', fetch_latest_from_bitbucket_path, method: :post, class: 'btn btn-success' %>
+    <%= button_to 'Fetch All Repositories', fetch_all_repositories_path, method: :post, class: 'btn btn-success' %>
   </div>
   <div style="float: left; width: auto; padding-right: 2px;">
-    <%= button_to 'Fetch All Knowable Repositories', fetch_latest_from_bitbucket_path, method: :post, class: 'btn btn-success' %>
+    <%= button_to 'Fetch All Known Repository Commits', fetch_old_commits_path, method: :post, class: 'btn btn-success' %>
   </div>
   <div style="float: left; width: auto; padding-right: 2px;">
     <%= button_to 'Clear Cache', clear_cache_path, method: :post, class: 'btn btn-default' %>

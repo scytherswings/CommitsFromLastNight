@@ -3,9 +3,11 @@ Rails.application.routes.draw do
   resources :users
   root 'commits#index'
   resources :commits
-  post 'fetch_latest_from_bitbucket' => 'commits#fetch_latest_from_bitbucket'
+  post 'fetch_latest_commits' => 'commits#fetch_latest_commits'
+  post 'fetch_old_commits' => 'commits#fetch_old_commits'
+  post 'fetch_all_repositories' => 'commits#fetch_all_repositories'
   post 'clear_cache' => 'commits#clear_cache'
-  delete 'destroy_all_commits' => 'commits#destroy_all_commits'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

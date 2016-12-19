@@ -26,13 +26,20 @@ class CommitsController < ApplicationController
     redirect_to '#'
   end
 
-  def fetch_latest_from_bitbucket
+  def fetch_latest_commits
     system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_latest_commits &'
 
     redirect_to '#'
   end
 
-  def fetch_all_knowable_repositories
+  def fetch_old_commits
+    system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_old_commits[100] &'
+
+    redirect_to '#'
+  end
+
+
+  def fetch_all_repositories
     system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_all_repositories &'
 
     redirect_to '#'

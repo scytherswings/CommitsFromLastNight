@@ -35,22 +35,18 @@ namespace :BitBucketAPI do
 
   desc 'Fetches up to [n] old commits'
   task :fetch_old_commits, [:commits_to_grab_from_each_repo] => :environment do |_, args|
-    puts "I grabbed old stuff:  #{args[:commits_to_grab_from_each_repo]}"
-
-    commits_to_get = args[:commits_to_grab_from_each_repo]
+    commits_to_get = Integer(args[:commits_to_grab_from_each_repo])
 
     config_file = YAML.load_file('config.yml')
     bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
 
     Rails.logger.info 'Starting to fetch data from BitBucket for repos and commits using the username: ' + config_file['username']
-    repos = bitbucket.repos.list
+    repositories = Repository.all
 
-    repos.each do |repo|
-      Rails.logger.info "Working on repo: #{repo['owner']}:#{repo['slug']}."
+    repositories.each do |repository|
+      Rails.logger.info "Working on repo: #{repository.owner}:#{repository.name}."
 
       begin
-        repository = Repository.find_or_create_by!(name: repo['slug'].to_s, owner: repo['owner'].to_s)
-
         if repository.first_commit_sha
           Rails.logger.info "The first_commit_sha was set for #{repository.name}. Not querying further."
           next
@@ -59,7 +55,7 @@ namespace :BitBucketAPI do
         grab_commits_from_bitbucket(commits_to_get, bitbucket, repository)
 
       rescue BitBucket::Error => error
-        Rails.logger.error "An error occurred trying to query the changesets for #{repo['slug']}. Error was #{error}"
+        Rails.logger.error "An error occurred trying to query the changesets for #{repository['slug']}. Error was #{error}"
         next
       end
     end
@@ -72,19 +68,19 @@ namespace :BitBucketAPI do
       Rails.logger.debug 'grab_commits_from_bitbucket was called with commits_to_get of 0 or less. Returning.'
       return
     end
-
     commits_to_get = commits_to_get < 50 ? commits_to_get : 50
 
-
-    params = {'limit': commits_to_get}
     oldest_commit = find_oldest_commit_in_repo(repository)
 
     if oldest_commit
+      Rails.logger.debug "A commit was found in repo: #{repository.name}. Using this commit's sha to query from: #{oldest_commit.sha}."
       params = {'limit': commits_to_get, 'start': oldest_commit.sha}
+    else
+      params = {'limit': commits_to_get}
     end
 
-    Rails.logger.debug "Fetching #{commits_to_get} commits from #{repository.owner}:#{repository.name}."
     begin
+      Rails.logger.debug "Fetching #{commits_to_get} commits from #{repository.owner}:#{repository.name}."
       changeset_list = bitbucket.repos.changesets.list(repository.owner, repository.name, params)
     rescue StandardError => error
       Rails.logger.warn "Query to get changesets from #{repository.name} resulted in an error: #{error}"
@@ -98,7 +94,12 @@ namespace :BitBucketAPI do
 
     if (commits_to_get < 50) || (total_records_fetched < commits_to_get)
       Rails.logger.debug "The number of records received: #{total_records_fetched} for repository: #{repository.name} was less than the number asked for: #{commits_to_get}. There are no more commits to grab."
-      earliest_commit_sha = Commit.where(repository_id: repository.id).order('utc_commit_time ASC').first.sha
+      earliest_commit = find_oldest_commit_in_repo(repository)
+      unless earliest_commit
+        Rails.logger.error "No commits were found for repository: #{repository.name}. There should have been commits since BitBucket was queried for "
+        return
+      end
+      earliest_commit_sha = earliest_commit.sha
       repository.update!(first_commit_sha: earliest_commit_sha)
       Rails.logger.info "The repository: #{repository.name} has had the first_commit_sha set to #{repository.first_commit_sha}. This will prevent historical queries on this repo from being run from now on."
       return
