@@ -11,31 +11,31 @@
 </div>
 
 <div class="row" id="commits">
-  <div class="table-responsive">
-    <% if @commits.empty? %>
-      <div class="jumbotron">
-        <h1>Well this is disappointing...</h1>
-        <h2>It looks like your developers aren't as angry as you thought.</h2>
-      </div>
-    <% else %>
+  <% if @commits.empty? %>
+    <div class="jumbotron">
+      <h1>Well this is disappointing...</h1>
+      <h2>It looks like your developers aren't as angry as you thought.</h2>
+    </div>
+  <% else %>
+    <div class="table-responsive">
+      <% start_time = Time.now %>
       <table class="table table-hover">
-        <tbody>
-        <div>
-          <% start_time = Time.now %>
-          <%= render @commits %>
-          <% end_time = Time.now %>
-          <% logger.debug "Rendering all the commit messages took: #{(end_time - start_time).round(2)} seconds." %>
-        </div>
-        <% unless @commits.empty? %>
-          <% begin %>
-            <%= will_paginate @commits %>
-          <% rescue Exception => e %>
-            <% logger.error "Exception was encountered because of the shitty paginatino gem. Fuck this. #{e}" %>
-          <% end %>
+
+        <%= render @commits %>
+
+
+        <% begin %>
+          <%= will_paginate @commits %>
+        <% rescue Exception => e %>
+          <% logger.error "Exception was encountered because of the shitty pagination gem. Fuck this. #{e}" %>
         <% end %>
-        </tbody>
+
+
       </table>
-    <% end %>
+      <% end_time = Time.now %>
+      <% logger.debug "Rendering all the commit messages took: #{(end_time - start_time).round(2)} seconds." %>
+
+  <% end %>
   </div>
 
 </div>
