@@ -26,17 +26,16 @@
           <% end_time = Time.now %>
           <% logger.debug "Rendering all the commit messages took: #{(end_time - start_time).round(2)} seconds." %>
         </div>
-
+        <% unless @commits.empty? %>
+          <% begin %>
+            <%= will_paginate @commits %>
+          <% rescue Exception => e %>
+            <% logger.error "Exception was encountered because of the shitty paginatino gem. Fuck this. #{e}" %>
+          <% end %>
+        <% end %>
         </tbody>
       </table>
     <% end %>
   </div>
 
 </div>
-<% unless @commits.empty? %>
-  <% begin %>
-    <%= will_paginate @commits %>
-  <% rescue Exception => e %>
-    <% logger.error "Exception was encountered because of the shitty paginatino gem. Fuck this. #{e}" %>
-  <% end %>
-<% end %>
