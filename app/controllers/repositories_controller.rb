@@ -16,9 +16,4 @@ class RepositoriesController < ApplicationController
     def set_repository
       @repository = Repository.find(params[:id])
     end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def repository_params
-      params.require(:repository).permit(:name, :owner, :first_commit_sha)
-    end
 end

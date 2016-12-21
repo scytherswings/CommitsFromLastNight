@@ -10,12 +10,12 @@ account_names = Array.new
 repository_names = Array.new
 50.times { account_names << Faker::Internet.user_name }
 20.times { repository_names << Faker::App.name }
-500.times do
+50000.times do
   user = User.find_or_create_by!(account_name: account_names[rand(0..49)], avatar_uri: 'https://bitbucket.org/account/unknown/avatar/48/?ts=0')
   UserName.find_or_create_by!(name: Faker::GameOfThrones.character, user: user)
   EmailAddress.find_or_create_by!(email: Faker::Internet::email, user: user)
 
-  repository = Repository.find_or_create_by!(name: repository_names[rand(0..19)], owner: Faker::Internet.user_name, first_commit_sha: Faker::Crypto.sha1)
+  repository = Repository.find_or_create_by!(name: repository_names[rand(0..19)])
 
   message = Faker::Hacker.say_something_smart + ' ..Fuck! ' + (rand(0..5).times.collect {|_|  Faker::Hacker.say_something_smart}).join(' ')
   sha = Faker::Crypto.sha1
