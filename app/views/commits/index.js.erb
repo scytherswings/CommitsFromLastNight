@@ -1,2 +1,6 @@
 $('#commits').append('<%= escape_javascript render(@commits) %>');
+<% if @commits.next_page %>
 $('.pagination').replaceWith('<%= escape_javascript will_paginate(@commits) %>');
+<% else %>
+$('.pagination').remove();
+<% end %>
