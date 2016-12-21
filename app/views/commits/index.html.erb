@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<div class="row" id="commits">
+<div class="row">
   <% if @commits.empty? %>
     <div class="jumbotron">
       <h1>Well this is disappointing...</h1>
@@ -19,18 +19,12 @@
   <% else %>
     <div class="table-responsive">
       <% start_time = Time.now %>
-      <table class="table table-hover">
-
+      <table class="table table-hover" id="commits">
+        <tbody>
         <%= render @commits %>
 
 
-        <% begin %>
-          <%= will_paginate @commits %>
-        <% rescue Exception => e %>
-          <% logger.error "Exception was encountered because of the shitty pagination gem. Fuck this. #{e}" %>
-        <% end %>
-
-
+        </tbody>
       </table>
       <% end_time = Time.now %>
       <% logger.debug "Rendering all the commit messages took: #{(end_time - start_time).round(2)} seconds." %>
@@ -39,3 +33,8 @@
   </div>
 
 </div>
+<% begin %>
+  <%= will_paginate @commits, class:'hidden' %>
+<% rescue Exception => e %>
+  <% logger.error "Exception was encountered because of the shitty pagination gem. Fuck this. #{e}" %>
+<% end %>
