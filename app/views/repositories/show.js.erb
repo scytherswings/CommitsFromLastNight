@@ -1,0 +1,6 @@
+$('#repository_users').append('<%= escape_javascript render(@users) %>');
+<% if @users.next_page %>
+$('.pagination').replaceWith('<%= escape_javascript will_paginate(@users) %>');
+<% else %>
+$('.pagination').remove();
+<% end %>

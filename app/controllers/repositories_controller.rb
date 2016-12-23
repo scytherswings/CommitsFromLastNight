@@ -10,10 +10,12 @@ class RepositoriesController < ApplicationController
   # GET /repositories/1
   # GET /repositories/1.json
   def show
+    @users = @repository.users.paginate(page: params[:page]).uniq { |user| user.id }
   end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_repository
-      @repository = Repository.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_repository
+    @repository = Repository.find(params[:id])
+  end
 end

@@ -2,20 +2,17 @@
   <div class="page-header">
     <h1><%= @repository.name %></h1>
   </div>
-
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th>Users</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%= content_tag_for(:tr, @repository.users {|user| user.id}) do |user| %>
-      <td><%= link_to user.account_name, user_path(user.id) %></td>
+  <div class="table-responsive">
+    <table class="table table-hover" id="repository_users">
+      <tbody>
+      <%= render @users %>
+      </tbody>
+    </table>
+    <% begin %>
+      <%= will_paginate @users %>
+    <% rescue Exception => e %>
+      <% logger.error "Exception was encountered because of the shitty pagination gem. Fuck this. #{e}" %>
     <% end %>
-    </tbody>
-  </table>
+  </div>
   <%= link_to 'Back', 'javascript:history.go(-1);', class: 'btn btn-default' %>
-
-
 </div>
