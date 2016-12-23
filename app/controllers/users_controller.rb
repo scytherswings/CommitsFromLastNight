@@ -1,3 +1,4 @@
+require 'will_paginate/array'
 class UsersController < ApplicationController
   before_action :set_user, only: [:show]
 
@@ -10,6 +11,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @commits = @user.commits.order('utc_commit_time DESC').paginate(page: params[:page]).uniq { |commit| commit.id }
   end
 
   private

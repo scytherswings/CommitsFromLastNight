@@ -1,3 +1,4 @@
+require 'will_paginate/array'
 class RepositoriesController < ApplicationController
   before_action :set_repository, only: [:show]
 

@@ -1,6 +1,6 @@
-$('#repository_users').append('<%= escape_javascript render(@users) %>');
+$('#repository_users').append('<%= escape_javascript render(@users, include_extra_commit_info: true ) %>');
 <% if @users.next_page %>
-$('.pagination').replaceWith('<%= escape_javascript will_paginate(@users) %>');
+$('.pagination').replaceWith('<%= escape_javascript will_paginate(@users, include_extra_commit_info: true ) %>');
 <% else %>
 $('.pagination').remove();
 <% end %>

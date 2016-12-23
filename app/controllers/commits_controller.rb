@@ -1,5 +1,6 @@
 require 'yaml'
 require 'obscenity'
+require 'will_paginate/array'
 class CommitsController < ApplicationController
   before_action :set_commit, only: [:show]
 

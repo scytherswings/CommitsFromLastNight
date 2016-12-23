@@ -1,5 +1,26 @@
 <tr id="user_id:<%= user.id %>" data-no-turbolink>
   <td>
-    <%= link_to user.account_name, user_path(user.id) %>
+    <table>
+      <tr>
+        <td>
+          <%= image_tag user.avatar_uri, class: 'avatar_wrapper' %>
+        </td>
+        <td>
+          <%= link_to user.account_name, user_path(user.id) %>
+        </td>
+      </tr>
+    </table>
   </td>
+  <% if local_assigns[:include_extra_commit_info]%>
+  <td>
+    <%= user.commits.count %>
+  </td>
+  <td>
+    <% commit = user.commits.order('utc_commit_time DESC').first %>
+    <%= commit.message %>
+  </td>
+    <td>
+      <p><%=  time_ago_in_words(commit.utc_commit_time) %> ago</p>
+    </td>
+    <% end %>
 </tr>

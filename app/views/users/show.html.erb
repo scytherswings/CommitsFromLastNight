@@ -1,30 +1,28 @@
 <div class="row">
   <div class="page-header">
-    <h1><%= image_tag @user.avatar_uri, class: 'avatar_wrapper' %><%= @user.account_name %></h1>
+    <h1>
+      <%= image_tag @user.avatar_uri, class: 'avatar_wrapper' %><%= @user.account_name %>
+    </h1>
   </div>
 
   <dl class="dl-horizontal">
     <dt>User's Aliases:</dt>
-    <dd><%= @user.user_names.uniq { |u| u.name }.map { |u| u.name } %></dd>
+    <dd><%= @user.user_names.uniq { |u| u.name }.map { |u| u.name }.join(', ') %></dd>
   </dl>
   <%= link_to 'Back', 'javascript:history.go(-1);', class: 'btn btn-default' %>
 
-</div>
-<div class="row">
   <div class="table-responsive">
-    <% start_time = Time.now %>
-    <table class="table table-hover" id="commits">
+    <table class="table table-hover sortable" id="commits">
+      <thead>
+      <tr>
+        <th>Repository</th>
+        <th>Commit</th>
+      </tr>
+      </thead>
       <tbody>
-      <%= render @user.commits %>
+      <%= render @commits, without_avatar: true %>
       </tbody>
     </table>
-    <% begin %>
-      <%= will_paginate @user.commits %>
-    <% rescue Exception => e %>
-      <% logger.error "Exception was encountered because of the shitty pagination gem. Fuck this. #{e}" %>
-    <% end %>
-    <% end_time = Time.now %>
-    <% logger.debug "Rendering all the commit messages took: #{(end_time - start_time).round(2)} seconds." %>
-
+      <%= will_paginate @commits, without_avatar: true %>
   </div>
 </div>

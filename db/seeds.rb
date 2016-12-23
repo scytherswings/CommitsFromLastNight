@@ -19,6 +19,6 @@ repository_names = Array.new
 
   message = Faker::Hacker.say_something_smart + ' ..Fuck! ' + (rand(0..5).times.collect {|_|  Faker::Hacker.say_something_smart}).join(' ')
   sha = Faker::Crypto.sha1
-  commit_time = Faker::Time.between(DateTime.now - 30, DateTime.now)
+  commit_time = Faker::Time.between(DateTime.now - 30.days, DateTime.now)
   Commit.create!(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
 end
