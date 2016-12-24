@@ -11,7 +11,7 @@ class RepositoriesController < ApplicationController
   # GET /repositories/1
   # GET /repositories/1.json
   def show
-    @users = @repository.users.paginate(page: params[:page]).uniq { |user| user.id }
+    @users = @repository.users.uniq(&:id).paginate(page: params[:page])
   end
 
   private

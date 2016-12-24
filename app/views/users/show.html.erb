@@ -5,9 +5,9 @@
     </h1>
   </div>
 
-  <dl class="dl-horizontal">
+  <dl>
     <dt>User's Aliases:</dt>
-    <dd><%= @user.user_names.uniq { |u| u.name }.map { |u| u.name }.join(', ') %></dd>
+    <dd><%= @user.user_names.uniq(&:name).map(&:name).join(', ') %></dd>
   </dl>
   <%= link_to 'Back', 'javascript:history.go(-1);', class: 'btn btn-default' %>
 

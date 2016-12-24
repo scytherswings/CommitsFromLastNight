@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161218055307) do
+ActiveRecord::Schema.define(version: 20161224053458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,7 +35,6 @@ ActiveRecord::Schema.define(version: 20161218055307) do
     t.string   "sha"
     t.string   "url"
     t.datetime "utc_commit_time"
-    t.string   "type"
     t.integer  "repository_id"
   end
 
@@ -75,6 +74,7 @@ ActiveRecord::Schema.define(version: 20161218055307) do
     t.datetime "updated_at",       null: false
     t.string   "owner"
     t.string   "first_commit_sha"
+    t.integer  "commits_count"
   end
 
   create_table "user_names", force: :cascade do |t|
@@ -87,10 +87,11 @@ ActiveRecord::Schema.define(version: 20161218055307) do
   add_index "user_names", ["user_id"], name: "index_user_names_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.string   "account_name", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "account_name",  null: false
     t.string   "avatar_uri"
+    t.integer  "commits_count"
   end
 
   add_index "users", ["account_name"], name: "index_users_on_account_name", using: :btree

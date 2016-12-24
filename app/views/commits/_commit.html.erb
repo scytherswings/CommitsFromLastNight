@@ -1,27 +1,43 @@
 <tr id="commit_id:<%= commit.id %>" data-no-turbolink>
   <% if local_assigns[:without_avatar] %>
     <td>
-      <%= link_to commit.repository.name, repository_path(commit.repository.id) %>
+      <table>
+        <tr>
+          <td>
+            <%= link_to commit.repository.name, repository_path(commit.repository.id) %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><small><small><small><%=  distance_of_time_in_words(commit.utc_commit_time, DateTime.now) %> ago</small></small></small></p>
+          </td>
+        </tr>
+      </table>
     </td>
   <% else %>
     <td>
       <table>
         <tr>
           <td>
-            <%= image_tag commit.user.avatar_uri, class: 'avatar_wrapper' %>
+            <%= link_to(image_tag(commit.user.avatar_uri, class: 'avatar_wrapper'), '/users') %>
           </td>
-          <td>
-            <table>
-              <tr>
+          <td style="padding-left: 1px; vertical-align: top">
+            <table class="avatar_header">
+              <tr class="small">
                 <td>
-                  <%= link_to commit.user.account_name, user_path(commit.user.id) %>
+                  <%= link_to commit.user.account_name, user_path(commit.user.id), style: 'margin:0' %>
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <p class="small">in <%= link_to commit.repository.name, repository_path(commit.repository.id) %></p>
-                </td>
-              </tr>
+                <tr class="small">
+                  <td  class="small">
+                    <p style="margin:0" class="small">in <%= link_to commit.repository.name, repository_path(commit.repository.id) %></p>
+                  </td>
+                </tr>
+                <tr  class="small">
+                  <td  class="small">
+                    <p style="margin:0" class="small"><%=  distance_of_time_in_words_to_now(commit.utc_commit_time) %> ago</p>
+                  </td>
+                </tr>
             </table>
           </td>
         </tr>

@@ -1,9 +1,12 @@
 # Commits From Last Night
-## Version 0.0.1
+## Version 0.0.2
 
 This project was inspired by [Commit Logs From Last Night](http://www.commitlogsfromlastnight.com/). 
 I wanted to see what shenanigans my coworkers are up to in our internal company repos. 
-I will be developing this project to interface with [BitBucket](https://bitbucket.org) and I don't have any current plans to expand it to include GitHub. 
-That being said, I have attempted to design the database in a style that should work for both. I won't guarantee anything will be properly abstracted though. 
+I will be developing this project to interface with [BitBucket](https://bitbucket.org) 
+but after much thought I plan to expand this to GitHub also.
 
-I intend to play around with project in a non-serious manner so don't expect anything great.
+One of the long-term goals of this project is to run different analytics on commit messages to provide insightful data about 
+what programmers are thinking.
+
+Whether that data will actually be insightful is still to be determined.
