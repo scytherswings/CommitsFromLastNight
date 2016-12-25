@@ -1,33 +1,19 @@
 source 'https://rubygems.org'
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.7.1'
-# Use postgresql as the database for Active Record
-gem 'pg', '~> 0.15'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.1.0'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
+gem 'pg'
+gem 'sass-rails'
+gem 'uglifier'
+gem 'coffee-rails'
 gem 'jquery-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
-gem 'bitbucket_rest_api', '~> 0.1.7'
-gem 'bootstrap-generators', '~> 3.3', '>= 3.3.4'
-gem 'simple_form', '~> 3.1.1'
-gem 'obscenity', '~> 1.0', '>= 1.0.2'
-gem 'parallel', '~> 1.10'
-gem 'sprockets-rails', '~> 3.0', '>= 3.0.4'
-gem 'jquery-turbolinks', '~> 2.1'
-gem 'bootstrap-sass', '~> 3.3.6'
+gem 'jbuilder'
+gem 'bitbucket_rest_api'
+gem 'bootstrap-generators'
+gem 'simple_form'
+gem 'obscenity'
+gem 'sprockets-rails'
+gem 'jquery-turbolinks'
+gem 'bootstrap-sass'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
@@ -40,19 +26,19 @@ group :development do
 end
 
 group :test do
-  gem 'simplecov', '~> 0.11.1'
+  gem 'simplecov'
   gem 'coveralls', require: false
-  gem 'minitest-reporters', '~> 1.0.20'
-  gem 'mini_backtrace', '~> 0.1.3'
-  gem 'webmock', '~> 1.21.0'
+  gem 'minitest-reporters'
+  gem 'mini_backtrace'
+  gem 'webmock'
   # gem 'capybara', '~> 2.6.2'
   # gem 'poltergeist', '~> 1.9.0'
   # gem 'phantomjs', require: 'phantomjs/poltergeist'
   # gem 'capybara-screenshot'
   # gem 'vcr', '~> 3.0.1'
   # gem 'minitest-vcr', '~> 1.4.0'
-  gem 'faker', '~> 1.6.1'
-  gem 'fabrication', '~> 2.14.1'
+  gem 'faker', '1.6.6'
+  gem 'fabrication'
 end
 
 group :production do

@@ -115,10 +115,10 @@ namespace :BitBucketAPI do
     changeset_list['changesets'].each do |changeset|
       user = find_or_create_new_user changeset
 
-      if /[\W]/.match user.account_name
-        Rails.logger.debug "Username: #{user.account_name} was found to contain a non-word character. Can't fetch the avatar_uri. Setting it to the default."
-        user.update(avatar_uri: 'https://bitbucket.org/account/unknown/avatar/48/?ts=0')
-      end
+      # if /[\W]/.match user.account_name
+      #   Rails.logger.debug "Username: #{user.account_name} was found to contain a non-word character. Can't fetch the avatar_uri. Setting it to the default."
+      #   user.update(avatar_uri: 'https://bitbucket.org/account/unknown/avatar/48/?ts=0')
+      # end
 
       find_or_set_user_avatar_uri bitbucket, user
 
@@ -159,10 +159,11 @@ namespace :BitBucketAPI do
     if user.account_name && !user.avatar_uri
       Rails.logger.debug "Found a user: #{user.account_name} whose avatar_uri was empty or nil. Querying profile for avatar_uri."
       begin
-        user_profile= bitbucket.users.account.profile(user.account_name)
+        user_to_query = URI.encode(user.account_name)
+        user_profile= bitbucket.users.account.profile(user_to_query)
 
       rescue BitBucket::Error::NotFound
-        Rails.logger.warn "Query looking for #{user.account_name} resulted in a 404. Setting avatar to the default."
+        Rails.logger.warn "Query looking for #{user_to_query} resulted in a 404. Setting avatar to the default."
         user.update(avatar_uri: 'https://bitbucket.org/account/unknown/avatar/48/?ts=0')
         return
       end

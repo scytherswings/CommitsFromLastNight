@@ -3,17 +3,12 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="If you came here looking for insight, you came to the wrong place.">
+  <meta name="description" content="If you came here looking for insight, you came to the wrong place. Just kidding, these statistics are pretty cool.">
   <meta name="author" content="Andrew Newell">
 
-
-  <% start_time = Time.now %>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  <% end_time = Time.now %>
-  <% logger.debug "Rendering stylesheet and javascript tag thing: #{(end_time - start_time).round(2)} seconds." %>
-
   <!-- Custom CSS -->
   <%= favicon_link_tag %>
 </head>

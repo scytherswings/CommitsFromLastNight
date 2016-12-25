@@ -1,3 +1,4 @@
+<% provide(:title, @user.account_name) %>
 <div class="row">
   <div class="page-header">
     <h1>
@@ -5,12 +6,21 @@
     </h1>
   </div>
 
-  <dl>
-    <dt>User's Aliases:</dt>
-    <dd><%= @user.user_names.uniq(&:name).map(&:name).join(', ') %></dd>
-  </dl>
-  <%= link_to 'Back', 'javascript:history.go(-1);', class: 'btn btn-default' %>
+  <div class="table-responsive">
+    <table class="table table-hover table-condensed">
+      <thead>
+      <th>User's Aliases</th>
+      <th>Total Commits</th>
+      </thead>
+      <tbody>
+      <td><%= @user.user_names.uniq(&:name).map(&:name).join(', ') %></td>
+      <td><%= @user.commits.size %></td>
+      </tbody>
+    </table>
 
+  </div>
+
+  <%= link_to 'Back', 'javascript:history.go(-1);', class: 'btn btn-default' %>
   <div class="table-responsive">
     <table class="table table-hover sortable table-condensed" id="commits">
       <thead>

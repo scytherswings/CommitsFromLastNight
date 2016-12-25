@@ -1,0 +1,33 @@
+<% commit = repository_user.commits.where(repository: @repository).order('utc_commit_time DESC').first %>
+
+<tr id="user_id:<%= repository_user.id %>" data-no-turbolink>
+  <td>
+    <table>
+      <tr>
+        <td>
+          <%= link_to(image_tag(repository_user.avatar_uri, class: 'avatar_wrapper'), '/users') %>
+        </td>
+        <td style="padding-left: 1px; vertical-align: top">
+          <table class="avatar_header">
+            <tr class="small">
+              <td>
+                <%= link_to repository_user.account_name, user_path(commit.user.id), style: 'margin:0' %>
+              </td>
+            </tr>
+            <tr  class="small">
+              <td  class="small">
+                <p style="margin:0" class="small"><%=  distance_of_time_in_words_to_now(commit.utc_commit_time) %> ago</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+    <td>
+      <%= repository_user.commits.where(repository: @repository).size %>
+    </td>
+    <td>
+      <%= commit.message %>
+    </td>
+</tr>
