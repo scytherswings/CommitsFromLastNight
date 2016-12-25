@@ -9,11 +9,9 @@
   <div class="table-responsive">
     <table class="table table-hover table-condensed">
       <thead>
-      <th>User's Aliases</th>
       <th>Total Commits</th>
       </thead>
       <tbody>
-      <td><%= @user.user_names.uniq(&:name).map(&:name).join(', ') %></td>
       <td><%= @user.commits.size %></td>
       </tbody>
     </table>
