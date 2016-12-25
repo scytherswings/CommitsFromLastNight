@@ -5,22 +5,22 @@
         <td>
           <%= image_tag user.avatar_uri, class: 'avatar_wrapper' %>
         </td>
-        <td  style="padding-left: 1px;"class="small">
+        <td style="padding-left: 1px;" class="small">
           <%= link_to user.account_name, user_path(user.id) %>
         </td>
       </tr>
     </table>
   </td>
-  <% if local_assigns[:include_extra_commit_info]%>
-  <td>
-    <%= user.commits.size %>
-  </td>
-  <td>
-    <% commit = user.commits.order('utc_commit_time ASC').first %>
-    <%= commit.message %>
-  </td>
+  <% if local_assigns[:include_extra_commit_info] %>
     <td>
-      <p><%=  distance_of_time_in_words_to_now(commit.utc_commit_time) %> ago</p>
+      <%= user.commits.size %>
     </td>
-    <% end %>
+    <td>
+      <% commit = user.commits.order('utc_commit_time ASC').first %>
+      <%= commit.message %>
+    </td>
+    <td>
+      <p><%= distance_of_time_in_words_to_now(commit.utc_commit_time) %> ago</p>
+    </td>
+  <% end %>
 </tr>

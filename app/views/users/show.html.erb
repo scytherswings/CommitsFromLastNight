@@ -12,7 +12,7 @@
   <%= link_to 'Back', 'javascript:history.go(-1);', class: 'btn btn-default' %>
 
   <div class="table-responsive">
-    <table class="table table-hover sortable" id="commits">
+    <table class="table table-hover sortable table-condensed" id="commits">
       <thead>
       <tr>
         <th>Repository</th>
@@ -23,6 +23,6 @@
       <%= render @commits, without_avatar: true %>
       </tbody>
     </table>
-      <%= will_paginate @commits, without_avatar: true %>
+    <%= will_paginate @commits, without_avatar: true %>
   </div>
 </div>
