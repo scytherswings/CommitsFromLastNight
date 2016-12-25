@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @commits = @user.commits.order('utc_commit_time DESC').paginate(page: params[:page]).uniq { |commit| commit.id }
+    @commits = @user.commits.order('utc_commit_time DESC').uniq(&:id).paginate(page: params[:page])
   end
 
   private
