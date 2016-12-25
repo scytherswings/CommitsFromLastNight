@@ -143,11 +143,6 @@ namespace :BitBucketAPI do
     author_name = /\A(?:(?!\s<.*>\z).)+/.match(changeset['raw_author']).to_s
     email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s.downcase
 
-
-    Rails.cache.fetch("users/#{account_name.slice 0..15}/author_name/#{author_name.slice 0..15}", expires_in: 120.seconds) do
-      UserName.create(name: author_name, user: user)
-    end
-
     Rails.cache.fetch("users/#{account_name.slice 0..15}/email_address/#{email.slice 0..15}", expires_in: 120.seconds) do
       EmailAddress.create(email: email, user: user)
     end
