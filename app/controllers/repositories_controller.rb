@@ -6,12 +6,20 @@ class RepositoriesController < ApplicationController
   # GET /repositories.json
   def index
     @repositories = Repository.all
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /repositories/1
   # GET /repositories/1.json
   def show
-    @users = @repository.users.uniq(&:id).paginate(page: params[:page])
+    @repository_users = @repository.users.uniq(&:id).paginate(page: params[:page])
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   private

@@ -1,6 +1,6 @@
-$('#repository_users').append('<%= escape_javascript render(@users, include_extra_commit_info: true ) %>');
-<% if @users.next_page %>
-$('.pagination').replaceWith('<%= escape_javascript will_paginate(@users, include_extra_commit_info: true ) %>');
+$('#repository_users').append('<%= escape_javascript render(partial: 'users/repository_user', collection: @repository_users) %>');
+<% if @repository_users.next_page %>
+$('.pagination').replaceWith('<%= escape_javascript will_paginate(@repository_users, partial: 'users/repository_user') %>');
 <% else %>
 $('.pagination').remove();
 <% end %>

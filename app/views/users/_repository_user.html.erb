@@ -1,6 +1,6 @@
 <% commit = repository_user.commits.where(repository: @repository).order('utc_commit_time DESC').first %>
 
-<tr id="user_id:<%= repository_user.id %>" data-no-turbolink>
+<tr id="repository_user_id:<%= repository_user.id %>" data-no-turbolink>
   <td>
     <table>
       <tr>
@@ -14,20 +14,18 @@
                 <%= link_to repository_user.account_name, user_path(commit.user.id), style: 'margin:0' %>
               </td>
             </tr>
-            <tr  class="small">
-              <td  class="small">
-                <p style="margin:0" class="small"><%=  distance_of_time_in_words_to_now(commit.utc_commit_time) %> ago</p>
-              </td>
-            </tr>
           </table>
         </td>
       </tr>
     </table>
   </td>
-    <td>
-      <%= repository_user.commits.where(repository: @repository).size %>
-    </td>
-    <td>
-      <%= commit.message %>
-    </td>
+  <td>
+    <%= repository_user.commits.where(repository: @repository).size %>
+  </td>
+  <td>
+    <%= commit.utc_commit_time %>
+  </td>
+  <td>
+    <%= commit.message %>
+  </td>
 </tr>

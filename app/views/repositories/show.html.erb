@@ -3,18 +3,19 @@
   <h1><%= @repository.name %></h1>
   <%= link_to 'Back', 'javascript:history.go(-1);', class: 'btn btn-default' %>
   <div class="table-responsive">
-    <table class="table table-hover sortable table-condensed" id="repository_users">
+    <table class="table table-hover sortable table-condensed">
       <thead>
       <tr>
         <th>User</th>
         <th>Commits</th>
+        <th>Time</th>
         <th>Latest&nbsp;Commit</th>
       </tr>
       </thead>
       <tbody>
-      <%= render partial: 'users/repository_user', collection: @users %>
+      <%= render partial: 'users/repository_user', collection: @repository_users %>
       </tbody>
     </table>
-    <%= will_paginate @users, include_extra_commit_info: true %>
+    <%= will_paginate(@repository_users, partial: 'users/repository_user') %>
   </div>
 </div>
