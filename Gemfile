@@ -16,6 +16,7 @@ gem 'jquery-turbolinks'
 gem 'bootstrap-sass'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
+gem 'browser-timezone-rails', '~> 1.0.1'
 
 group :development do
   gem 'spring'
