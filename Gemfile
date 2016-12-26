@@ -18,6 +18,10 @@ gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'browser-timezone-rails', '~> 1.0.1'
 
+group :development, :test do
+  gem 'faker', git: 'https://github.com/stympy/faker'
+end
+
 group :development do
   gem 'spring'
   gem 'rack-mini-profiler'
@@ -38,7 +42,7 @@ group :test do
   # gem 'capybara-screenshot'
   # gem 'vcr', '~> 3.0.1'
   # gem 'minitest-vcr', '~> 1.4.0'
-  gem 'faker', '1.6.6'
+
   gem 'fabrication'
 end
 
