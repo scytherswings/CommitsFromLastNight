@@ -3,8 +3,8 @@
     <td>
       <%= link_to commit.repository.name, repository_path(commit.repository.id) %>
     </td>
-    <td>
-      <p><%= distance_of_time_in_words_to_now(commit.utc_commit_time) %> ago</p>
+    <td class="small">
+      <p class="small"><%= commit.utc_commit_time %></p>
     </td>
   <% else %>
     <td>
