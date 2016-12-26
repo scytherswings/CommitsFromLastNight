@@ -21,7 +21,7 @@ unless Rails.env == 'production'
 
     message = Faker::Hacker.say_something_smart + ' ..Fuck! ' + (rand(0..1).times.collect { |_| Faker::Hacker.say_something_smart }).join(' ')
     sha = Faker::Crypto.sha1
-    commit_time = Faker::Time.between(DateTime.now - 30.days, DateTime.now)
+    commit_time = Faker::Time.between(DateTime.now - 2.months, DateTime.now - 1.day) # https://github.com/stympy/faker/pull/675
     Commit.create!(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
   end
 end
