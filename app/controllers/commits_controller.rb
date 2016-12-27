@@ -41,8 +41,8 @@ class CommitsController < ApplicationController
   end
 
   def fetch_old_commits
-    system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_old_commits[100] &'
-
+    # system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_old_commits[100] &'
+    BitbucketHistorical.perform_async
     redirect_to '#'
   end
 

@@ -17,6 +17,7 @@ gem 'bootstrap-sass'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'browser-timezone-rails', '~> 1.0.1'
+gem 'sidekiq', '~> 4.2', '>= 4.2.7'
 
 group :development, :test do
   gem 'faker', git: 'https://github.com/stympy/faker'
