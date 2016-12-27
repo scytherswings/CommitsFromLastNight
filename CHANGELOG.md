@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) after version 
 - Better user profiles
   - Users have commits totaled.
   - User avatars are more reliably fetched
+- Timezone is automatically detected on first visit and stored in a cookie on the user's machine
+
 ### Removed
 - User name aliases
   - Storing the committer names of users doesn't really add any value since we only care about usernames
