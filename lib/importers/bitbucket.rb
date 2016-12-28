@@ -88,7 +88,7 @@ class Bitbucket
 
     total_records_fetched = changeset_list['changesets'].count
 
-    if (commits_to_get < 50) || (total_records_fetched < commits_to_get)
+    if (commits_to_get < 50) && (total_records_fetched < commits_to_get)
       Rails.logger.debug "The number of records received: #{total_records_fetched} for repository: #{repository.name} was less than the number asked for: #{commits_to_get}. There are no more commits to grab."
       earliest_commit = find_oldest_commit_in_repo(repository)
       unless earliest_commit
@@ -100,9 +100,10 @@ class Bitbucket
       Rails.logger.info "The repository: #{repository.name} has had the first_commit_sha set to #{repository.first_commit_sha}. This will prevent historical queries on this repo from being run from now on."
       return
     end
-
-    if total_records_fetched < commits_to_get && ((commits_to_get - total_records_fetched) < available_commits_count)
-      grab_commits_from_bitbucket(commits_to_get - total_records_fetched, bitbucket, repository)
+    continue_loop = total_records_fetched < commits_to_get && ((commits_to_get - total_records_fetched) < available_commits_count)
+    Rails.logger.debug "Evaluation for loop: #{continue_loop}"
+    if continue_loop
+      self.grab_commits_from_bitbucket(commits_to_get - total_records_fetched, bitbucket, repository)
     end
   end
 
