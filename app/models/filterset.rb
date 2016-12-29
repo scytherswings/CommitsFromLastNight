@@ -4,11 +4,18 @@ class Filterset < ActiveRecord::Base
   has_many :commits, through: :filtered_messages
 
   def execute(commit)
-
+    
   end
 
-  def match_black_list_words
-
+  def match_black_list_words(commit)
+   commit.message.split(/s/).each  do |message_word|
+    black_list_words.each do |word|
+      
+      
+      
+      
+      
+      
   end
 
   def match_white_list_words
