@@ -100,8 +100,9 @@ class Bitbucket
       Rails.logger.info "The repository: #{repository.name} has had the first_commit_sha set to #{repository.first_commit_sha}. This will prevent historical queries on this repo from being run from now on."
       return
     end
-    are_more_commits_available = total_records_fetched < commits_to_get && ((commits_to_get - total_records_fetched) < available_commits_count)
-    if are_more_commits_available
+
+    more_commits_are_available = total_records_fetched < commits_to_get && ((commits_to_get - total_records_fetched) < available_commits_count)
+    if more_commits_are_available
       self.grab_commits_from_bitbucket(commits_to_get - total_records_fetched, bitbucket, repository)
     end
   end
