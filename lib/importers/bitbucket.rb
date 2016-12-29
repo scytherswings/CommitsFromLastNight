@@ -117,7 +117,7 @@ class Bitbucket
 
       find_or_set_user_avatar_uri bitbucket, user
 
-      commit = Commit.create(sha: changeset['raw_node'], message: changeset['message'],
+      Commit.create(sha: changeset['raw_node'], message: changeset['message'],
                              utc_commit_time: changeset['utctimestamp'], branch_name: changeset['branch'],
                              user: user, repository: repository)
 
@@ -133,8 +133,6 @@ class Bitbucket
     account_name = changeset['author'].to_s
     user = User.find_or_create_by!(account_name: account_name) #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
 
-
-    author_name = /\A(?:(?!\s<.*>\z).)+/.match(changeset['raw_author']).to_s
     email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s.downcase
 
     Rails.cache.fetch("users/#{account_name.slice 0..15}/email_address/#{email.slice 0..15}", expires_in: 120.seconds) do
