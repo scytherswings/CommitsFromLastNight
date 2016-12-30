@@ -13,7 +13,9 @@ class CommitsController < ApplicationController
     # start_time = Time.now
     # unfiltered_commits = Rails.cache.fetch("commits/unfiltered_commits/page/#{params[:page]}", expires_in: 60.seconds) do
       logger.debug 'Cache for unfiltered_commits was unpopulated. Populating..'
-     @commits = Commit.order('utc_commit_time DESC').paginate(page: params[:page])
+     # @commits = Commit.order('utc_commit_time DESC').paginate(page: params[:page])
+
+    @commits = Filterset.first.filtered_messages.all.paginate(page: params[:page]).map(&:commit)
     # end
     # end_time = Time.now
     # logger.debug "Fetching #{unfiltered_commits.size} Commits took #{(end_time - start_time).round(2)} seconds."

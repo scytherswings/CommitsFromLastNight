@@ -118,7 +118,7 @@ class Bitbucket
 
       find_or_set_user_avatar_uri bitbucket, user
 
-      commit = Commit.create(sha: changeset['raw_node'], message: changeset['message'],
+      commit = Commit.find_or_create_by(sha: changeset['raw_node'], message: changeset['message'],
                              utc_commit_time: changeset['utctimestamp'], branch_name: changeset['branch'],
                              user: user, repository: repository)
 

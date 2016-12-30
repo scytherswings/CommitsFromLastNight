@@ -6,3 +6,4 @@ production:
   - default
   - bitbucket
   - github
+  - filter
