@@ -9,16 +9,16 @@ class Filter
   end
 
   def import_yaml(blacklist_file, whitelist_file = nil)
-    @blacklist_file | YAML.load_file(blacklist_file).flatten
+    @blacklist_file = @blacklist_file | YAML.load_file(blacklist_file).flatten
     unless whitelist_file.blank?
-      @whitelist_file | YAML.load_file(whitelist_file).flatten
+      @whitelist_file = @whitelist_file | YAML.load_file(whitelist_file).flatten
     end
   end
 
   def import_csv(blacklist_file, whitelist_file = nil)
-    @blacklist_file | CSV.read(blacklist_file).flatten
+    @blacklist_file = @blacklist_file | CSV.read(blacklist_file).flatten
     unless whitelist_file.blank?
-      @whitelist_file | CSV.read(whitelist_file).flatten
+      @whitelist_file = @whitelist_file | CSV.read(whitelist_file).flatten
     end
   end
 
