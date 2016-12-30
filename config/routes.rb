@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :white_list_words
+  resources :black_list_words
+  resources :words
+  resources :filtersets
   require 'sidekiq/web'
 
   resources :repositories
