@@ -1,11 +1,2 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  owner: MyString
-  first_commit_sha: MyString
-
-two:
-  name: MyString
-  owner: MyString
-  first_commit_sha: MyString

@@ -1,10 +1,10 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-#one:
-#  message: MyString
-#  commit_time: 2016-12-14 00:43:02
-#  repo_name: MyString
-#  branch_name: MyString
+profane_commit:
+  message: fuck your shit you ass
+  utc_commit_time: 2016-12-14 00:43:02
+  user: bob
+
 #
 #two:
 #  username: MyString

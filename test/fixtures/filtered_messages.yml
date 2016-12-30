@@ -1,13 +1,1 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  filterset_id: 1
-  commit_id: 1
-  filterset_id: MyString
-  commit_id: MyString
-
-two:
-  filterset_id: 1
-  commit_id: 1
-  filterset_id: MyString
-  commit_id: MyString

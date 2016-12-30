@@ -1,4 +1,5 @@
 class Commit < ActiveRecord::Base
+  has_many :filtered_messages
   has_many :filtersets, through: :filtered_messages
   belongs_to :user, counter_cache: true
   belongs_to :repository, counter_cache: true

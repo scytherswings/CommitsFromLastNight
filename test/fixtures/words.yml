@@ -1,7 +1,14 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  word: MyString
+happy:
+  word: happy
 
-two:
-  word: MyString
+sad:
+  word: sad
+
+fuck:
+  word: fuck
+
+ass:
+  word: ass
+

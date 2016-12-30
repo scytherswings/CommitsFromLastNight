@@ -1,4 +1,5 @@
 class Word < ActiveRecord::Base
-  belongs_to  :white_list_word
-  belongs_to  :black_list_word
+  has_many :white_list_words
+  has_many :black_list_words
+  has_many :filtersets, through: :black_list_words
 end

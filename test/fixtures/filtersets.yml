@@ -1,7 +1,10 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+profanity:
+  name: Profane words
 
-two:
-  name: MyString
+happy:
+  name: Happy words
+
+whitelist_only:
+  name: Whitelist only words

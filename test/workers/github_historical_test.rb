@@ -1,6 +1,4 @@
-require_relative 'test_helper'
-class GithubHistoricalTest < MiniTest::Unit::TestCase
-  def test_example
-    skip "add some examples to (or delete) #{__FILE__}"
-  end
+require 'test_helper'
+class GithubHistoricalTest < ActiveSupport::TestCase
+
 end
