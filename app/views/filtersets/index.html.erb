@@ -1,0 +1,27 @@
+<div class="page-header">
+  <%= link_to new_filterset_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Filterset
+  <% end %>
+  <h1>Listing filtersets</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @filtersets) do |filterset| %>
+            <td><%= link_to 'Show', filterset %></td>
+        <td><%= link_to 'Edit', edit_filterset_path(filterset) %></td>
+        <td><%= link_to 'Destroy', filterset, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

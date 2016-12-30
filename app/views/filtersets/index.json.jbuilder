@@ -1,0 +1,1 @@
+json.array! @filtersets, partial: 'filtersets/filterset', as: :filterset

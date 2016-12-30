@@ -1,0 +1,1 @@
+json.partial! "filtersets/filterset", filterset: @filterset

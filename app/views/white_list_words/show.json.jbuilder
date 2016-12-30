@@ -1,0 +1,1 @@
+json.partial! "white_list_words/white_list_word", white_list_word: @white_list_word

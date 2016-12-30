@@ -1,0 +1,1 @@
+json.array! @black_list_words, partial: 'black_list_words/black_list_word', as: :black_list_word

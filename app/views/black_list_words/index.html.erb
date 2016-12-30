@@ -1,0 +1,29 @@
+<div class="page-header">
+  <%= link_to new_black_list_word_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Black list word
+  <% end %>
+  <h1>Listing black_list_words</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Word</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @black_list_words) do |black_list_word| %>
+            <td><%= black_list_word.word %></td>
+            <td><%= link_to 'Show', black_list_word %></td>
+        <td><%= link_to 'Edit', edit_black_list_word_path(black_list_word) %></td>
+        <td><%= link_to 'Destroy', black_list_word, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>
