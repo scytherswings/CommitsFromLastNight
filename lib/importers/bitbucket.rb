@@ -118,10 +118,11 @@ class Bitbucket
 
       find_or_set_user_avatar_uri bitbucket, user
 
-      Commit.create(sha: changeset['raw_node'], message: changeset['message'],
+      commit = Commit.create(sha: changeset['raw_node'], message: changeset['message'],
                              utc_commit_time: changeset['utctimestamp'], branch_name: changeset['branch'],
                              user: user, repository: repository)
 
+      ExecuteFilters.perform_async(commit.id)
     end
   end
 

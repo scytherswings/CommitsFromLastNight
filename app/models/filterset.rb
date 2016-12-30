@@ -8,7 +8,7 @@ class Filterset < ActiveRecord::Base
   validates_presence_of :black_list_words
 
   def execute(commit)
-    keywords = (black_list_words.map { |bl| bl.word } - white_list_words.map { |wl| wl.word }).map{|word_obj| word_obj.word}
+    keywords = (black_list_words.map(&:word) - white_list_words.map(&:word)).map(&:word)
     message_words = commit.message.split(/\W+/)
     message_words.each do |message_word|
       if keywords.include? message_word
