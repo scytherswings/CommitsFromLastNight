@@ -103,6 +103,6 @@ ActiveRecord::Schema.define(version: 20161224053458) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "words", ["word"], name: "index_words_on_word", using: :btree
+  add_index "words", ["word"], name: "index_words_on_word", unique: true, using: :btree
 
 end

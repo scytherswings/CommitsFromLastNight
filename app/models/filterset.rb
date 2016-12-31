@@ -5,6 +5,7 @@ class Filterset < ActiveRecord::Base
   has_many :commits, through: :filtered_messages
   has_many :words, through: :black_list_words
 
+  validates_presence_of :name
   validates_presence_of :black_list_words
 
   def execute(commit)
