@@ -1,5 +1,4 @@
 require 'yaml'
-require 'obscenity'
 require 'will_paginate/array'
 class CommitsController < ApplicationController
   before_action :set_commit, only: [:show]
@@ -8,14 +7,14 @@ class CommitsController < ApplicationController
   # GET /commits
   # GET /commits.json
   def index
-    ActiveRecord::Base.logger = nil
+    # ActiveRecord::Base.logger = nil
 
     # start_time = Time.now
     # unfiltered_commits = Rails.cache.fetch("commits/unfiltered_commits/page/#{params[:page]}", expires_in: 60.seconds) do
-      logger.debug 'Cache for unfiltered_commits was unpopulated. Populating..'
+    #   logger.debug 'Cache for unfiltered_commits was unpopulated. Populating..'
      # @commits = Commit.order('utc_commit_time DESC').paginate(page: params[:page])
 
-    @commits = Filterset.first.filtered_messages.all.paginate(page: params[:page]).map(&:commit)
+    @commits = Filterset.first.commits.order('utc_commit_time DESC').paginate(page: params[:page])
     # end
     # end_time = Time.now
     # logger.debug "Fetching #{unfiltered_commits.size} Commits took #{(end_time - start_time).round(2)} seconds."
@@ -76,25 +75,4 @@ class CommitsController < ApplicationController
   def commit_params
     params.require(:commit).permit(:username, :user_avatar, :message, :commit_time, :repository, :branch, :raw_node)
   end
-
-  def filter_commits(commits)
-    # logger.debug 'Entering into the commit filtering block. Hold on to your butts.'
-    # start = Time.now
-    # unordered_filtered_commits = Array.new
-    # commits.each do |commit|
-    #     if Obscenity.profane? commit.message
-    #       unordered_filtered_commits << commit
-    #     end
-    # end
-    # finish = Time.now
-    # logger.debug "Filtering #{commits.length} filtered commits took #{(finish - start).round(2)} seconds."
-    #
-    # start = Time.now
-    # ordered_filtered_commits = unordered_filtered_commits.sort_by {|commit| commit.utc_commit_time}
-    # finish = Time.now
-    # logger.debug "Sorting #{commits.length} filtered commits took #{(finish - start).round(2)} seconds."
-    # ordered_filtered_commits
-    commits
-  end
-
 end

@@ -6,8 +6,14 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 require 'faker'
-
+require 'importers/filter'
 unless Rails.env == 'production'
+
+  filter = Importers::Filter.new
+  filter.import_yaml('lib/resources/blacklist.yml')
+  filter.import_csv('lib/resources/google_bad_words.csv')
+  filter.create_filterset('Default Profanity Filterset')
+
   account_names = Array.new
   repository_names = Array.new
 
@@ -19,9 +25,12 @@ unless Rails.env == 'production'
 
     repository = Repository.find_or_create_by!(name: repository_names[rand(0..19)])
 
-    message = Faker::Hacker.say_something_smart + ' ..Fuck! ' + (rand(0..1).times.collect { |_| Faker::Hacker.say_something_smart }).join(' ')
+    message = Faker::Hacker.say_something_smart + (rand(0..1).times.collect { |_| ' ..Fuck! ' }).join(' ') + (rand(0..1).times.collect { |_| Faker::Hacker.say_something_smart }).join(' ')
     sha = Faker::Crypto.sha1
     commit_time = Faker::Time.between(DateTime.now - 2.months, DateTime.now, :between)
-    Commit.create!(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
+    commit = Commit.create!(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
+    ExecuteFilters.perform_async(commit.id)
   end
+
+
 end

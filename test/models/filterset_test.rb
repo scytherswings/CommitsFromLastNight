@@ -36,10 +36,10 @@ class FiltersetTest < ActiveSupport::TestCase
   end
 
   test 'execute will create a valid FilteredMessage after matching' do
-    filtered_message = assert_difference('FilteredMessage.count', +1) do
-      @profanity.execute(@profane_commit)
+    assert_difference('FilteredMessage.count', +1) do
+      filtered_message = @profanity.execute(@profane_commit)
+      assert filtered_message.valid?
     end
-    assert filtered_message.valid?
   end
 
 end
