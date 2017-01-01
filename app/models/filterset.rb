@@ -8,7 +8,7 @@ class Filterset < ActiveRecord::Base
   validates_presence_of :name
 
   def execute(commit)
-    ActiveRecord::Base.logger.silence do
+    ActiveRecord::Base.logger.silence(Logger::WARN) do
       keywords = Set.new
       keywords = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 5.minutes) do
         (black_list_words.map(&:word) - white_list_words.map(&:word)).map(&:word).each { |keyword| keywords.add(keyword) }

@@ -24,8 +24,6 @@ module Importers
     end
 
     def create_filterset(filterset_name)
-      ActiveRecord::Base.logger = nil
-
       blacklist_words = Array.new
       @blacklist_words.each do |word|
         blacklist_words << Word.find_or_create_by!(word: word)
@@ -39,10 +37,11 @@ module Importers
       filterset = Filterset.find_or_create_by!(name: filterset_name)
       filterset.black_list_words.destroy_all
       filterset.white_list_words.destroy_all
-      blacklist_words.each {|word| BlackListWord.create(word: word, filterset: filterset)}
-      whitelist_words.each {|word| WhiteListWord.create(word: word, filterset: filterset)}
+      blacklist_words.each { |word| BlackListWord.create(word: word, filterset: filterset) }
+      whitelist_words.each { |word| WhiteListWord.create(word: word, filterset: filterset) }
 
-      filterset
+      return filterset
     end
-end
+
+  end
 end

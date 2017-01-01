@@ -23,6 +23,7 @@ gem 'redis'
 gem 'redis-store'
 
 group :development, :test do
+  gem 'pry'
   gem 'faker', git: 'https://github.com/stympy/faker'
 end
 

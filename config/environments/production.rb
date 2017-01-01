@@ -29,7 +29,7 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.serve_static_assets = true
+  config.serve_static_files = true
   config.assets.compile = true
   config.assets.precompile += %w(*.js *.css.erb)
 

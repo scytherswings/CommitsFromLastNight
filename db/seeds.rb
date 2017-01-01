@@ -7,13 +7,13 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 require 'faker'
 require 'importers/filter'
+
+filter = Importers::Filter.new
+filter.import_yaml('lib/resources/blacklist.yml')
+filter.import_csv('lib/resources/google_bad_words.csv')
+filter.create_filterset('Default Profanity Filterset')
+
 unless Rails.env == 'production'
-
-  filter = Importers::Filter.new
-  filter.import_yaml('lib/resources/blacklist.yml')
-  filter.import_csv('lib/resources/google_bad_words.csv')
-  filter.create_filterset('Default Profanity Filterset')
-
   account_names = Array.new
   repository_names = Array.new
 
@@ -31,6 +31,5 @@ unless Rails.env == 'production'
     commit = Commit.create!(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
     ExecuteFilters.perform_async(commit.id)
   end
-
 
 end

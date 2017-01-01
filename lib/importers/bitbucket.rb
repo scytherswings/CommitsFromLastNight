@@ -1,6 +1,5 @@
 module Importers
   class Bitbucket
-
     def self.fetch_latest_commits
       repositories = Rails.cache.fetch('repositories', expires_in: 60.seconds) do
         Rails.logger.debug 'Cache for repositories was empty, querying repositories from database.'
@@ -15,49 +14,51 @@ module Importers
     end
 
     def self.fetch_all_repositories
-      Rails.logger.debug 'Requesting repositories from BitBucket.'
-      config_file = YAML.load_file('config.yml')
-      bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
+      ActiveRecord::Base.logger.silence(Logger::WARN) do
+        Rails.logger.debug 'Requesting repositories from BitBucket.'
+        config_file = YAML.load_file('config.yml')
+        bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
 
-      repos = bitbucket.repos.list
+        repos = bitbucket.repos.list
 
-      repos.each do |repo|
-        Rails.logger.info "Working on repo: #{repo['owner']}:#{repo['slug']}."
-        Repository.create(name: repo['slug'].to_s, owner: repo['owner'].to_s)
+        repos.each do |repo|
+          Rails.logger.info "Working on repo: #{repo['owner']}:#{repo['slug']}."
+          Repository.create(name: repo['slug'].to_s, owner: repo['owner'].to_s)
+        end
+
+        Rails.logger.debug 'Requesting repositories finished.'
       end
-
-      Rails.logger.debug 'Requesting repositories finished.'
     end
 
 
     def self.fetch_old_commits(commits_to_grab_from_each_repo)
       commits_to_get = Integer(commits_to_grab_from_each_repo)
 
-      ActiveRecord::Base.logger = nil
       config_file = YAML.load_file('config.yml')
       bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
+      ActiveRecord::Base.logger.silence(Logger::WARN) do
+        Rails.logger.info 'Starting to fetch data from BitBucket for repos and commits using the username: ' + config_file['username']
+        repositories = Repository.all
 
-      Rails.logger.info 'Starting to fetch data from BitBucket for repos and commits using the username: ' + config_file['username']
-      repositories = Repository.all
+        repositories.each do |repository|
+          Rails.logger.info "Working on repo: #{repository.owner}:#{repository.name}."
 
-      repositories.each do |repository|
-        Rails.logger.info "Working on repo: #{repository.owner}:#{repository.name}."
+          begin
+            if repository.first_commit_sha
+              Rails.logger.info "The first_commit_sha was set for #{repository.name}. Not querying further."
+              next
+            end
 
-        begin
-          if repository.first_commit_sha
-            Rails.logger.info "The first_commit_sha was set for #{repository.name}. Not querying further."
+            grab_commits_from_bitbucket(commits_to_get, bitbucket, repository)
+
+          rescue BitBucket::Error => error
+            Rails.logger.error "An error occurred trying to query the changesets for #{repository['slug']}. Error was #{error}"
             next
           end
-
-          grab_commits_from_bitbucket(commits_to_get, bitbucket, repository)
-
-        rescue BitBucket::Error => error
-          Rails.logger.error "An error occurred trying to query the changesets for #{repository['slug']}. Error was #{error}"
-          next
         end
-      end
 
-      Rails.logger.info 'Fetching old commits finished'
+        Rails.logger.info 'Fetching old commits finished'
+      end
     end
 
     def self.grab_commits_from_bitbucket(commits_to_get, bitbucket, repository)
