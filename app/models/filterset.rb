@@ -7,6 +7,10 @@ class Filterset < ActiveRecord::Base
 
   validates_presence_of :name
 
+  # If this proves to be too slow it might be worth it to investigate querying the database for each word in the message
+  # against instead of comparing the whole set to every word in the message. That might allow indexes to be leveraged.
+  # That being said, I don't think querying the database is very efficient when the keyword set is very small
+  # e.g. < 800 words
   def execute(commit)
     ActiveRecord::Base.logger.silence(Logger::WARN) do
       keywords = Set.new
