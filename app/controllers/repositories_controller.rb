@@ -5,20 +5,24 @@ class RepositoriesController < ApplicationController
   # GET /repositories
   # GET /repositories.json
   def index
-    @repositories = Repository.all
-    respond_to do |format|
-      format.html
-      format.js
+    ActiveRecord::Base.logger.silence(Logger::WARN) do
+      @repositories = Repository.all
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
   end
 
   # GET /repositories/1
   # GET /repositories/1.json
   def show
-    @repository_users = @repository.users.uniq(&:id).paginate(page: params[:page])
-    respond_to do |format|
-      format.html
-      format.js
+    ActiveRecord::Base.logger.silence(Logger::WARN) do
+      @repository_users = @repository.users.uniq(&:id).paginate(page: params[:page])
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
   end
 

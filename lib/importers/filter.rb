@@ -40,7 +40,7 @@ module Importers
       blacklist_words.each { |word| BlackListWord.create(word: word, filterset: filterset) }
       whitelist_words.each { |word| WhiteListWord.create(word: word, filterset: filterset) }
 
-      return filterset
+      filterset
     end
 
   end

@@ -5,20 +5,24 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all.paginate(page: params[:page])
-    respond_to do |format|
-      format.html
-      format.js
+    ActiveRecord::Base.logger.silence(Logger::WARN) do
+      @users = User.all.paginate(page: params[:page])
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
-    @commits = @user.commits.order('utc_commit_time DESC').uniq(&:id).paginate(page: params[:page])
-    respond_to do |format|
-      format.html
-      format.js
+    ActiveRecord::Base.logger.silence(Logger::WARN) do
+      @commits = @user.commits.order('utc_commit_time DESC').uniq(&:id).paginate(page: params[:page])
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
   end
 

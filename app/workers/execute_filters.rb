@@ -1,6 +1,6 @@
 class ExecuteFilters
   include Sidekiq::Worker
-  sidekiq_options(queue: 'filter')
+  sidekiq_options(queue: 'filter', retry: 5)
 
   def perform(commit_id)
     ActiveRecord::Base.logger.silence(Logger::WARN) do

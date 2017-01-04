@@ -1,28 +1,14 @@
-require 'yaml'
 require 'will_paginate/array'
 class CommitsController < ApplicationController
   before_action :set_commit, only: [:show]
 
-
   # GET /commits
   # GET /commits.json
   def index
-    # ActiveRecord::Base.logger = nil
     ActiveRecord::Base.logger.silence(Logger::WARN) do
-      # start_time = Time.now
-      # unfiltered_commits = Rails.cache.fetch("commits/unfiltered_commits/page/#{params[:page]}", expires_in: 60.seconds) do
-      #   logger.debug 'Cache for unfiltered_commits was unpopulated. Populating..'
-      # @commits = Commit.order('utc_commit_time DESC').paginate(page: params[:page])
-
-      @commits = Filterset.first.commits.order('utc_commit_time DESC').paginate(page: params[:page])
-      # end
-      # end_time = Time.now
-      # logger.debug "Fetching #{unfiltered_commits.size} Commits took #{(end_time - start_time).round(2)} seconds."
-      #
-      # @commits = Rails.cache.fetch("commits/filtered_commits/page/#{params[:page]}", expires_in: 60.seconds) do
-      #   logger.debug 'Cache for filtered_commits was unpopulated. Populating..'
-      #   filter_commits(unfiltered_commits)
-      # end
+      @commits = Rails.cache.fetch("commits/page/#{params[:page]}", expires_in: 60.seconds) do
+        Filterset.first.commits.order('utc_commit_time DESC').paginate(page: params[:page])
+      end
 
       respond_to do |format|
         format.html
@@ -38,7 +24,6 @@ class CommitsController < ApplicationController
 
   def fetch_latest_commits
     system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_latest_commits &'
-
     redirect_to '#'
   end
 
@@ -50,14 +35,12 @@ class CommitsController < ApplicationController
 
   def fetch_all_repositories
     system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_all_repositories &'
-
     redirect_to '#'
   end
 
   #Placeholder for potential github stuff.
   def fetch_latest_from_github
     system 'rake RAILS_ENV=' + Rails.env + ' GitHubAPI:fetch_latest_commits &'
-
     redirect_to '#'
   end
 
