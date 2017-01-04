@@ -1,0 +1,2 @@
+module FilterCategoriesHelper
+end

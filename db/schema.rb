@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161224053458) do
+ActiveRecord::Schema.define(version: 20170104020857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,13 @@ ActiveRecord::Schema.define(version: 20161224053458) do
 
   add_index "black_list_words", ["filterset_id"], name: "index_black_list_words_on_filterset_id", using: :btree
   add_index "black_list_words", ["word_id"], name: "index_black_list_words_on_word_id", using: :btree
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "category",      null: false
+    t.integer  "commits_count"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
 
   create_table "commits", force: :cascade do |t|
     t.string   "message"
@@ -52,6 +59,16 @@ ActiveRecord::Schema.define(version: 20161224053458) do
 
   add_index "email_addresses", ["user_id"], name: "index_email_addresses_on_user_id", using: :btree
 
+  create_table "filter_categories", force: :cascade do |t|
+    t.integer  "category_id",  null: false
+    t.integer  "filterset_id", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "filter_categories", ["category_id"], name: "index_filter_categories_on_category_id", using: :btree
+  add_index "filter_categories", ["filterset_id"], name: "index_filter_categories_on_filterset_id", using: :btree
+
   create_table "filtered_messages", force: :cascade do |t|
     t.integer  "filterset_id"
     t.integer  "commit_id"
@@ -64,8 +81,9 @@ ActiveRecord::Schema.define(version: 20161224053458) do
 
   create_table "filtersets", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "commits_count"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "repositories", force: :cascade do |t|
@@ -76,6 +94,8 @@ ActiveRecord::Schema.define(version: 20161224053458) do
     t.string   "first_commit_sha"
     t.integer  "commits_count"
   end
+
+  add_index "repositories", ["name"], name: "index_repositories_on_name", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",    null: false
@@ -98,7 +118,7 @@ ActiveRecord::Schema.define(version: 20161224053458) do
   add_index "white_list_words", ["word_id"], name: "index_white_list_words_on_word_id", using: :btree
 
   create_table "words", force: :cascade do |t|
-    t.string   "word"
+    t.string   "word",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

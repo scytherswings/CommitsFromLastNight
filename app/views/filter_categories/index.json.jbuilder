@@ -1,0 +1,1 @@
+json.array! @filter_categories, partial: 'filter_categories/filter_category', as: :filter_category
