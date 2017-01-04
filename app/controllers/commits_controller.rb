@@ -34,7 +34,7 @@ class CommitsController < ApplicationController
 
 
   def fetch_all_repositories
-    system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_all_repositories &'
+    BitbucketRepos.perform_async
     redirect_to '#'
   end
 

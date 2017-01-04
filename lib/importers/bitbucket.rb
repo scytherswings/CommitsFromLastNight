@@ -14,22 +14,22 @@ module Importers
     end
 
     def self.fetch_all_repositories
+      repos = nil
+      start = Time.now
+      Sidekiq.logger.debug 'Requesting repositories from BitBucket.'
       ActiveRecord::Base.logger.silence(Logger::WARN) do
-        Sidekiq.logger.debug 'Requesting repositories from BitBucket.'
         config_file = YAML.load_file('config.yml')
         bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
-
-        repos = bitbucket.repos.list
-
-        repos.each do |repo|
+        repos = bitbucket.repos.list do |repo|
           Sidekiq.logger.info "Working on repo: #{repo['owner']}:#{repo['slug']}."
           Repository.create(name: repo['slug'].to_s, owner: repo['owner'].to_s)
         end
-
-        Sidekiq.logger.debug 'Requesting repositories finished.'
       end
+      Sidekiq.logger.debug 'Requesting repositories finished.'
+      end_time = Time.now
+      Sidekiq.logger.debug "Fetching #{repos.size} repos took: #{(end_time-start).round(2)} seconds."
     end
-    
+
     def self.fetch_old_commits(commits_to_grab_from_each_repo)
       commits_to_get = Integer(commits_to_grab_from_each_repo)
 
