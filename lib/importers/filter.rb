@@ -10,16 +10,16 @@ module Importers
     end
 
     def import_yaml(blacklist_file, whitelist_file = nil)
-      @blacklist_words = @blacklist_words | YAML.load_file(blacklist_file).flatten
+      @blacklist_words = @blacklist_words | YAML.load_file(blacklist_file).flatten.uniq
       unless whitelist_file.blank?
-        @whitelist_words = @whitelist_words | YAML.load_file(whitelist_file).flatten
+        @whitelist_words = @whitelist_words | YAML.load_file(whitelist_file).flatten.uniq
       end
     end
 
     def import_csv(blacklist_file, whitelist_file = nil)
-      @blacklist_words = @blacklist_words | CSV.read(blacklist_file).flatten
+      @blacklist_words = @blacklist_words | CSV.read(blacklist_file).flatten.uniq
       unless whitelist_file.blank?
-        @whitelist_words = @whitelist_words | CSV.read(whitelist_file).flatten
+        @whitelist_words = @whitelist_words | CSV.read(whitelist_file).flatten.uniq
       end
     end
 

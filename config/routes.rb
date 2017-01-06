@@ -1,3 +1,4 @@
+require 'sidekiq/web'
 Rails.application.routes.draw do
   resources :filter_categories
   resources :categories
@@ -5,8 +6,6 @@ Rails.application.routes.draw do
   resources :black_list_words
   resources :words
   resources :filtersets
-  require 'sidekiq/web'
-
   resources :repositories
   resources :users
   root 'commits#index'

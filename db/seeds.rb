@@ -9,8 +9,7 @@ require 'faker'
 require 'importers/filter'
 
 filter = Importers::Filter.new
-filter.import_yaml('lib/resources/blacklist.yml')
-filter.import_csv('lib/resources/google_bad_words.csv')
+filter.import_yaml('lib/resources/profanity.yml')
 filter.create_filterset('Default Profanity Filterset')
 
 unless Rails.env == 'production'
