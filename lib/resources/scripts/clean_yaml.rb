@@ -10,8 +10,7 @@ class CleanYaml
     puts 'Removing duplicate words..'
     yaml['words'].uniq!
     puts 'Downcasing words..'
-    yaml['words'].each {|word| word.to_s.downcase!}
-
+    yaml['words'].each { |word| word.to_s.downcase! }
 
     File.open(file_name, 'w') { |f| f.write(yaml.to_yaml) }
     puts "Wrote out: #{file_name} successfully!"
