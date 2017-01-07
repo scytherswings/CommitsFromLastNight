@@ -1,11 +1,7 @@
 ---
-happiness:
-  - yay
-  - excellent
-  -
-sadness:
-  - farts
-  - fuckers
-  - assholes
-anger:
-  -
+- happiness
+- sadness
+- anger
+- joy
+- profanity
+
