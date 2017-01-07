@@ -44,6 +44,7 @@ words:
 - arexx
 - argus
 - aspectj
+- assembly
 - assembly language
 - ateji px
 - ats
@@ -74,6 +75,7 @@ words:
 - boomerang
 - bourne shell
 - bpel
+- brainfuck
 - brew
 - c
 - c shell
@@ -124,7 +126,6 @@ words:
 - coldc
 - coldfusion
 - comal
-- brainfuck
 - combined programming language
 - comit
 - common intermediate language
