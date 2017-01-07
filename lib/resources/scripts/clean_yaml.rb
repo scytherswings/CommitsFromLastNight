@@ -1,13 +1,34 @@
+#!/usr/bin/env ruby
 require 'yaml'
 
 class CleanYaml
   def self.clean(file_name)
-    yaml = YAML.load_file(file_name).flatten
-    puts "Read file: #{file_name} with contents:"
-    puts yaml
-    puts 'Sorting file and removing duplicates:'
-    puts yaml.sort_by! { |word| word.to_s.downcase }.uniq!
+    puts "Reading file: #{file_name}"
+    yaml = YAML.load_file(file_name)
+    puts "Sorting file's words.."
+    yaml['words'].sort_by! { |word| word.to_s.downcase }
+    puts 'Removing duplicate words..'
+    yaml['words'].uniq!
+
     File.open(file_name, 'w') { |f| f.write(yaml.to_yaml) }
     puts "Wrote out: #{file_name} successfully!"
+  end
+end
+
+if __FILE__ == $0
+  ARGV.each do |argument|
+    if File.directory?(argument)
+      puts "It looks like a directory was passed in. Trying to clean all files in: #{argument} that end with '.yml'"
+      absolute_path = File.absolute_path(argument)
+      Dir.glob(absolute_path + '/*.yml').each do |arg|
+        puts "Cleaning: #{arg}"
+        CleanYaml.clean(arg)
+      end
+    elsif File.exists?(argument)
+      CleanYaml.clean(argument)
+    else
+      puts "Could not find file: \"#{argument}\". Is it reachable from: \"#{Dir.pwd}\"?"
+    end
+
   end
 end
