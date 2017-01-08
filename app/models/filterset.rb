@@ -2,10 +2,12 @@ class Filterset < ActiveRecord::Base
   has_many :white_list_words, dependent: :destroy
   has_many :black_list_words, dependent: :destroy
   has_many :filtered_messages, dependent: :destroy
+  has_many :filter_categories, dependent: :destroy
   has_many :commits, through: :filtered_messages
   has_many :words, through: :black_list_words
+  has_one :category, through: :filter_categories
 
-  validates_presence_of :name
+  validates_presence_of :name, :category
 
   # If this proves to be too slow it might be worth it to investigate querying the database for each word in the message
   # against instead of comparing the whole set to every word in the message. That might allow indexes to be leveraged.

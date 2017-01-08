@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-ass:
-  word: ass
-  filterset: profanity
-
-arse:
-  word: ass
-  filterset: whitelist_only

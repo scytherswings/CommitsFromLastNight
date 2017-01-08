@@ -2,25 +2,19 @@ require 'yaml'
 require 'csv'
 module Importers
   class Filter
-    attr_reader :blacklist_words, :whitelist_words
+    attr_reader :blacklist_words
 
     def initialize
-      @blacklist_words = Array.new
-      @whitelist_words = Array.new
+      @category = nil
+      @blacklist_words = Hash.new
     end
 
-    def import_yaml(blacklist_file, whitelist_file = nil)
-      @blacklist_words = @blacklist_words | YAML.load_file(blacklist_file).flatten.uniq
-      unless whitelist_file.blank?
-        @whitelist_words = @whitelist_words | YAML.load_file(whitelist_file).flatten.uniq
-      end
-    end
+    def import_yaml(blacklist_file)
+      bl_file = YAML.load_file(blacklist_file)
 
-    def import_csv(blacklist_file, whitelist_file = nil)
-      @blacklist_words = @blacklist_words | CSV.read(blacklist_file).flatten.uniq
-      unless whitelist_file.blank?
-        @whitelist_words = @whitelist_words | CSV.read(whitelist_file).flatten.uniq
-      end
+      @category = bl_file['category']
+      @blacklist_words = @blacklist_words | bl_file['words']
+
     end
 
     def create_filterset(filterset_name)
@@ -29,16 +23,9 @@ module Importers
         blacklist_words << Word.find_or_create_by!(word: word)
       end
 
-      whitelist_words = Array.new
-      @whitelist_words.each do |word|
-        whitelist_words << Word.find_or_create_by!(word: word)
-      end
-
       filterset = Filterset.find_or_create_by!(name: filterset_name)
       filterset.black_list_words.destroy_all
-      filterset.white_list_words.destroy_all
       blacklist_words.each { |word| BlackListWord.create(word: word, filterset: filterset) }
-      whitelist_words.each { |word| WhiteListWord.create(word: word, filterset: filterset) }
 
       filterset
     end

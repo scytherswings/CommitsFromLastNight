@@ -2,7 +2,6 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   resources :filter_categories
   resources :categories
-  resources :white_list_words
   resources :black_list_words
   resources :words
   resources :filtersets
