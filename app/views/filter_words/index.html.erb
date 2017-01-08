@@ -1,0 +1,27 @@
+<div class="page-header">
+  <%= link_to new_filter_word_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Filter word
+  <% end %>
+  <h1>Listing filter_words</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @filter_words) do |filter_word| %>
+            <td><%= link_to 'Show', filter_word %></td>
+        <td><%= link_to 'Edit', edit_filter_word_path(filter_word) %></td>
+        <td><%= link_to 'Destroy', filter_word, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

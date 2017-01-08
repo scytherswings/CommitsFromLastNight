@@ -1,8 +1,7 @@
-<%= simple_form_for(@black_list_word) do |f| %>
+<%= simple_form_for(@filter_word) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :word, as: :select, collection: Word.all.map(&:word) %>
   </div>
 
   <div class="form-actions">

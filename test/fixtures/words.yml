@@ -1,14 +1,14 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 happy:
-  word: happy
+  value: happy
 
 sad:
-  word: sad
+  value: sad
 
 fuck:
-  word: fuck
+  value: fuck
 
 ass:
-  word: ass
+  value: ass
 

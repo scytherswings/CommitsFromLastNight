@@ -1,1 +1,0 @@
-json.partial! "black_list_words/black_list_word", black_list_word: @black_list_word

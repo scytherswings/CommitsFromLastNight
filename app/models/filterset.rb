@@ -1,11 +1,9 @@
 class Filterset < ActiveRecord::Base
-  has_many :white_list_words, dependent: :destroy
-  has_many :black_list_words, dependent: :destroy
+  has_many :filter_words, dependent: :destroy
   has_many :filtered_messages, dependent: :destroy
-  has_many :filter_categories, dependent: :destroy
   has_many :commits, through: :filtered_messages
-  has_many :words, through: :black_list_words
-  has_one :category, through: :filter_categories
+  has_many :words, through: :filter_words
+  belongs_to :category
 
   validates_presence_of :name, :category
 
@@ -17,7 +15,7 @@ class Filterset < ActiveRecord::Base
     ActiveRecord::Base.logger.silence(Logger::WARN) do
       keywords = Set.new
       keywords = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 5.minutes) do
-        (black_list_words.map(&:word) - white_list_words.map(&:word)).map(&:word).each { |keyword| keywords.add(keyword) }
+        filter_words.map { |filter_word| filter_word.word.value }.each { |keyword| keywords.add(keyword) }
         keywords
       end
 

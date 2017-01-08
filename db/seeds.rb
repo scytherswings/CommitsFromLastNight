@@ -9,7 +9,7 @@ require 'faker'
 require 'importers/filter'
 
 filter = Importers::Filter.new
-filter.import_yaml('lib/resources/profanity.yml')
+filter.import_yaml('lib/resources/category_words/profanity.yml')
 filter.create_filterset('Default Profanity Filterset')
 
 unless Rails.env == 'production'

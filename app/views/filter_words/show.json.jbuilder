@@ -1,0 +1,1 @@
+json.partial! "filter_words/filter_word", filter_word: @filter_word

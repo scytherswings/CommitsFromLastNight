@@ -1,8 +1,8 @@
 require 'sidekiq/web'
 Rails.application.routes.draw do
-  resources :filter_categories
+  resources :filter_words
   resources :categories
-  resources :black_list_words
+  resources :filter_words
   resources :words
   resources :filtersets
   resources :repositories

@@ -1,1 +1,0 @@
-json.partial! "filter_categories/filter_category", filter_category: @filter_category

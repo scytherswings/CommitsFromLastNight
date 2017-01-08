@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class FilterCategoryTest < ActiveSupport::TestCase
+class FilterWordTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

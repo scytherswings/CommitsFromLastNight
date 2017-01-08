@@ -5,5 +5,6 @@ class CreateCategories < ActiveRecord::Migration
       t.integer :commits_count
       t.timestamps null: false
     end
+    add_index :categories, :category, unique: true
   end
 end

@@ -2,9 +2,8 @@
 
 profanity:
   name: Profane words
+  category: profanity
 
 happy:
   name: Happy words
-
-whitelist_only:
-  name: Whitelist only words
+  category: happy
