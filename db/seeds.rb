@@ -9,7 +9,7 @@ require 'faker'
 require 'importers/filter'
 
 filter = Importers::Filter.new
-filter.import_yaml('lib/resources/category_words/profanity.yml')
+filter.import_yaml('lib/resources/filter_categories/profanity.yml')
 filter.create_filterset('Default Profanity Filterset')
 
 unless Rails.env == 'production'
@@ -24,7 +24,8 @@ unless Rails.env == 'production'
 
     repository = Repository.find_or_create_by!(name: repository_names[rand(0..19)])
 
-    message = Faker::Hacker.say_something_smart + (rand(0..1).times.collect { |_| ' ..Fuck! ' }).join(' ') + (rand(0..1).times.collect { |_| Faker::Hacker.say_something_smart }).join(' ')
+    message = Faker::Hacker.say_something_smart + (rand(0..1).times.collect { |_| ' ..Fuck! ' }).join(' ') +
+        (rand(0..1).times.collect { |_| Faker::Hacker.say_something_smart }).join(' ')
     sha = Faker::Crypto.sha1
     commit_time = Faker::Time.between(DateTime.now - 2.months, DateTime.now, :between)
     commit = Commit.create!(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
