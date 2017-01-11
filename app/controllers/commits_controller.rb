@@ -7,7 +7,7 @@ class CommitsController < ApplicationController
   def index
     ActiveRecord::Base.logger.silence(Logger::WARN) do
       @commits = Rails.cache.fetch("commits/page/#{params[:page]}", expires_in: 60.seconds) do
-        Filterset.first.commits.order('utc_commit_time DESC').paginate(page: params[:page])
+        Category.last.commits.order('utc_commit_time DESC').paginate(page: params[:page])
       end
 
       respond_to do |format|

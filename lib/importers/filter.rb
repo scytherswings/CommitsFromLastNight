@@ -17,6 +17,10 @@ module Importers
     end
 
     def create_filterset(filterset_name)
+      if filterset_name.blank?
+        filterset_name = @category
+      end
+
       filter_words = Array.new
       @filter_words.each do |filter_word|
         filter_words << Word.find_or_create_by!(value: filter_word)
