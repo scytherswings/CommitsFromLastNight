@@ -5,16 +5,16 @@ class CommitsController < ApplicationController
   # GET /commits
   # GET /commits.json
   def index
-    ActiveRecord::Base.logger.silence(Logger::WARN) do
+    ActiveRecord::Base.logger = Rails.logger
       @commits = Rails.cache.fetch("commits/page/#{params[:page]}", expires_in: 60.seconds) do
-        Category.last.commits.order('utc_commit_time DESC').paginate(page: params[:page])
+        Category.first.commits.order('utc_commit_time DESC').paginate(page: params[:page])
       end
 
       respond_to do |format|
         format.html
         format.js
       end
-    end
+    # end
   end
 
   def clear_cache
