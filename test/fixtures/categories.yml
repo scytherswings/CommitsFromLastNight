@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 profanity:
-  category: profanity
+  name: profanity
 
 happy:
-  category: happy
+  name: happy

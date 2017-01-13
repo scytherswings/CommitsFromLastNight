@@ -1,5 +1,6 @@
 ---
-category: profanity
+name: profanity
+default: true
 words:
 - "$h!t"
 - "$h1t"

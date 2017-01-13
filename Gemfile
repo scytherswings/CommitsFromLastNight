@@ -21,6 +21,7 @@ gem 'sidekiq', '~> 4.2', '>= 4.2.7'
 gem 'silencer'
 gem 'redis'
 gem 'redis-store'
+gem 'simple_form'
 
 group :development, :test do
   gem 'pry'

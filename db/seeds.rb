@@ -13,26 +13,27 @@ filter_files = Dir.glob('lib/resources/filter_categories/*.yml')
 filter_files.each do |file|
   filter = Importers::Filter.new
   filter.import_yaml(file)
+  filter.create_filterset
 end
-#
-# unless Rails.env == 'production'
-#   account_names = Array.new
-#   repository_names = Array.new
-#
-#   50.times { account_names << Faker::Internet.user_name }
-#   20.times { repository_names << Faker::App.name }
-#   5000.times do
-#     user = User.find_or_create_by!(account_name: account_names[rand(0..49)], avatar_uri: 'https://bitbucket.org/account/unknown/avatar/48/?ts=0')
-#     EmailAddress.find_or_create_by!(email: Faker::Internet::email, user: user)
-#
-#     repository = Repository.find_or_create_by!(name: repository_names[rand(0..19)])
-#
-#     message = Faker::Hacker.say_something_smart + (rand(0..1).times.collect { |_| ' ..Fuck! ' }).join(' ') +
-#         (rand(0..1).times.collect { |_| Faker::Hacker.say_something_smart }).join(' ')
-#     sha = Faker::Crypto.sha1
-#     commit_time = Faker::Time.between(DateTime.now - 2.months, DateTime.now, :between)
-#     commit = Commit.create!(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
-#     ExecuteFilters.perform_async(commit.id)
-#   end
 
-# end
+unless Rails.env == 'production'
+  account_names = Array.new
+  repository_names = Array.new
+
+  50.times { account_names << Faker::Internet.user_name }
+  20.times { repository_names << Faker::App.name }
+  5000.times do
+    user = User.find_or_create_by!(account_name: account_names[rand(0..49)], avatar_uri: 'https://bitbucket.org/account/unknown/avatar/48/?ts=0')
+    EmailAddress.find_or_create_by!(email: Faker::Internet::email, user: user)
+
+    repository = Repository.find_or_create_by!(name: repository_names[rand(0..19)])
+
+    message = Faker::Hacker.say_something_smart + (rand(0..1).times.collect { |_| ' ..Fuck! ' }).join(' ') +
+        (rand(0..1).times.collect { |_| Faker::Hacker.say_something_smart }).join(' ')
+    sha = Faker::Crypto.sha1
+    commit_time = Faker::Time.between(DateTime.now - 2.months, DateTime.now, :between)
+    commit = Commit.create!(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
+    ExecuteFilters.perform_async(commit.id)
+  end
+
+end

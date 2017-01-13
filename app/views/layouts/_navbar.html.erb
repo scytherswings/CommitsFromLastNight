@@ -13,23 +13,28 @@
 
     </div>
 
-
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-          <form class="navbar-form text-center" role="form" >
-            <div class="form-group">
-              <select class="selectpicker" multiple="" data-actions-box="true" >
-                  <option selected="selected">option1</option>
-                  <option>option2</option>
-                  <option>option3</option>
-                  <option>option4</option>
-              </select>
-            </div>
+        <% if current_page?(controller: 'commits', action: 'index') %>
+            <form id="multiselect_commits" class="navbar-form text-center" role="form">
+              <div class="form-group">
+                <select class="selectpicker" multiple="" data-actions-box="true">
+                  <% @categories.try(:each) do |category| %>
+                      <option id="category_id<%= category.id %>"
+                              <% if category.default %>
+                              selected="selected"
+                              <% end %>>
+                        <%= category.name.humanize %>
+                      </option>
+                  <% end %>
+                </select>
+              </div>
+            </form>
 
-          </form>
-          <!--<li><a href=>About</a></li>-->
-          <!--<li><a href=>Contact</a></li>-->
+        <% end %>
+        <!--<li><a href=>About</a></li>-->
+        <!--<li><a href=>Contact</a></li>-->
 
       </ul>
     </div>
