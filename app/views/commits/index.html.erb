@@ -20,7 +20,6 @@
     </div>
   <% else %>
     <div class="table-responsive">
-      <% start_time = Time.now %>
       <table class="table table-hover table-condensed" id="commits">
         <tbody>
         <%= render @commits %>
@@ -31,9 +30,6 @@
       <% rescue Exception => e %>
         <% logger.error "Exception was encountered because of the shitty pagination gem. Fuck this. #{e}" %>
       <% end %>
-      <% end_time = Time.now %>
-      <% logger.debug "Rendering all the commit messages took: #{(end_time - start_time).round(2)} seconds." %>
-
   <% end %>
   </div>
 
