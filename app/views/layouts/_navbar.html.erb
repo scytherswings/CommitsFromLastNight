@@ -10,25 +10,48 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href=<%= root_path %>>Commits From Last Night</a>
-
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <% if current_page?(controller: 'commits', action: 'index') %>
-            <form class="navbar-form text-center" role="form">
+            <form class="navbar-form text-center" role="form" method="get" action="">
               <div class="form-group">
                 <select id="multiselect_commits" class="selectpicker" multiple="" data-actions-box="true">
                   <% @categories.try(:each) do |category| %>
-                      <option id="category_id<%= category.id %>"<% if category.default %> selected="selected"<% end %>><%= category.name.humanize %></option>
+                      <option id="category_id_<%= category.id %>"
+                      <% if category.default %> selected="selected"
+                      <% end %> name="<%= category.name %>" value="<%= category.id %>"><%= category.name.humanize %></option>
                   <% end %>
                 </select>
               </div>
               <div class="form-group">
-                  <button type="submit" class="btn btn-default">Submit</button>
+                <script type="text/javascript">
+                    function refreshWithSelectedCategories() {
+                        let url_params = new Set;
+                        $('#multiselect_commits').find(':selected').each(function (i, selected) {
+                            let selected_item = $(selected);
+                            console.log('Selected: ' + selected_item.attr('name'));
+                            url_params.add(selected_item.val())
+                        });
+                        console.log(url_params);
+
+                        let queryParameters = {}, queryString = location.search.substring(1),
+                            re = /([^&=]+)=([^&]*)/g, m;
+
+                        while (m = re.exec(queryString)) {
+                            queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+                        }
+                        console.log('Array of shit:' + Array.from(url_params));
+                        queryParameters['categories'] = Array.from(url_params);
+                        location.search = $.param(queryParameters); // Causes page to reload
+                    }
+                </script>
+                <button type="button" class="btn btn-default" onClick="refreshWithSelectedCategories()">Submit</button>
               </div>
             </form>
+
         <% end %>
         <!--<li><a href=>About</a></li>-->
         <!--<li><a href=>Contact</a></li>-->
