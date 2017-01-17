@@ -1,16 +1,18 @@
-getQueryStringKey = function(key) {
+getQueryStringKey = function (key) {
     return getQueryStringAsObject()[key];
 };
 
-getQueryStringAsObject = function() {
+getQueryStringAsObject = function () {
     var b, cv, e, k, ma, sk, v, r = {},
-        d = function (v) { return decodeURIComponent(v).replace(/\+/g, " "); }, //# d(ecode) the v(alue)
+        d = function (v) {
+            return decodeURIComponent(v).replace(/\+/g, " ");
+        }, //# d(ecode) the v(alue)
         q = window.location.search.substring(1),
         s = /([^&;=]+)=?([^&;]*)/g //# original regex that does not allow for ; as a delimiter:   /([^&=]+)=?([^&]*)/g
         ;
 
     //# ma(make array) out of the v(alue)
-    ma = function(v) {
+    ma = function (v) {
         //# If the passed v(alue) hasn't been setup as an object
         if (typeof v != "object") {
             //# Grab the cv(current value) then setup the v(alue) as an object
@@ -20,7 +22,9 @@ getQueryStringAsObject = function() {
 
             //# If there was a cv(current value), .push it into the new v(alue)'s array
             //#     NOTE: This may or may not be 100% logical to do... but it's better than loosing the original value
-            if (cv) { Array.prototype.push.call(v, cv); }
+            if (cv) {
+                Array.prototype.push.call(v, cv);
+            }
         }
         return v;
     };
@@ -57,9 +61,13 @@ getQueryStringAsObject = function() {
             r[k] = ma(r[k]);
 
             //# If we have a sk(sub-key), plug the v(alue) into it
-            if (sk) { r[k][sk] = v; }
+            if (sk) {
+                r[k][sk] = v;
+            }
             //# Else .push the v(alue) into the k(ey)'s array
-            else { Array.prototype.push.call(r[k], v); }
+            else {
+                Array.prototype.push.call(r[k], v);
+            }
         }
     }
 
@@ -71,13 +79,29 @@ $(function () {
     let multiselect = $("#multiselect_commits");
 
     if (multiselect.length) {
-        let selected_categories = Array.from(getQueryStringKey('categories[]'));
-        console.log(selected_categories);
-        selected_categories.forEach(function (category) {
+        let url_param_categories = getQueryStringKey('categories[]');
+
+        if (!url_param_categories) {
+            url_param_categories = [];
+            console.log('URL params were empty. Checking for selected categories.');
+            if (multiselect.find(':selected').length === 0) {
+                console.log('No selected categories were found. Setting selected to match default categories');
+                multiselect.find('[default=true]').each(function (i, selected) {
+                    let selected_item = $(selected);
+                    console.log('Selecting default category: ' + selected_item.attr('name'));
+                    $('#' + selected_item.attr('id')).prop('selected', 'selected');
+                });
+            }
+        }
+        let categories_array_from_url = Array.from(url_param_categories);
+
+        console.log(categories_array_from_url);
+        categories_array_from_url.forEach(function (category) {
             console.log('Selecting:' + category);
             $('#category_id_' + category).prop('selected', 'selected');
         });
     }
-});
+})
+;
 
 

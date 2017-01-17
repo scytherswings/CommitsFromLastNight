@@ -21,7 +21,7 @@
                 <select id="multiselect_commits" class="selectpicker" multiple="" data-actions-box="true">
                   <% @categories.try(:each) do |category| %>
                       <option id="category_id_<%= category.id %>"
-                      <% if category.default %> selected="selected"
+                              <% if category.default %> default="true"
                       <% end %> name="<%= category.name %>" value="<%= category.id %>"><%= category.name.humanize %></option>
                   <% end %>
                 </select>
@@ -30,32 +30,35 @@
                 <script type="text/javascript">
                     function refreshWithSelectedCategories() {
                         let url_params = new Set;
+//                        let queryString = location.search.substring(1), re = /([^&=]+)=([^&]*)/g, m;
+//
+//                        while (m = re.exec(queryString)) {
+//                            url_params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+//                        }
+
                         $('#multiselect_commits').find(':selected').each(function (i, selected) {
                             let selected_item = $(selected);
                             console.log('Selected: ' + selected_item.attr('name'));
                             url_params.add(selected_item.val())
                         });
-                        console.log(url_params);
+                        let categories_array = Array.from(url_params);
+                        console.log('Array of categories from url_params: ' + categories_array);
 
-                        let queryParameters = {}, queryString = location.search.substring(1),
-                            re = /([^&=]+)=([^&]*)/g, m;
-
-                        while (m = re.exec(queryString)) {
-                            queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+                        if (categories_array.length) {
+                            url_params['categories'] = categories_array;
+                        } else {
+                            url_params = {};
                         }
-                        console.log('Array of shit:' + Array.from(url_params));
-                        queryParameters['categories'] = Array.from(url_params);
-                        location.search = $.param(queryParameters); // Causes page to reload
+
+                        location.search = $.param(url_params);
                     }
                 </script>
-                <button type="button" class="btn btn-default" onClick="refreshWithSelectedCategories()">Submit</button>
+                <button type="button" class="btn btn-default" onClick="refreshWithSelectedCategories()">Filter</button>
               </div>
             </form>
-
         <% end %>
         <!--<li><a href=>About</a></li>-->
         <!--<li><a href=>Contact</a></li>-->
-
       </ul>
     </div>
     <!-- /.navbar-collapse -->
