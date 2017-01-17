@@ -95,9 +95,9 @@ $(function () {
         }
         let categories_array_from_url = Array.from(url_param_categories);
 
-        console.log(categories_array_from_url);
+        console.log('Categories found from  url_params on page load: ' + categories_array_from_url);
         categories_array_from_url.forEach(function (category) {
-            console.log('Selecting:' + category);
+            // console.log('Selecting:' + category);
             $('#category_id_' + category).prop('selected', 'selected');
         });
     }

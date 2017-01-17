@@ -30,19 +30,14 @@
                 <script type="text/javascript">
                     function refreshWithSelectedCategories() {
                         let url_params = new Set;
-//                        let queryString = location.search.substring(1), re = /([^&=]+)=([^&]*)/g, m;
-//
-//                        while (m = re.exec(queryString)) {
-//                            url_params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-//                        }
 
                         $('#multiselect_commits').find(':selected').each(function (i, selected) {
                             let selected_item = $(selected);
-                            console.log('Selected: ' + selected_item.attr('name'));
+//                            console.log('Selected: ' + selected_item.attr('name'));
                             url_params.add(selected_item.val())
                         });
                         let categories_array = Array.from(url_params);
-                        console.log('Array of categories from url_params: ' + categories_array);
+                        console.log('Array of new url_params: ' + categories_array);
 
                         if (categories_array.length) {
                             url_params['categories'] = categories_array;
