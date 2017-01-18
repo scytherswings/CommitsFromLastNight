@@ -10,7 +10,6 @@ gem 'jbuilder'
 gem 'bitbucket_rest_api'
 gem 'bootstrap-generators'
 gem 'simple_form'
-gem 'obscenity'
 gem 'sprockets-rails'
 gem 'jquery-turbolinks'
 gem 'bootstrap-sass'
@@ -21,7 +20,6 @@ gem 'sidekiq', '~> 4.2', '>= 4.2.7'
 gem 'silencer'
 gem 'redis'
 gem 'redis-store'
-gem 'simple_form'
 
 group :development, :test do
   gem 'pry'
@@ -34,6 +32,8 @@ group :development do
   gem 'memory_profiler'
   gem 'flamegraph'
   gem 'stackprof'
+  gem 'pghero'
+  gem 'pg_query'
 end
 
 group :test do
@@ -41,15 +41,14 @@ group :test do
   gem 'coveralls', require: false
   gem 'minitest-reporters'
   gem 'mini_backtrace'
-  gem 'webmock'
+  # gem 'webmock'
   # gem 'capybara', '~> 2.6.2'
   # gem 'poltergeist', '~> 1.9.0'
   # gem 'phantomjs', require: 'phantomjs/poltergeist'
   # gem 'capybara-screenshot'
   # gem 'vcr', '~> 3.0.1'
   # gem 'minitest-vcr', '~> 1.4.0'
-
-  gem 'fabrication'
+  # gem 'fabrication'
 end
 
 group :production do

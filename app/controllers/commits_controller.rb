@@ -12,13 +12,13 @@ class CommitsController < ApplicationController
     end
 
     if params[:categories].blank?
-      cleaned_categories_params = Category.all.where('default=true')
+      cleaned_categories_params = Category.all.where(default: true).map(&:id)
     else
       cleaned_categories_params = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort.join(',')
     end
 
     @commits = Rails.cache.fetch("commits/page/#{params[:page]}/#{cleaned_categories_params}", expires_in: 60.seconds) do
-      Category.first.commits.order('utc_commit_time DESC').paginate(page: params[:page])
+      Category.find(cleaned_categories_params).commits.order('utc_commit_time DESC').paginate(page: params[:page])
     end
 
     respond_to do |format|
