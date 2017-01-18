@@ -6,8 +6,18 @@ class CommitsController < ApplicationController
   # GET /commits.json
   def index
     ActiveRecord::Base.logger = Rails.logger
-    @categories = Category.all.order('name')
-    @commits = Rails.cache.fetch("commits/page/#{params[:page]}", expires_in: 60.seconds) do
+
+    @categories = Rails.cache.fetch('categories', expires_in: 5.minutes) do
+      Category.all.order('name')
+    end
+
+    if params[:categories].blank?
+      cleaned_categories_params = Category.all.where('default=true')
+    else
+      cleaned_categories_params = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort.join(',')
+    end
+
+    @commits = Rails.cache.fetch("commits/page/#{params[:page]}/#{cleaned_categories_params}", expires_in: 60.seconds) do
       Category.first.commits.order('utc_commit_time DESC').paginate(page: params[:page])
     end
 
