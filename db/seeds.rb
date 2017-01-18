@@ -16,6 +16,21 @@ filter_files.each do |file|
   filter.create_filterset
 end
 
+
+def generate_random_interjection
+  ['..damn..', '..fuck!', '..well that makes me sad.', '..how disappointing.', '...yes!', '...oh no..', '..whooppee!',
+   '...holy shit!', 'gee willikers, Batman!',
+   "...why do people use python anyway? There's no way it could be as fun as Ruby!"].sample
+end
+
+def generate_random_message
+  message = []
+  message << Faker::Hacker.say_something_smart
+  message << (rand(0..1).times.collect { |_| generate_random_interjection }).join('')
+  message << (rand(0..1).times.collect { |_| Faker::Hacker.say_something_smart }).join('')
+  message.join(' ').strip
+end
+
 unless Rails.env == 'production'
   account_names = Array.new
   repository_names = Array.new
@@ -28,12 +43,11 @@ unless Rails.env == 'production'
 
     repository = Repository.find_or_create_by!(name: repository_names[rand(0..19)])
 
-    message = Faker::Hacker.say_something_smart + (rand(0..1).times.collect { |_| ' ..Fuck! ' }).join(' ') +
-        (rand(0..1).times.collect { |_| Faker::Hacker.say_something_smart }).join(' ')
+    message = generate_random_message
     sha = Faker::Crypto.sha1
     commit_time = Faker::Time.between(DateTime.now - 2.months, DateTime.now, :between)
     commit = Commit.create!(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
     ExecuteFilters.perform_async(commit.id)
   end
-
 end
+

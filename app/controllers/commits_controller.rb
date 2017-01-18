@@ -14,11 +14,18 @@ class CommitsController < ApplicationController
     if params[:categories].blank?
       cleaned_categories_params = Category.all.where(default: true).map(&:id)
     else
-      cleaned_categories_params = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort.join(',')
+      cleaned_categories_params = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort.sanitize.join(',')
     end
 
     @commits = Rails.cache.fetch("commits/page/#{params[:page]}/#{cleaned_categories_params}", expires_in: 60.seconds) do
-      Category.find(cleaned_categories_params).commits.order('utc_commit_time DESC').paginate(page: params[:page])
+#       "SELECT  "commits".* FROM "commits"
+#   INNER JOIN "filtered_messages" ON "commits"."id" = "filtered_messages"."commit_id"
+#   INNER JOIN "filtersets" ON "filtered_messages"."filterset_id" = "filtersets"."id"
+# WHERE "filtersets"."category_id" = 3 OR "filtersets"."category_id" = 6
+# ORDER BY utc_commit_time DESC LIMIT 20"
+      # Need to convert the above into active-record-speak.
+      Category.first.commits.order('utc_commit_time DESC').paginate(page: params[:page])
+      # Category.find(cleaned_categories_params).commits.order('utc_commit_time DESC').paginate(page: params[:page])
     end
 
     respond_to do |format|
