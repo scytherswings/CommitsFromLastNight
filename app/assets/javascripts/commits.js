@@ -76,10 +76,10 @@ getQueryStringAsObject = function () {
 };
 
 $(function () {
-    let multiselect = $("#multiselect_commits");
+    var multiselect = $("#multiselect_commits");
 
     if (multiselect.length) {
-        let url_param_categories = getQueryStringKey('categories[]');
+        var url_param_categories = getQueryStringKey('categories[]');
 
         if (!url_param_categories) {
             url_param_categories = [];
@@ -87,13 +87,13 @@ $(function () {
             if (multiselect.find(':selected').length === 0) {
                 console.log('No selected categories were found. Setting selected to match default categories');
                 multiselect.find('[default=true]').each(function (i, selected) {
-                    let selected_item = $(selected);
+                    var selected_item = $(selected);
                     console.log('Selecting default category: ' + selected_item.attr('name'));
                     $('#' + selected_item.attr('id')).prop('selected', 'selected');
                 });
             }
         }
-        let categories_array_from_url = Array.from(url_param_categories);
+        var categories_array_from_url = Array.from(url_param_categories);
 
         console.log('Categories found from  url_params on page load: ' + categories_array_from_url);
         categories_array_from_url.forEach(function (category) {
