@@ -1,5 +1,6 @@
 require 'will_paginate/array'
 class CommitsController < ApplicationController
+
   before_action :set_commit, only: [:show]
 
   # GET /commits
@@ -12,21 +13,26 @@ class CommitsController < ApplicationController
     end
 
     if params[:categories].blank?
-      cleaned_categories_params = Category.all.where(default: true).map(&:id)
+      list_of_category_ids = Category.all.where(default: true).map(&:id)
+
     else
-      cleaned_categories_params = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort.sanitize.join(',')
+      list_of_category_ids = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort
     end
+    cleaned_categories_params = list_of_category_ids.join(',')
 
     @commits = Rails.cache.fetch("commits/page/#{params[:page]}/#{cleaned_categories_params}", expires_in: 60.seconds) do
-#       "SELECT  "commits".* FROM "commits"
-#   INNER JOIN "filtered_messages" ON "commits"."id" = "filtered_messages"."commit_id"
-#   INNER JOIN "filtersets" ON "filtered_messages"."filterset_id" = "filtersets"."id"
-# WHERE "filtersets"."category_id" = 3 OR "filtersets"."category_id" = 6
-# ORDER BY utc_commit_time DESC LIMIT 20"
-      # Need to convert the above into active-record-speak.
-      Category.first.commits.order('utc_commit_time DESC').paginate(page: params[:page])
-      # Category.find(cleaned_categories_params).commits.order('utc_commit_time DESC').paginate(page: params[:page])
-    # end
+      Commit.select(Arel.star).where(
+          Filterset.arel_table[:category_id].in(list_of_category_ids)
+      ).joins(
+          Commit.arel_table.join(FilteredMessage.arel_table).on(
+              Commit.arel_table[:id].eq(FilteredMessage.arel_table[:commit_id])
+          ).join_sources
+      ).joins(
+          Commit.arel_table.join(Filterset.arel_table).on(
+              FilteredMessage.arel_table[:filterset_id].eq(Filterset.arel_table[:id])
+          ).join_sources
+      ).order(:utc_commit_time).reverse_order.paginate(page: params[:page])
+    end
 
     respond_to do |format|
       format.html
