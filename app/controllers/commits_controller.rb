@@ -26,7 +26,7 @@ class CommitsController < ApplicationController
       # Need to convert the above into active-record-speak.
       Category.first.commits.order('utc_commit_time DESC').paginate(page: params[:page])
       # Category.find(cleaned_categories_params).commits.order('utc_commit_time DESC').paginate(page: params[:page])
-    end
+    # end
 
     respond_to do |format|
       format.html
