@@ -1,4 +1,4 @@
-<% if Rails.env == 'development' %>
+<% if Rails.env == 'production' %>
 <div class="row">
   <div style="float: left; width: auto; padding-right: 2px;">
     <%= button_to 'Fetch All Repositories', fetch_all_repositories_path, method: :post, class: 'btn btn-success' %>

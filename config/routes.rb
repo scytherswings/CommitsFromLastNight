@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq', constraints: lambda { |request| /127\.0\.0\.1/.match(request.remote_ip) }
   Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
 
-  mount PgHero::Engine, at: 'pghero', constraints: lambda { |request| /127\.0\.0\.1/.match(request.remote_ip) }
-
+  if Rails.env == 'development'
+    mount PgHero::Engine, at: 'pghero', constraints: lambda { |request| /127\.0\.0\.1/.match(request.remote_ip) }
+  end
 end
