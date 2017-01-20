@@ -12,10 +12,6 @@
             <table>
               <tr>
                 <td>
-                  <% if commit.user.nil? %>
-                      <% logger.error("Commit: #{commit.id} has a nil user! This is INVALID!") %>
-                      <% return %>
-                  <% end %>
                   <%= link_to(image_tag(commit.user.avatar_uri, class: 'avatar_wrapper'), '/users') %>
                 </td>
                 <td style="padding-left: 1px; vertical-align: top">
