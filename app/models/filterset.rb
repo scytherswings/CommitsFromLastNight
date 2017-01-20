@@ -1,4 +1,5 @@
 class Filterset < ActiveRecord::Base
+  include ArelHelpers::ArelTable
   has_many :filter_words, dependent: :destroy
   has_many :filtered_messages, dependent: :destroy
   has_many :commits, through: :filtered_messages

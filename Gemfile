@@ -20,6 +20,7 @@ gem 'sidekiq', '~> 4.2', '>= 4.2.7'
 gem 'silencer'
 gem 'redis'
 gem 'redis-store'
+gem 'arel-helpers'
 
 group :development, :test do
   gem 'pry'

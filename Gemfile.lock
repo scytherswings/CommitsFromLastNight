@@ -45,6 +45,8 @@ GEM
       tzinfo (~> 1.1)
     ansi (1.5.0)
     arel (6.0.4)
+    arel-helpers (2.3.0)
+      activerecord (>= 3.1.0, < 6)
     autoprefixer-rails (6.6.1)
       execjs
     bitbucket_rest_api (0.1.7)
@@ -231,6 +233,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  arel-helpers
   bitbucket_rest_api
   bootstrap-generators
   bootstrap-sass

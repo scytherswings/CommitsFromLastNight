@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20170113051510) do
   add_index "commits", ["repository_id"], name: "index_commits_on_repository_id", using: :btree
   add_index "commits", ["sha"], name: "index_commits_on_sha", unique: true, using: :btree
   add_index "commits", ["user_id"], name: "index_commits_on_user_id", using: :btree
-  add_index "commits", ["utc_commit_time"], name: "index_commits_on_utc_commit_time", using: :btree
+  add_index "commits", ["utc_commit_time"], name: "index_commits_on_utc_commit_time", order: {"utc_commit_time"=>:desc}, using: :btree
 
   create_table "email_addresses", force: :cascade do |t|
     t.string   "email",      null: false

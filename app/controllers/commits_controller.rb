@@ -1,4 +1,5 @@
 require 'will_paginate/array'
+require 'arel-helpers'
 class CommitsController < ApplicationController
 
   before_action :set_commit, only: [:show]
@@ -14,24 +15,30 @@ class CommitsController < ApplicationController
 
     if params[:categories].blank?
       list_of_category_ids = Category.all.where(default: true).map(&:id)
-
     else
       list_of_category_ids = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort
     end
     cleaned_categories_params = list_of_category_ids.join(',')
 
     @commits = Rails.cache.fetch("commits/page/#{params[:page]}/#{cleaned_categories_params}", expires_in: 60.seconds) do
-      Commit.select(Arel.star).where(
-          Filterset.arel_table[:category_id].in(list_of_category_ids)
-      ).joins(
-          Commit.arel_table.join(FilteredMessage.arel_table).on(
-              Commit.arel_table[:id].eq(FilteredMessage.arel_table[:commit_id])
-          ).join_sources
+      Commit.select(
+          [
+              Commit[:id],
+              Commit[:utc_commit_time],
+              Commit[:message],
+              Commit[:user_id],
+              Commit[:repository_id],
+              Commit[:branch_name],
+              Commit[:sha]
+          ]
+      ).where(Filterset[:category_id].in(list_of_category_ids)).joins(
+          Commit.arel_table.join(FilteredMessage.arel_table).on(Commit[:id].eq(FilteredMessage[:commit_id])).join_sources
       ).joins(
           Commit.arel_table.join(Filterset.arel_table).on(
-              FilteredMessage.arel_table[:filterset_id].eq(Filterset.arel_table[:id])
+              FilteredMessage[:filterset_id].eq(Filterset[:id])
           ).join_sources
-      ).order(:utc_commit_time).reverse_order.paginate(page: params[:page])
+      ).order('utc_commit_time desc').uniq.paginate(page: params[:page]) #.reverse_order isn't working for some reason and I don't care enough to figure out why
+
     end
 
     respond_to do |format|
