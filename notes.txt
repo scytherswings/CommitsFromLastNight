@@ -1,0 +1,6 @@
+These notes are for testing in development. Don't actually run your production stuff with these settings.
+RAILS_ENV=production COMMITSFROMLASTNIGHT_DATABASE_PASSWORD=password rake db:drop db:create db:schema:load db:seed assets:clobber assets:precompile
+
+RAILS_ENV=production COMMITSFROMLASTNIGHT_DATABASE_PASSWORD=password bundle exec sidekiq
+
+sudo apt-get install redis-server postgresql postgresql-server-dev-9.5 -y
