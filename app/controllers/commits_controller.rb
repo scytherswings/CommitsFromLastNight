@@ -30,21 +30,21 @@ class CommitsController < ApplicationController
               Commit[:repository_id],
               Commit[:branch_name],
               Commit[:sha]
-          ]
-      ).where(Filterset[:category_id].in(list_of_category_ids))
+          ])
+          .where(Filterset[:category_id].in(list_of_category_ids))
           .joins(
               Commit.arel_table
                   .join(FilteredMessage.arel_table)
                   .on(Commit[:id].eq(FilteredMessage[:commit_id]))
-                  .join_sources
-          ).joins(
-          Commit.arel_table.join(Filterset.arel_table)
-              .on(FilteredMessage[:filterset_id].eq(Filterset[:id])
-              ).join_sources
-      ).order('utc_commit_time desc')
+                  .join_sources)
+          .joins(
+              Commit.arel_table
+                  .join(Filterset.arel_table)
+                  .on(FilteredMessage[:filterset_id].eq(Filterset[:id]))
+                  .join_sources)
+          .order('utc_commit_time desc')
           .uniq
           .paginate(page: params[:page]) #.reverse_order isn't working for some reason and I don't care enough to figure out why
-
     end
 
     respond_to do |format|
