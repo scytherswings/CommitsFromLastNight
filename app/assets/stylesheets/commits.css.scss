@@ -5,3 +5,11 @@
   vertical-align: top;
   margin: 0;
 }
+
+mark.hoverable {
+  background: none;
+}
+
+td:hover + mark{
+  background: yellow;
+}

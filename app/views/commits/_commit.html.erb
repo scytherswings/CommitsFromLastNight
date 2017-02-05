@@ -1,5 +1,5 @@
 <% cache "commits/#{commit.id}/without_avatar=#{local_assigns[:without_avatar]}" do %>
-    <tr id="commit_id:<%= commit.id %>" data-no-turbolink>
+    <tr id="commit_id=<%= commit.id %>" data-no-turbolink>
       <% if local_assigns[:without_avatar] %>
           <td>
             <%= link_to commit.repository.name, repository_path(commit.repository.id) %>
@@ -38,7 +38,7 @@
             </table>
           </td>
       <% end %>
-      <td>
+      <td id="commit_message_id <%= commit.id %>" class="hoverable">
         <%= commit.message %>
       </td>
     </tr>
