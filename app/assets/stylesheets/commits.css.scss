@@ -10,6 +10,6 @@ mark.hoverable {
   background: none;
 }
 
-td:hover + mark{
+td:hover > mark.hoverable  {
   background: yellow;
 }
