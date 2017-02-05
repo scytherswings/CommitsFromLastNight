@@ -2,6 +2,8 @@
 
 profanity:
   name: profanity
+  default: true
 
 happy:
   name: happy
+  default: false

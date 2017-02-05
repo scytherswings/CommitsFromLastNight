@@ -9,8 +9,8 @@ module Importers
       @default = false
     end
 
-    def import_yaml(blacklist_file)
-      bl_file = YAML.load_file(blacklist_file)
+    def import_yaml(filter_file)
+      bl_file = YAML.load_file(filter_file)
 
       @name = bl_file['name']
       @default = bl_file.fetch('default', false)
@@ -18,8 +18,12 @@ module Importers
 
     end
 
-    def create_filterset(filterset_name: @name, default: @default)
+    def create_filterset_from_file(filename)
+      import_yaml(filename)
+      create_filterset
+    end
 
+    def create_filterset(filterset_name: @name, default: @default)
       filter_words = Array.new
       @filter_words.each do |filter_word|
         filter_words << Word.find_or_create_by!(value: filter_word)
