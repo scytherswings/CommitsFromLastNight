@@ -4,18 +4,7 @@ $('#commits').append('<%= escape_javascript render(@commits) %>');
 $('.pagination').replaceWith('<%= escape_javascript will_paginate(@commits) %>');
 <% require 'arel-helpers' %>
 var highlight_text = function () {
-    $('[id^=commit_message_id]').highlight(<%= Word.select(Word[:value]).joins(
-  Word.arel_table.join(FilterWord.arel_table).on(Word[:id].eq(FilterWord[:word_id])).join_sources
-).joins(
-  Word.arel_table.join(Filterset.arel_table).on(Filterset[:id].eq(FilterWord[:filterset_id])).join_sources
-).joins(
-  Word.arel_table.join(FilteredMessage.arel_table).on(
-    FilteredMessage[:filterset_id].eq(Filterset[:id])
-  ).join_sources
-).joins(
-  Word.arel_table.join(Commit.arel_table).on(FilteredMessage[:commit_id].eq(Commit[:id])).join_sources
-).where(Commit[:id].in(@commits.map(&:id)))
-.uniq.flatten.map(&:value).to_json.html_safe %>);
+    $('[id^=commit_message_id]').highlight(['fuck', 'suck', 'damn', 'shit']);
     console.log("Words have been highlighted.");
 };
 highlight_text();

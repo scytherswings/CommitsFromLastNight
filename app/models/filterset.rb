@@ -14,15 +14,13 @@ class Filterset < ActiveRecord::Base
   # e.g. < 800 words
   def execute(commit)
     ActiveRecord::Base.logger.silence(Logger::WARN) do
-      keywords = Set.new
-      keywords = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 5.minutes) do
-        filter_words.map { |filter_word| filter_word.word.value }.each { |keyword| keywords.add(keyword) }
-        keywords
+      filter_word_id_and_word_values = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 5.minutes) do
+        FilterWord.select([FilterWord[:id], Word[:value]]).where(FilterWord[:filterset_id].eq(id)).joins(:word).eager_load!
       end
-
-      keywords.each do |keyword|
-        if commit.message =~ /\b#{keyword}\b/i
-          return FilteredMessage.find_or_create_by!(commit: commit, filterset: self)
+      logger.error(filter_word_id_and_word_values.map(&:value))
+      filter_word_id_and_word_values.each do |filter_word_id_and_word_value|
+        if commit.message =~ /\b#{filter_word_id_and_word_value.value}\b/i
+          return FilteredMessage.create!(commit: commit, filterset: self, filter_word_id: filter_word_id_and_word_value.id)
         end
       end
     end

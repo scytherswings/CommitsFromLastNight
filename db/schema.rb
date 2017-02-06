@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170113051510) do
+ActiveRecord::Schema.define(version: 20170206050805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,11 +65,13 @@ ActiveRecord::Schema.define(version: 20170113051510) do
   create_table "filtered_messages", force: :cascade do |t|
     t.integer  "filterset_id"
     t.integer  "commit_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "filter_word_id"
   end
 
   add_index "filtered_messages", ["commit_id"], name: "index_filtered_messages_on_commit_id", using: :btree
+  add_index "filtered_messages", ["filter_word_id"], name: "index_filtered_messages_on_filter_word_id", using: :btree
   add_index "filtered_messages", ["filterset_id"], name: "index_filtered_messages_on_filterset_id", using: :btree
 
   create_table "filtersets", force: :cascade do |t|

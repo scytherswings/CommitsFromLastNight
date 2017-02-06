@@ -1,5 +1,5 @@
 require 'yaml'
-require 'csv'
+
 module Importers
   class Filter
     attr_reader :filter_words, :name, :default
