@@ -80,7 +80,7 @@ jQuery.fn.unhighlight = function (options) {
 };
 
 jQuery.fn.highlight = function (words, options) {
-    var settings = { className: 'hoverable', element: 'mark', caseSensitive: false, wordsOnly: false };
+    var settings = { className: 'hoverable', element: 'mark', caseSensitive: false, wordsOnly: true };
     jQuery.extend(settings, options);
 
     if (words.constructor === String) {

@@ -11,6 +11,9 @@ module Importers
 
     def import_yaml(filter_file)
       bl_file = YAML.load_file(filter_file)
+      if bl_file.blank?
+        raise StandardError.new("File: #{filter_file} was empty or unusable. Skipping.")
+      end
 
       @name = bl_file['name']
       @default = bl_file.fetch('default', false)
@@ -19,7 +22,12 @@ module Importers
     end
 
     def create_filterset_from_file(filename)
+      begin
       import_yaml(filename)
+      rescue StandardError => e
+        Rails.logger.info("An exception was caught while trying to import file: #{filename}. Not creating filterset. Error: #{e}")
+        return
+      end
       create_filterset
     end
 

@@ -1,7 +1,7 @@
-:concurrency: 25
+:concurrency: 2
 :pidfile: tmp/pids/sidekiq.pid
 production:
-  :concurrency: 25
+  :concurrency: 2
 :queues:
   - default
   - bitbucket

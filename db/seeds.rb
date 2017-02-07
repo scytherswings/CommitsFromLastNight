@@ -11,9 +11,7 @@ require 'importers/filter'
 filter_files = Dir.glob('lib/resources/filter_categories/*.yml')
 
 filter_files.each do |file|
-  filter = Importers::Filter.new
-  filter.import_yaml(file)
-  filter.create_filterset
+  Importers::Filter.new.create_filterset_from_file(file)
 end
 
 

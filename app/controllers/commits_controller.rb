@@ -14,11 +14,11 @@ class CommitsController < ApplicationController
     end
 
     if params[:categories].blank?
-      list_of_category_ids = Category.all.where(default: true).map(&:id)
+      @list_of_category_ids = Category.all.where(default: true).map(&:id)
     else
-      list_of_category_ids = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort
+      @list_of_category_ids = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort
     end
-    cleaned_categories_params = list_of_category_ids.join(',')
+    cleaned_categories_params = @list_of_category_ids.join(',')
 
     @commits = Rails.cache.fetch("commits/page/#{params[:page]}/#{cleaned_categories_params}", expires_in: 60.seconds) do
       Commit.select(
@@ -31,7 +31,7 @@ class CommitsController < ApplicationController
               Commit[:branch_name],
               Commit[:sha]
           ])
-          .where(Filterset[:category_id].in(list_of_category_ids))
+          .where(Filterset[:category_id].in(@list_of_category_ids))
           .joins(
               Commit.arel_table
                   .join(FilteredMessage.arel_table)
