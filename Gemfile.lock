@@ -61,6 +61,7 @@ GEM
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+    bootstrap-toggle-rails (2.2.1.0)
     browser-timezone-rails (1.0.1)
       js_cookie_rails
       jstz-rails3-plus
@@ -237,6 +238,7 @@ DEPENDENCIES
   bitbucket_rest_api
   bootstrap-generators
   bootstrap-sass
+  bootstrap-toggle-rails
   browser-timezone-rails (~> 1.0.1)
   coffee-rails
   coveralls

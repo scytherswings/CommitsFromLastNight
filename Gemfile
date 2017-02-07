@@ -21,6 +21,7 @@ gem 'silencer'
 gem 'redis'
 gem 'redis-store'
 gem 'arel-helpers'
+gem 'bootstrap-toggle-rails'
 
 group :development, :test do
   gem 'pry'
