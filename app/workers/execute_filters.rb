@@ -3,14 +3,16 @@ class ExecuteFilters
   sidekiq_options(queue: 'filter', retry: 5)
 
   def perform(commit_id)
-    ActiveRecord::Base.logger.silence(Logger::WARN) do
+    Rails.env == 'production' ? log_level = Logger::WARN : log_level = Logger::DEBUG
+
+    ActiveRecord::Base.logger.silence(log_level) do
       if commit_id.nil?
         return
       end
 
       commit = Commit.find(commit_id)
       if commit.nil?
-        logger.error "Couldn't find commit by id: #{commit_id}."
+        logger.error { "Couldn't find commit by id: #{commit_id}." }
         raise StandardError "Commit: #{commit_id} not found."
       end
       filter_sets = Filterset.all

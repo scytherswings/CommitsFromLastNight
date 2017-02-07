@@ -13,11 +13,13 @@ class Filterset < ActiveRecord::Base
   # That being said, I don't think querying the database is very efficient when the keyword set is very small
   # e.g. < 800 words
   def execute(commit)
-    ActiveRecord::Base.logger.silence(Logger::WARN) do
+    Rails.env == 'production' ? log_level = Logger::WARN : log_level = Logger::DEBUG
+
+    ActiveRecord::Base.logger.silence(log_level) do
       filter_word_id_and_word_values = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 5.minutes) do
         FilterWord.select([FilterWord[:id], Word[:value]]).where(FilterWord[:filterset_id].eq(id)).joins(:word).eager_load!
       end
-      logger.error(filter_word_id_and_word_values.map(&:value))
+
       filter_word_id_and_word_values.each do |filter_word_id_and_word_value|
         if commit.message =~ /\b#{filter_word_id_and_word_value.value}\b/i
           return FilteredMessage.create!(commit: commit, filterset: self, filter_word_id: filter_word_id_and_word_value.id)
