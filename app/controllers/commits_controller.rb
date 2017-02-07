@@ -16,7 +16,7 @@ class CommitsController < ApplicationController
       end
 
       if params[:categories].blank?
-        @list_of_category_ids = Category.all.where(default: true).map(&:id)
+        @list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) { |_| Category.all.where(default: true).map(&:id) }
       else
         @list_of_category_ids = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort
       end
@@ -53,6 +53,36 @@ class CommitsController < ApplicationController
         format.html
         format.js
       end
+    end
+  end
+
+  def highlight_keywords
+    if params[:categories].blank?
+      list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) { |_| Category.all.where(default: true).map(&:id) }
+    else
+      list_of_category_ids = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort
+    end
+    cleaned_categories_params = list_of_category_ids.join(',')
+
+    @selected_categories = Rails.cache.fetch("categories_by_id/#{cleaned_categories_params}", expires_in: 24.hours) do
+      Category.where(id: list_of_category_ids)
+    end
+
+    @keywords = Rails.cache.fetch("highlight_keywords/#{cleaned_categories_params}", expires_in: 24.hours) do
+      Word.select(Word[:value])
+          .joins(
+              Word.arel_table.join(FilterWord.arel_table).on(Word[:id].eq(FilterWord[:word_id])).join_sources)
+          .joins(
+              Word.arel_table.join(Filterset.arel_table).on(Filterset[:id].eq(FilterWord[:filterset_id])).join_sources)
+          .where(Filterset[:category_id].in(list_of_category_ids))
+          .joins(
+              Word.arel_table.join(FilteredMessage.arel_table).on(FilteredMessage[:filterset_id].eq(Filterset[:id])).join_sources)
+          .joins(
+              Word.arel_table.join(Commit.arel_table).on(FilteredMessage[:commit_id].eq(Commit[:id])).join_sources)
+          .uniq
+          .flatten
+          .map(&:value)
+          .each { |word| Regexp.escape(word) }
     end
   end
 

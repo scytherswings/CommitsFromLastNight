@@ -16,42 +16,28 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <% if current_page?(controller: 'commits', action: 'index') %>
-            <form class="navbar-form text-center" role="form" method="get" action="">
-              <div class="form-group">
-                <select id="multiselect_commits" class="selectpicker" multiple="" data-actions-box="true">
-                  <% @categories.try(:each) do |category| %>
-                      <option id="category_id_<%= category.id %>"
-                              <% if category.default %> default="true"
-                      <% end %> name="<%= category.name %>" value="<%= category.id %>"><%= category.name.humanize %></option>
-                  <% end %>
-                </select>
-              </div>
-              <div class="form-group">
-                <script type="text/javascript">
-                    function refreshWithSelectedCategories() {
-                        let url_params = new Set;
-
-                        $('#multiselect_commits').find(':selected').each(function (i, selected) {
-                            let selected_item = $(selected);
-//                            console.log('Selected: ' + selected_item.attr('name'));
-                            url_params.add(selected_item.val())
-                        });
-                        let categories_array = Array.from(url_params);
-                        console.log('Array of new url_params: ' + categories_array);
-
-                        if (categories_array.length) {
-                            url_params['categories'] = categories_array;
-                        } else {
-                            url_params = {};
-                        }
-
-                        location.search = $.param(url_params);
-                    }
-                </script>
-                <button type="button" class="btn btn-default" onClick="refreshWithSelectedCategories()">Filter</button>
-              </div>
-              <input type="checkbox" checked data-toggle="toggle" data-on="Highlight On" data-off="Highlight Off" data-onstyle="default">
-            </form>
+          <form class="navbar-form text-center" role="form" method="get" action="">
+            <div class="form-group">
+              <select id="multiselect_commits" class="selectpicker" multiple="" data-actions-box="true">
+                <% @categories.try(:each) do |category| %>
+                  <option id="category_id_<%= category.id %>"
+                          <% if category.default %> default="true"
+                          <% end %> name="<%= category.name %>" value="<%= category.id %>"><%= category.name.humanize %></option>
+                <% end %>
+              </select>
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-default" onClick="refreshWithSelectedCategories()">Filter</button>
+            </div>
+            <input id="HighlightToggle"
+                   title="Highlight Toggle"
+                   type="checkbox"
+                   data-toggle="toggle"
+                   data-on="Highlight On"
+                   data-off="Highlight Off"
+                   data-onstyle="default"
+                   onClick="$.runToggleOnChange()">
+          </form>
         <% end %>
 
         <!--<li><a href=>About</a></li>-->

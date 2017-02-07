@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   post 'fetch_old_commits' => 'commits#fetch_old_commits'
   post 'fetch_all_repositories' => 'commits#fetch_all_repositories'
   post 'clear_cache' => 'commits#clear_cache'
+  get 'highlight_keywords' => 'commits#highlight_keywords'
 
 
   mount Sidekiq::Web => '/sidekiq', constraints: lambda { |request| /127\.0\.0\.1/.match(request.remote_ip) }

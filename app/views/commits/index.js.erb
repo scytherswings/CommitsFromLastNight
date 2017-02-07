@@ -1,10 +1,10 @@
 $('#commits').append('<%= escape_javascript render(@commits) %>');
 <% if @commits.next_page %>
 $('.pagination').replaceWith('<%= escape_javascript will_paginate(@commits) %>');
-<% require 'arel-helpers' %>
 var highlight_text = function () {
     $('[id^=commit_message_id]').highlight(
         <%=
+    require 'arel-helpers'
     Word.select(Word[:value])
     .joins(
     Word.arel_table.join(FilterWord.arel_table).on(Word[:id].eq(FilterWord[:word_id])).join_sources)
@@ -24,8 +24,10 @@ var highlight_text = function () {
     .html_safe
      %>
     );
-    console.log("Words have been highlighted.");
+    console.log("Words have been tagged for highlighting.");
+    $.toggleHighlighting();
 };
+
 highlight_text();
 <% else %>
 $('.pagination').remove();
