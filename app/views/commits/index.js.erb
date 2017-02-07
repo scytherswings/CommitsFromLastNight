@@ -1,4 +1,4 @@
-$('#commits').append('<%= escape_javascript render(@commits) %>');
+$('#commits_table_body').append('<%= escape_javascript render(@commits) %>');
 <% if @commits.next_page %>
 $('.pagination').replaceWith('<%= escape_javascript will_paginate(@commits) %>');
 var highlight_text = function () {
