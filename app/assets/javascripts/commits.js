@@ -45,12 +45,12 @@ function changeHighlighting(highlight_toggle) {
 
 function enableHighlighting() {
     $('mark.hoverable').css('background', 'lemonchiffon');
-    console.log("Highlighting of keywords should be enabled now.")
+    console.log("Keywords should be highlighted now.")
 }
 
 function disableHighlighting() {
     $('mark.hoverable').css('background', 'none');
-    console.log("Highlighting of keywords should be disabled now.")
+    console.log("Keywords should not be highlighted now.")
 }
 
 $(document).ready($.toggleHighlighting);
