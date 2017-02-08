@@ -15,7 +15,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <% if current_page?(controller: 'commits', action: 'index') %>
+        <% if current_page?(controller: 'commits', action: 'index') && !@commits.blank?%>
           <form class="navbar-form text-center" role="form" method="get" action="">
             <div class="form-group">
               <select id="multiselect_commits" class="selectpicker" multiple="" data-actions-box="true">

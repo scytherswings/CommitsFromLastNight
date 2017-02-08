@@ -1,4 +1,4 @@
-let categories = {};
+var categories = {};
 
 function getListOfSelectedCategories() {
     return $.map($('#multiselect_commits').find(':selected'), function (obj) {
@@ -57,13 +57,13 @@ jQuery.changeHighlighting = function () {
 };
 
 function refreshWithSelectedCategories() {
-    let url_params = new Set;
+    var url_params = new Set;
 
     $('#multiselect_commits').find(':selected').each(function (i, selected) {
-        let selected_item = $(selected);
+        var selected_item = $(selected);
         url_params.add(selected_item.val())
     });
-    let categories_array = Array.from(url_params);
+    var categories_array = Array.from(url_params);
     console.log('Array of new url_params: ' + categories_array);
 
     if (categories_array.length) {

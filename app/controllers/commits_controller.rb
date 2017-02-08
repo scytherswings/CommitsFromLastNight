@@ -11,7 +11,7 @@ class CommitsController < ApplicationController
 
     ActiveRecord::Base.logger.silence(log_level) do
 
-      @categories = Rails.cache.fetch('categories', expires_in: 5.minutes) do
+      @categories = Rails.cache.fetch('categories', expires_in: 24.hours) do
         Category.all.order('name')
       end
 
@@ -23,6 +23,21 @@ class CommitsController < ApplicationController
       cleaned_categories_params = @list_of_category_ids.join(',')
 
       @commits = Rails.cache.fetch("commits/page/#{params[:page]}/#{cleaned_categories_params}", expires_in: 60.seconds) do
+        if @list_of_category_ids.flatten == ['0']
+          Rails.logger.error { "Someone requested no filter!" }
+          Commit.all.order('utc_commit_time desc').uniq.paginate(page: params[:page])
+
+          # Commit.select(
+          #     [
+          #         Commit[:id].as('commit_id'), User[:account_name], Repository[:name], Repository[:id].as('repository_id')
+          #     ]
+          # ).joins(
+          #     Commit.arel_table.join(Repository.arel_table, OuterJoin).on(Commit[:repository_id].eq(Repository[:id])).join_sources
+          # ).joins(
+          #     Commit.arel_table.join(User.arel_table, OuterJoin).on(Commit[:user_id].eq(User[:id])).join_sources
+          # )
+        end
+
         Commit.select(
             [
                 Commit[:id],
@@ -31,7 +46,11 @@ class CommitsController < ApplicationController
                 Commit[:user_id],
                 Commit[:repository_id],
                 Commit[:branch_name],
-                Commit[:sha]
+                Commit[:sha],
+                # User[:account_name],
+                # User[:avatar_uri],
+                # Repository[:id],
+                # Repository[:name]
             ])
             .where(Filterset[:category_id].in(@list_of_category_ids))
             .joins(
@@ -91,25 +110,13 @@ class CommitsController < ApplicationController
     redirect_to '#'
   end
 
-  def fetch_latest_commits
-    system 'rake RAILS_ENV=' + Rails.env + ' BitBucketAPI:fetch_latest_commits &'
-    redirect_to '#'
-  end
-
   def fetch_old_commits
     BitbucketHistorical.perform_async(100)
     redirect_to '#'
   end
 
-
   def fetch_all_repositories
     BitbucketRepos.perform_async
-    redirect_to '#'
-  end
-
-  #Placeholder for potential github stuff.
-  def fetch_latest_from_github
-    system 'rake RAILS_ENV=' + Rails.env + ' GitHubAPI:fetch_latest_commits &'
     redirect_to '#'
   end
 
