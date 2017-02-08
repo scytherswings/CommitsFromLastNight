@@ -7,7 +7,7 @@ function getListOfSelectedCategories() {
 }
 
 function highlight_text(keywords) {
-    if (typeof keywords !== 'undefined' && keywords.length > 0){
+    if (typeof keywords !== 'undefined' && keywords.length > 0) {
         $('[id^=commit_message_id]').highlight(keywords);
     }
 }
@@ -18,7 +18,7 @@ function getListOfFilterWordsAndHighlight(listOfCategories) {
         type: "GET",
         dataType: "json",
         url: "/highlight_keywords",
-        data: {'categories':listOfCategories},
+        data: {'categories': listOfCategories},
         success: function (response) {
             console.log(response);
             categories['categories'] = response.categories;
@@ -27,7 +27,11 @@ function getListOfFilterWordsAndHighlight(listOfCategories) {
             enableHighlighting();
         },
         error: function (response, status, error) {
-            $("#error_modal_body").html(error);
+            $("#error_modal_body").html("<p>If you think there's a real problem, " +
+                "then go ahead and complain about the incompetence of the " +
+                "complete idiot who designed this piece of garbage loudly to yourself. " +
+                "</p><pre class='well'><code>Sum ting wong:\n " + error + response.responseText +
+                "</code></pre><p>This is payback for your shitty error messages, Zack.</p>");
             $("#error_modal").modal("show");
         }
     });
@@ -43,7 +47,7 @@ function enableHighlighting() {
     console.log("Keywords should be highlighted now.")
 }
 
-jQuery.changeHighlighting = function() {
+jQuery.changeHighlighting = function () {
     if ($('#HighlightToggle').is(':checked')) {
         highlight_text(categories['keywords']);
         enableHighlighting();
