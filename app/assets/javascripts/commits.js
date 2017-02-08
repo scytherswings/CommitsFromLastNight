@@ -43,7 +43,7 @@ function enableHighlighting() {
     console.log("Keywords should be highlighted now.")
 }
 
-jQuery.changeHighlighting = function () {
+jQuery.changeHighlighting = function() {
     if ($('#HighlightToggle').is(':checked')) {
         highlight_text(categories['keywords']);
         enableHighlighting();

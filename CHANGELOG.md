@@ -5,12 +5,16 @@ This project adheres to [Semantic Versioning](http://semver.org/) after version 
 ## [v0.0.6] : 2017-2-5
 ### Added
 - Keyword highlighting
-  - This uses javascript. Currently only highlights: fuck, suck, damn, and shit. I'm still working on getting
-  a simple way to highlight every word present that matched each commit. I'm afraid of adding too many DB queries 
-  to enable such a simple and non-essential feature. That being said, now that I have it I'm finding it quite useful
-  in debugging.
+  - This uses javascript. A commit message:
+    ```
+    Hoooooly fuck. FUCK JAVASCRIPT THIS IS THE DEVIL'S LANGUAGE. 
+    I swear it was designed by post-lobotomy patients and monkeys. 
+    Uck I can't understand how anyone would *want* to choose to work in this language. 
+    Everything is completly fucky. /rage
+    ```
+    I make this sacrifice for you, the readers of documents like this. The *real* users.
+    The people who understand the struggle.
   
-
 ## [v0.0.5] : 2017-1-20
 ### Added
 - Overhauled Navbar Kindof

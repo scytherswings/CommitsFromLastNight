@@ -33,8 +33,12 @@
             <script>
                 $(function () {
                     $('#HighlightToggle').change(function () {
-                        getListOfFilterWordsAndHighlight(getListOfSelectedCategories());
-                        $.changeHighlighting();
+                        if ($('#HighlightToggle').is(':checked')) {
+                            getListOfFilterWordsAndHighlight(getListOfSelectedCategories());
+                            $.changeHighlighting();
+                        } else {
+                            $.changeHighlighting();
+                        }
                     })
                 })
             </script>
