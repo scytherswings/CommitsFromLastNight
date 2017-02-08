@@ -29,22 +29,31 @@
             <div class="form-group">
               <button type="button" class="btn btn-default" onClick="refreshWithSelectedCategories()">Filter</button>
             </div>
-            <input id="HighlightToggle"
-                   title="Highlight Toggle"
-                   type="checkbox"
-                   data-toggle="toggle"
-                   data-on="Highlight On"
-                   data-off="Highlight Off"
-                   data-onstyle="default"
-                   onClick="$.runToggleOnChange()">
+            <input id="HighlightToggle" type="checkbox" data-toggle="toggle" data-on="Highlight On" data-off="Highlight Off" data-onstyle="default">
+            <script>
+                $(function () {
+                    $('#HighlightToggle').change(function () {
+                        getListOfFilterWordsAndHighlight(getListOfSelectedCategories());
+                        $.changeHighlighting();
+                    })
+                })
+            </script>
           </form>
-        <% end %>
+          <!--<li><a href=>About</a></li>-->
+          <!--<li><a href=>Contact</a></li>-->
+          </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+          </div>
+          <!-- /.container -->
+          </nav>
+          <%= render 'layouts/error_modal' %>
+        <% else %>
+          </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+          </div>
 
-        <!--<li><a href=>About</a></li>-->
-        <!--<li><a href=>Contact</a></li>-->
-      </ul>
-    </div>
-    <!-- /.navbar-collapse -->
-  </div>
-  <!-- /.container -->
-</nav>
+          <!-- /.container -->
+          </nav>
+        <% end %>
