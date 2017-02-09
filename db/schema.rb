@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 20170206050805) do
     t.integer  "commits_count"
   end
 
-  add_index "repositories", ["name"], name: "index_repositories_on_name", using: :btree
+  add_index "repositories", ["name"], name: "index_repositories_on_name", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",    null: false
