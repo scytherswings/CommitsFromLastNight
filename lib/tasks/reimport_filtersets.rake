@@ -1,5 +1,3 @@
-require 'resources/scripts/refilter_all_commits'
-
 desc 'Uses a PostgreSQL Cursor to throw all commits back into Redis to have the filters re-executed'
 task reimport_filters: :environment do
   filter_files = Dir.glob('lib/resources/filter_categories/*.yml')
