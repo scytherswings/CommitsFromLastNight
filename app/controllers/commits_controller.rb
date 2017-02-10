@@ -7,7 +7,7 @@ class CommitsController < ApplicationController
   # GET /commits
   # GET /commits.json
   def index
-    Rails.env == 'production' ? log_level = Logger::WARN : log_level = Logger::DEBUG
+    log_level = Rails.env == 'production' ?  Logger::WARN : Logger::DEBUG
 
     ActiveRecord::Base.logger.silence(log_level) do
 
@@ -88,6 +88,8 @@ class CommitsController < ApplicationController
     end
 
     @keywords = Rails.cache.fetch("highlight_keywords/#{cleaned_categories_params}", expires_in: 24.hours) do
+
+
       Word.select(Word[:value])
           .joins(
               Word.arel_table.join(FilterWord.arel_table).on(Word[:id].eq(FilterWord[:word_id])).join_sources)

@@ -38,7 +38,7 @@
             </table>
           </td>
       <% end %>
-      <td id="commit_message_id <%= commit.id %>">
+      <td id="commit_message_id <%= commit.id %>" filter_word="<%= commit.filter_words.map{|fw| fw.word.value}.uniq.to_json %>">
         <%= commit.message %>
       </td>
     </tr>

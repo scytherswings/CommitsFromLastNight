@@ -22,6 +22,7 @@ gem 'redis'
 gem 'redis-store'
 gem 'arel-helpers'
 gem 'bootstrap-toggle-rails'
+gem 'postgresql_cursor', '~> 0.6.1'
 
 group :development, :test do
   gem 'pry'

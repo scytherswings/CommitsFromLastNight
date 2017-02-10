@@ -3,7 +3,8 @@
 production:
   :concurrency: 4
 :queues:
+  - [bitbucket, 1]
+  - [github, 1]
+  - [filter, 1]
   - default
-  - bitbucket
-  - github
-  - filter
+

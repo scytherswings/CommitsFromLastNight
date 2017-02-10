@@ -12,11 +12,9 @@ words:
 - autolisp
 - awk
 - bash
-- basic
 - bourne shell
 - brainfuck
 - brew
-- c
 - c#
 - c++
 - chef
@@ -28,7 +26,6 @@ words:
 - cuda
 - curl
 - cython
-- dynamo
 - elixir
 - elm
 - emacs lisp
@@ -37,7 +34,6 @@ words:
 - f#
 - f-script
 - fortran
-- go
 - groovy
 - haskell
 - java

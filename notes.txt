@@ -3,4 +3,6 @@ RAILS_ENV=production COMMITSFROMLASTNIGHT_DATABASE_PASSWORD=password rake db:dro
 
 RAILS_ENV=production COMMITSFROMLASTNIGHT_DATABASE_PASSWORD=password bundle exec sidekiq
 
+RAILS_ENV=production COMMITSFROMLASTNIGHT_DATABASE_PASSWORD=password rails server -b 0.0.0.0 -p 80
+
 sudo apt-get install redis-server nodejs postgresql postgresql-server-dev-9.5 -y

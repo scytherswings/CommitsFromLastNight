@@ -1,9 +1,9 @@
-class ExecuteFilters
+class ReexecuteFilters
   include Sidekiq::Worker
-  sidekiq_options(queue: 'filter', retry: 2)
+  sidekiq_options(queue: 'default', retry: 2)
 
   def perform(commit_id)
-    Rails.env == 'production' ? log_level = Logger::WARN : log_level = Logger::DEBUG
+    log_level = Rails.env == 'production' ?  Logger::WARN : Logger::DEBUG
 
     ActiveRecord::Base.logger.silence(log_level) do
       if commit_id.nil?
@@ -17,7 +17,7 @@ class ExecuteFilters
       end
       filter_sets = Filterset.all
       filter_sets.try(:each) do |filter|
-        filter.execute(commit)
+        filter.reexecute(commit)
       end
     end
   end

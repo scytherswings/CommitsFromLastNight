@@ -29,7 +29,7 @@ def generate_random_message
   message.join(' ').strip
 end
 
-unless Rails.env == 'production'
+unless Rails.env == 'development'
   account_names = Array.new
   repository_names = Array.new
 

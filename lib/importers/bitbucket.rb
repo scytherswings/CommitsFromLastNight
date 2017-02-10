@@ -69,7 +69,7 @@ module Importers
       end
       commits_to_get = commits_to_get < 50 ? commits_to_get : 50
 
-      oldest_commit = find_oldest_commit_in_repo(repository)
+      oldest_commit = find_oldest_commit_in_repo(repository.id)
 
       if oldest_commit
         Sidekiq.logger.debug { "A commit was found in repo: #{repository.name}. Using this commit's sha to query from: #{oldest_commit.sha}." }
@@ -93,7 +93,7 @@ module Importers
 
       if (commits_to_get < 50) && (total_records_fetched < commits_to_get)
         Sidekiq.logger.debug { "The number of records received: #{total_records_fetched} for repository: #{repository.name} was less than the number asked for: #{commits_to_get}. There are no more commits to grab." }
-        earliest_commit = find_oldest_commit_in_repo(repository)
+        earliest_commit = find_oldest_commit_in_repo(repository.id)
         unless earliest_commit
           Sidekiq.logger.error { "No commits were found for repository: #{repository.name}. There should have been commits since BitBucket was queried for them or something." }
           return
@@ -112,31 +112,28 @@ module Importers
 
     def self.add_commits_to_db(changeset_list, bitbucket, repository)
       changeset_list['changesets'].each do |changeset|
-        user = find_or_create_new_user changeset
+        user = find_or_create_new_user(changeset)
 
-        # if /[\W]/.match user.account_name
-        #   Sidekiq.logger.debug {"Username: #{user.account_name} was found to contain a non-word character. Can't fetch the avatar_uri. Setting it to the default."}
-        #   user.update(avatar_uri: 'https://bitbucket.org/account/unknown/avatar/48/?ts=0')
-        # end
+        find_or_set_user_avatar_uri(bitbucket, user)
+        begin
+          commit = Commit.find_or_create_by(sha: changeset['raw_node'], message: changeset['message'],
+                                            utc_commit_time: changeset['utctimestamp'], branch_name: changeset['branch'],
+                                            user: user, repository: repository)
 
-        find_or_set_user_avatar_uri bitbucket, user
-
-        commit = Commit.find_or_create_by(sha: changeset['raw_node'], message: changeset['message'],
-                                          utc_commit_time: changeset['utctimestamp'], branch_name: changeset['branch'],
-                                          user: user, repository: repository)
-
-        ExecuteFilters.perform_async(commit.id)
+          ExecuteFilters.perform_async(commit.id)
+        rescue ActiveRecord::RecordNotUnique => e
+          Sidekiq.logger.error { "Commit with sha: #{changeset['raw_node']} is already in the database! Are you trying to run the filter import multi-threaded? Error was: #{e}" }
+        end
       end
     end
 
-    def self.find_oldest_commit_in_repo(repo)
-      commits_from_repo = Commit.where(repository_id: repo.id).order('utc_commit_time ASC')
-      commits_from_repo.first
+    def self.find_oldest_commit_in_repo(repo_id)
+      Commit.where(repository_id: repo_id).order('utc_commit_time ASC').first
     end
 
     def self.find_or_create_new_user(changeset)
       account_name = changeset['author'].to_s
-      user = User.find_or_create_by!(account_name: account_name) #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
+      user = User.find_or_create_by(account_name: account_name) #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
 
       email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s.downcase
 

@@ -13,18 +13,82 @@ class Filterset < ActiveRecord::Base
   # That being said, I don't think querying the database is very efficient when the keyword set is very small
   # e.g. < 800 words
   def execute(commit)
-    Rails.env == 'production' ? log_level = Logger::WARN : log_level = Logger::DEBUG
+    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
 
     ActiveRecord::Base.logger.silence(log_level) do
-      filter_word_id_and_word_values = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 5.minutes) do
+      filter_word_id_and_word_values = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 24.hours) do
         FilterWord.select([FilterWord[:id], Word[:value]]).where(FilterWord[:filterset_id].eq(id)).joins(:word).eager_load!
       end
 
       filter_word_id_and_word_values.each do |filter_word_id_and_word_value|
-        if commit.message =~ /\b#{filter_word_id_and_word_value.value}\b/i
+        if commit.message =~ /\b#{Regexp.escape(filter_word_id_and_word_value.value)}\b/i
           return FilteredMessage.create!(commit: commit, filterset: self, filter_word_id: filter_word_id_and_word_value.id)
         end
       end
     end
+  end
+
+  def reexecute(commit)
+    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+
+    ActiveRecord::Base.logger.silence(log_level) do
+      commit.filtered_messages.destroy_all
+      filter_word_id_and_word_values = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 24.hours) do
+        FilterWord.select([FilterWord[:id], Word[:value]]).where(FilterWord[:filterset_id].eq(id)).joins(:word).eager_load!
+      end
+
+      filter_word_id_and_word_values.each do |filter_word_id_and_word_value|
+        if commit.message =~ /\b#{Regexp.escape(filter_word_id_and_word_value.value)}\b/i
+          return FilteredMessage.create!(commit: commit, filterset: self, filter_word_id: filter_word_id_and_word_value.id)
+        end
+      end
+    end
+  end
+
+  def update_filterset_from_file(filterset_file)
+    filterset_file_hash = convert_filterset_file_to_hash(filterset_file)
+
+    if filterset_file_hash[:name] != name
+      logger.error { "Filterset file: #{filterset_file} contains a name: #{filterset_file_hash[:name]} which does not " +
+          "match this filterset's name: #{name}. " +
+          'If you need a new filterset then use an Importers::Filter script or something.' }
+      return
+    end
+
+    if filterset_file_hash[:default] != category.default
+      logger.warn { "Filterset: #{name} is changing the default setting for category: #{category.name}! New value: #{filterset_file_hash[:default]}" }
+      category.update!(default: filterset_file_hash[:default])
+    end
+
+    complete_list_of_new_words = Array.new
+    filterset_file_hash[:words].each do |filter_word|
+      complete_list_of_new_words << Word.find_or_create_by!(value: filter_word)
+    end
+
+    current_words = self.filter_words.map { |filter_word| filter_word.word.value }
+    removed_words = current_words - filterset_file_hash[:words]
+    new_words = filterset_file_hash[:words] - current_words
+
+    logger.debug { "Words being removed: #{removed_words}" }
+
+    self.filter_words.where(FilterWord[:word_id].in(Word.all.where(value: removed_words).map(&:id))).destroy_all
+
+    logger.debug { "Words being added: #{new_words}" }
+    new_words.each { |new_word| FilterWord.create(word: Word.find_by(value: new_word), filterset: self) }
+    Rails.cache.delete_matched("filtersets/#{id}/keywords")
+  end
+
+  def convert_filterset_file_to_hash(filter_file)
+    bl_file = YAML.load_file(filter_file)
+
+    if bl_file.blank?
+      raise ArgumentError.new("File: #{filter_file} was empty or unusable. Cannot import filterset.")
+    end
+
+    filterset_file_hash = Hash.new
+    filterset_file_hash[:name] = bl_file['name']
+    filterset_file_hash[:default] = bl_file.fetch('default', false)
+    filterset_file_hash[:words] = bl_file['words']
+    filterset_file_hash
   end
 end
