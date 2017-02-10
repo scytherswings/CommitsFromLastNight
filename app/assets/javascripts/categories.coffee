@@ -14,7 +14,7 @@ getQueryStringAsObject = ->
   d = (v) ->
     decodeURIComponent(v).replace /\+/g, ' '
 
-  q = window.location.search.substring(1)
+  q = window.location.search
   s = /([^&;=]+)=?([^&;]*)/g
   ## ma(make array) out of the v(alue)
 
