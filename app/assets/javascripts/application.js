@@ -13,11 +13,14 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require bootstrap-sprockets
+//= require bootstrap-select.min
+//= require bootstrap-toggle
+//= require highlighter
+//= require query
+//= require sortable_tables
 //= require js.cookie
 //= require jstz
 //= require browser_timezone_rails/set_time_zone
-//= require bootstrap-select.min
-//= require bootstrap-toggle
 //= require_tree .
 
 $(document).ready(function() {

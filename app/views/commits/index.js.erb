@@ -1,34 +1,9 @@
 $('#commits_table_body').append('<%= escape_javascript render(@commits) %>');
 <% if @commits.next_page %>
 $('.pagination').replaceWith('<%= escape_javascript will_paginate(@commits) %>');
-//var highlight_text = function () {
-//    $('[id^=commit_message_id]').highlight(
-        <!--=-->
-//#     require 'arel-helpers'
-//#     Word.select(Word[:value])
-//#     .joins(
-//#     Word.arel_table.join(FilterWord.arel_table).on(Word[:id].eq(FilterWord[:word_id])).join_sources)
-//#     .joins(
-//#     Word.arel_table.join(Filterset.arel_table).on(Filterset[:id].eq(FilterWord[:filterset_id])).join_sources)
-//#     .where(Filterset[:category_id].in(@list_of_category_ids))
-//#     .joins(
-//#     Word.arel_table.join(FilteredMessage.arel_table).on(FilteredMessage[:filterset_id].eq(Filterset[:id])).join_sources)
-//#     .joins(
-//#     Word.arel_table.join(Commit.arel_table).on(FilteredMessage[:commit_id].eq(Commit[:id])).join_sources)
-//#     .where(Commit[:id].in(@commits.map(&:id)))
-//#     .uniq
-//#     .flatten
-//#     .map(&:value)
-//#     .each{|word| Regexp.escape(word)}
-//#     .to_json
-//#     .html_safe
-     <!---->
-//    );
-//    console.log("Words have been tagged for highlighting.");
-//};
-//$.changeHighlighting();
-//highlight_text();
 $.changeHighlighting();
 <% else %>
 $('.pagination').remove();
+$.changeHighlighting();
+$('#commits_table_body').append("<tr><td colspan='2'><h3 class='text-center well'>That's all, folks!</h3></td></tr>");
 <% end %>
