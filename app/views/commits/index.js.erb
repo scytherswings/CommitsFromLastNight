@@ -1,9 +1,11 @@
-$('#commits_table_body').append('<%= escape_javascript render(@commits) %>');
+var commits_table_body = $('#commits_table_body');
+var pagination_class = $('.pagination');
+commits_table_body.append('<%= escape_javascript render(@commits) %>');
 <% if @commits.next_page %>
-$('.pagination').replaceWith('<%= escape_javascript will_paginate(@commits) %>');
+pagination_class.replaceWith('<%= escape_javascript will_paginate(@commits) %>');
 $.changeHighlighting();
 <% else %>
-$('.pagination').remove();
+pagination_class.remove();
 $.changeHighlighting();
-$('#commits_table_body').append("<tr><td colspan='2'><h3 class='text-center well'>That's all, folks!</h3></td></tr>");
+commits_table_body.append("<tr><td colspan='2'><h3 class='text-center'>That's all, folks!</h3></td></tr>");
 <% end %>

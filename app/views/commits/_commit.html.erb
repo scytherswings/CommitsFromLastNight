@@ -1,45 +1,45 @@
 <% cache "commits/#{commit.id}/without_avatar=#{local_assigns[:without_avatar]}" do %>
-    <tr id="commit_id=<%= commit.id %>" data-no-turbolink>
-      <% if local_assigns[:without_avatar] %>
-          <td>
-            <%= link_to commit.repository.name, repository_path(commit.repository.id) %>
-          </td>
-          <td class="small">
-            <p class="small"><%= commit.utc_commit_time %></p>
-          </td>
-      <% else %>
-          <td>
-            <table>
-              <tr>
-                <td>
-                  <%= link_to(image_tag(commit.user.avatar_uri, class: 'avatar_wrapper'), '/users') %>
-                </td>
-                <td style="padding-left: 1px; vertical-align: top">
-                  <table class="avatar_header">
-                    <tr class="small">
-                      <td>
-                        <%= link_to commit.user.account_name, user_path(commit.user.id), style: 'margin:0' %>
-                      </td>
-                    </tr>
-                    <tr class="small">
-                      <td class="small">
-                        <p style="margin:0" class="small">in <%= link_to commit.repository.name, repository_path(commit.repository.id) %></p>
-                      </td>
-                    </tr>
-                    <tr class="small">
-                      <td class="small">
-                        <p style="margin:0" class="small"><%= distance_of_time_in_words_to_now(commit.utc_commit_time) %>
-                          ago</p>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-          </td>
-      <% end %>
-      <td id="commit_message_id <%= commit.id %>" filter_word="<%= commit.filter_words.map{|fw| fw.word.value}.uniq.to_json %>">
-        <%= commit.message %>
+  <tr id="commit_id=<%= commit.id %>" class="row" data-no-turbolink>
+    <% if local_assigns[:without_avatar] %>
+      <td class="col-xs-2">
+        <%= link_to commit.repository.name, repository_path(commit.repository.id) %>
       </td>
-    </tr>
+      <td class="small">
+        <p class="small"><%= commit.utc_commit_time %></p>
+      </td>
+    <% else %>
+      <td class="col-xs-4 col-sm-2">
+        <table>
+          <tr>
+            <td>
+              <%= link_to(image_tag(commit.user.avatar_uri, class: 'avatar_wrapper'), user_path(commit.user.id)) %>
+            </td>
+            <td style="padding-left: 1px; vertical-align: top">
+              <table class="avatar_header" style="word-wrap:break-word; table-layout:fixed;">
+                <tr class="small">
+                  <td>
+                    <%= link_to truncate(commit.user.account_name, length: 20), user_path(commit.user.id), style: 'margin:0' %>
+                  </td>
+                </tr>
+                <tr class="small">
+                  <td class="small">
+                    <p style="margin:0" class="small">in <%= link_to truncate(commit.repository.name, length: 25), repository_path(commit.repository.id) %></p>
+                  </td>
+                </tr>
+                <tr class="small">
+                  <td class="small">
+                    <p style="margin:0" class="small"><%= distance_of_time_in_words_to_now(commit.utc_commit_time) %>
+                      ago</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    <% end %>
+    <td id="commit_message_id <%= commit.id %>" filter_word="<%= commit.filter_words.map { |fw| fw.word.value }.uniq.to_json %>" class="col-xs-8 col-sm-10">
+      <%= truncate(commit.message, length: 500) %>
+    </td>
+  </tr>
 <% end %>

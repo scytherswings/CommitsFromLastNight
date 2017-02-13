@@ -3,25 +3,17 @@
 <%= render 'layouts/header' %>
 <body>
 <%= render 'layouts/navbar' %>
-<div id="wrap">
-  <div id="main" class="container clear-top">
-    <div class="row">
-      <%= flash_messages %>
-      <title><%= full_title(yield(:title)) %></title>
-      <div class="container">
-        <div class="row">
-          <%= render 'layouts/statistics' %>
-          <%= render 'layouts/rightbar' %>
-          <div class="col-xs-12">
-            <%= yield %>
-          </div>
-        </div>
-      </div>
-      <%= render 'layouts/footer' %>
+<%= flash_messages %>
+<div class="container">
+  <div class="row">
+    <%= render 'layouts/statistics' %>
+    <%= render 'layouts/rightbar' %>
+    <div class="col-xs-12">
+      <%= yield %>
     </div>
   </div>
 </div>
-
+<%= render 'layouts/footer' %>
 </body>
 </html>
 
