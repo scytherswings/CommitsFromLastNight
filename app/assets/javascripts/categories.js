@@ -80,8 +80,7 @@ $(function () {
                 });
             }
         }
-
-        categories_array_from_url = Array.from(url_param_categories);
+        categories_array_from_url = jQuery.makeArray(url_param_categories);
         console.log('Categories found from url_params on page load: ' + categories_array_from_url);
         categories_array_from_url.forEach(function (category) {
             $('#category_id_' + category).prop('selected', 'selected');
