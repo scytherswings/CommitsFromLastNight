@@ -13,17 +13,16 @@ class CleanYaml
     yaml['words'].each { |word| word.to_s.downcase! }
 
     File.open(file_name, 'w') { |f| f.write(yaml.to_yaml) }
-    puts "Wrote out: #{file_name} successfully!"
+    puts "Wrote out: #{file_name} successfully!\n\n"
   end
 end
 
 if __FILE__ == $0
   ARGV.each do |argument|
     if File.directory?(argument)
-      puts "It looks like a directory was passed in. Trying to clean all files in: #{argument} that end with '.yml'"
+      puts "\n\nIt looks like a directory was passed in. Trying to clean all files in: #{argument} that end with '.yml'"
       absolute_path = File.absolute_path(argument)
       Dir.glob(absolute_path + '/*.yml').each do |arg|
-        puts "Cleaning: #{arg}"
         CleanYaml.clean(arg)
       end
     elsif File.exists?(argument)

@@ -26,6 +26,7 @@ words:
 - cuda
 - curl
 - cython
+- ecmascript
 - elixir
 - elm
 - emacs lisp
@@ -71,8 +72,8 @@ words:
 - stackless python
 - swift
 - tcl
-- typescript
 - trumpscript
+- typescript
 - unity
 - vala
 - vba
