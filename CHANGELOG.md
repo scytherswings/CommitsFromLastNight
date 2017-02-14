@@ -1,7 +1,29 @@
 # Change Log
-All notable changes to this project will be documented in this file.
-This project adheres to [Semantic Versioning](http://semver.org/) after version 1.0.0 is released.
+All notable changes to this project will be documented in this file. Un-notable changes have already
+been forgotten by the time I went to write these notes. Obviously they weren't important, right?
+This project adheres to [Semantic Versioning](http://semver.org/) starting when version 1.0.0 is released.
 
+## [v0.0.7] : 2017-2-5
+### Changed
+- Navbar
+  - Several unused chunks of code were removed and unnecessary stuff trimmed out somewhat. 
+  - The navbar is now using `contianer-fluid` because it was beginning to feel crowded with everything
+  pushed in towards the middle of the page.
+  - This should leave room for more stuff that I plan to release in v1.1.0! (If I make it there, 
+  you know how it goes with these things..)
+- Size of user avatars
+  - The user and repository pages have now had some more work done on them, they look less crappy now
+  hopefully. 
+- Commit message filtering
+  - Filter words are now properly escaped so that they don't inadvertantly get parsed as part of the
+  regular expression.
+  - Fixed some broken JS that interacted with query parameters. TBH I'm pretty sure there's a more 
+  elegant way to solve my problems with keeping a multiselect in sync with the page content across
+  reloads. Ehhh, this works. If I hear about a better way I'll rewrite it.
+- Truncating
+  - Commit messages, usernames, and repository names are all truncated to help keep the UI looking
+  more consistent. This should *hopefully* fix the horrendous horizontal scrollbar crap.
+  
 ## [v0.0.6] : 2017-2-5
 ### Added
 - Keyword highlighting
