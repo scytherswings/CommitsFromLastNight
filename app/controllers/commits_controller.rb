@@ -12,25 +12,26 @@ class CommitsController < ApplicationController
     ActiveRecord::Base.logger.silence(log_level) do
 
       @categories = Rails.cache.fetch('categories', expires_in: 24.hours) do
-        Category.all.order('name')
+        Category.all.order('name').as_json
       end
 
 
       if params[:categories].blank?
-        @list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) { |_| Category.all.where(default: true).map(&:id) }
+        @list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) { |_| Category.all.where(default: true).as_json.map {|category| category['id']} }
       else
         @list_of_category_ids = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort
       end
       cleaned_categories_params = @list_of_category_ids.join(',')
       logger.error {@list_of_category_ids}
+
       @selected_categories = Rails.cache.fetch("categories_by_id/#{cleaned_categories_params}", expires_in: 24.hours) do
-        Category.where(id: @list_of_category_ids)
+        Category.where(id: @list_of_category_ids).as_json
       end
 
       @commits = Rails.cache.fetch("commits/page/#{params[:page]}/#{cleaned_categories_params}", expires_in: 60.seconds) do
         if @list_of_category_ids.flatten == ['0']
           Rails.logger.error { "Someone requested no filter!" }
-          Commit.all.order('utc_commit_time desc').uniq.paginate(page: params[:page])
+          return Commit.all.order('utc_commit_time desc').uniq.paginate(page: params[:page])
 
           # Commit.select(
           #     [

@@ -21,9 +21,9 @@
               <div class="form-group">
                 <select id="multiselect_commits" class="selectpicker" multiple="" data-actions-box="true" title="Filter Category Select">
                   <% @categories.try(:each) do |category| %>
-                    <option id="category_id_<%= category.id %>"
-                            <% if category.default %> default="true"
-                            <% end %> name="<%= category.name %>" value="<%= category.id %>"><%= category.name.humanize %></option>
+                    <option id="category_id_<%= category['id'] %>"
+                            <% if category['default'] %> default="true"
+                            <% end %> name="<%= category['name'] %>" value="<%= category['id'] %>"><%= category['name'].humanize %></option>
                   <% end %>
                 </select>
                 <button type="button" class="btn btn-default" onClick="refreshWithSelectedCategories()">Filter</button>

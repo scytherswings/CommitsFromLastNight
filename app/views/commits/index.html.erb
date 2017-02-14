@@ -19,7 +19,7 @@
     <% if @commits.blank? %>
       <div class="jumbotron">
         <h1>Well this is disappointing...</h1>
-        <h2>It looks like these developers aren't as <% @selected_categories.map(&:name).map {|category_name| category_name.humanize} %>-ed as you thought.</h2>
+        <h2>It looks like these developers aren't as <% @selected_categories.map(&['name']).map {|category_name| category_name.humanize} %>-ed as you thought.</h2>
       </div>
     <% else %>
       <div class="table-responsive">
