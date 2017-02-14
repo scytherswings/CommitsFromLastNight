@@ -4,6 +4,9 @@ been forgotten by the time I went to write these notes. Obviously they weren't i
 This project adheres to [Semantic Versioning](http://semver.org/) starting when version 1.0.0 is released.
 
 ## [v0.0.7] : 2017-2-5
+### Added
+- Meh
+  - meh
 ### Changed
 - Navbar
   - Several unused chunks of code were removed and unnecessary stuff trimmed out somewhat. 
