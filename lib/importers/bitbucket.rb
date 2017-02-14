@@ -154,12 +154,12 @@ module Importers
 
         rescue BitBucket::Error::NotFound
           Sidekiq.logger.warn { "Query looking for #{user_to_query} resulted in a 404. Setting avatar to the default." }
-          user.update(avatar_uri: 'https://bitbucket.org/account/unknown/avatar/48/?ts=0')
+          user.update(avatar_uri: 'https://bitbucket.org/account/unknown/avatar/96/?ts=0')
           return
         end
 
         avatar_uri = user_profile['user']['avatar']
-        avatar_uri.gsub!(/\/avatar\/32\//, '/avatar/48/')
+        avatar_uri.gsub!(/\/avatar\/\d+\//, '/avatar/96/')
         Sidekiq.logger.debug { "User #{user.account_name}'s avatar_uri is going to be updated with: #{avatar_uri}" }
         user.update!(avatar_uri: avatar_uri)
       end
