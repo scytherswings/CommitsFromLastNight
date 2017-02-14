@@ -3,7 +3,7 @@ class ReexecuteFilters
   sidekiq_options(queue: 'default', retry: 2)
 
   def perform(commit_id)
-    log_level = Rails.env == 'production' ?  Logger::WARN : Logger::DEBUG
+    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
 
     ActiveRecord::Base.logger.silence(log_level) do
       if commit_id.nil?
@@ -15,8 +15,8 @@ class ReexecuteFilters
         logger.error { "Couldn't find commit by id: #{commit_id}." }
         raise StandardError "Commit: #{commit_id} not found."
       end
-      filter_sets = Filterset.all
-      filter_sets.try(:each) do |filter|
+
+      Filterset.all.try(:each) do |filter|
         filter.reexecute(commit)
       end
     end

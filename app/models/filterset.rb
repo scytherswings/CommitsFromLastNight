@@ -17,32 +17,33 @@ class Filterset < ActiveRecord::Base
 
     ActiveRecord::Base.logger.silence(log_level) do
       filter_word_id_and_word_values = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 24.hours) do
-        FilterWord.select([FilterWord[:id], Word[:value]]).where(FilterWord[:filterset_id].eq(id)).joins(:word).eager_load!
+        FilterWord.select([FilterWord[:id], Word[:value]]).where(FilterWord[:filterset_id].eq(id)).joins(:word).as_json
       end
 
       filter_word_id_and_word_values.each do |filter_word_id_and_word_value|
-        if commit.message =~ /\b#{Regexp.escape(filter_word_id_and_word_value.value)}\b/i
-          return FilteredMessage.create!(commit: commit, filterset: self, filter_word_id: filter_word_id_and_word_value.id)
+        if commit.message =~ /\b#{Regexp.escape(filter_word_id_and_word_value['value'])}\b/i
+          return FilteredMessage.create!(commit: commit, filterset: self, filter_word_id: filter_word_id_and_word_value['id'])
         end
       end
     end
   end
 
   def reexecute(commit)
-    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+    # log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+    #
+    # ActiveRecord::Base.logger.silence(log_level) do
+    filter_word_id_and_word_values = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 24.hours) do
+      logger.debug { "Fetching all the filterwords for this filterset: #{id}" }
+      FilterWord.select([FilterWord[:id], Word[:value]]).where(FilterWord[:filterset_id].eq(id)).joins(:word).as_json
+    end
 
-    ActiveRecord::Base.logger.silence(log_level) do
-      commit.filtered_messages.destroy_all
-      filter_word_id_and_word_values = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 24.hours) do
-        FilterWord.select([FilterWord[:id], Word[:value]]).where(FilterWord[:filterset_id].eq(id)).joins(:word).eager_load!
-      end
-
-      filter_word_id_and_word_values.each do |filter_word_id_and_word_value|
-        if commit.message =~ /\b#{Regexp.escape(filter_word_id_and_word_value.value)}\b/i
-          return FilteredMessage.create!(commit: commit, filterset: self, filter_word_id: filter_word_id_and_word_value.id)
-        end
+    filter_word_id_and_word_values.each do |filter_word_id_and_word_value|
+      if commit.message =~ /\b#{Regexp.escape(filter_word_id_and_word_value['value'])}\b/i
+        logger.debug { 'This motherfucker might query again.' }
+        return FilteredMessage.create!(commit: commit, filterset: self, filter_word_id: filter_word_id_and_word_value['id'])
       end
     end
+    # end
   end
 
   def update_filterset_from_file(filterset_file)
@@ -75,6 +76,8 @@ class Filterset < ActiveRecord::Base
 
     logger.debug { "Words being added: #{new_words}" }
     new_words.each { |new_word| FilterWord.create(word: Word.find_by(value: new_word), filterset: self) }
+    logger.debug { 'Nuking caches for filtersets and their associated keywords' }
+    Rails.cache.delete_matched('filtersets/all')
     Rails.cache.delete_matched("filtersets/#{id}/keywords")
   end
 

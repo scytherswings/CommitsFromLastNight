@@ -15,12 +15,17 @@ class CommitsController < ApplicationController
         Category.all.order('name')
       end
 
+
       if params[:categories].blank?
         @list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) { |_| Category.all.where(default: true).map(&:id) }
       else
         @list_of_category_ids = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort
       end
       cleaned_categories_params = @list_of_category_ids.join(',')
+      logger.error {@list_of_category_ids}
+      @selected_categories = Rails.cache.fetch("categories_by_id/#{cleaned_categories_params}", expires_in: 24.hours) do
+        Category.where(id: @list_of_category_ids)
+      end
 
       @commits = Rails.cache.fetch("commits/page/#{params[:page]}/#{cleaned_categories_params}", expires_in: 60.seconds) do
         if @list_of_category_ids.flatten == ['0']
