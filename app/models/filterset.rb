@@ -33,13 +33,11 @@ class Filterset < ActiveRecord::Base
 
     ActiveRecord::Base.logger.silence(log_level) do
       filter_word_id_and_word_values = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 24.hours) do
-        logger.debug { "Fetching all the filterwords for this filterset: #{id}" }
         FilterWord.select([FilterWord[:id], Word[:value]]).where(FilterWord[:filterset_id].eq(id)).joins(:word).as_json
       end
 
       filter_word_id_and_word_values.each do |filter_word_id_and_word_value|
         if commit.message =~ /\b#{Regexp.escape(filter_word_id_and_word_value['value'])}\b/i
-          logger.debug { 'This motherfucker might query again.' }
           return FilteredMessage.create!(commit: commit, filterset: self, filter_word_id: filter_word_id_and_word_value['id'])
         end
       end

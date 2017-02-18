@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170206050805) do
+ActiveRecord::Schema.define(version: 20170218164223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,9 +92,21 @@ ActiveRecord::Schema.define(version: 20170206050805) do
     t.string   "owner"
     t.string   "first_commit_sha"
     t.integer  "commits_count"
+    t.text     "description"
+    t.string   "image"
   end
 
   add_index "repositories", ["name"], name: "index_repositories_on_name", unique: true, using: :btree
+
+  create_table "repository_languages", force: :cascade do |t|
+    t.integer  "repository_id"
+    t.integer  "word_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "repository_languages", ["repository_id"], name: "index_repository_languages_on_repository_id", using: :btree
+  add_index "repository_languages", ["word_id"], name: "index_repository_languages_on_word_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",    null: false

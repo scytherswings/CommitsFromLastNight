@@ -18,13 +18,19 @@ module Importers
       start = Time.now
       Sidekiq.logger.debug { 'Requesting repositories from BitBucket.' }
 
-      Rails.env == 'production' ? log_level = Logger::WARN : log_level = Logger::DEBUG
+      log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
       ActiveRecord::Base.logger.silence(log_level) do
         config_file = YAML.load_file('config.yml')
         bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
         repos = bitbucket.repos.list do |repo|
           Sidekiq.logger.info { "Working on repo: #{repo['owner']}:#{repo['slug']}." }
-          Repository.create(name: repo['slug'].to_s, owner: repo['owner'].to_s)
+          begin
+            repository = Repository.find_or_create_by(name: repo['slug'].to_s, owner: repo['owner'].to_s, description: repo['description'].to_s)
+            language = Word.find_or_create_by(value: repo['language'])
+          rescue ActiveRecord::RecordNotUnique
+            retry
+          end
+          RepositoryLanguage.create(repository: repository, word: language)
         end
       end
       Sidekiq.logger.debug { 'Requesting repositories finished.' }
@@ -98,15 +104,17 @@ module Importers
           Sidekiq.logger.error { "No commits were found for repository: #{repository.name}. There should have been commits since BitBucket was queried for them or something." }
           return
         end
-        earliest_commit_sha = earliest_commit.sha
-        repository.update!(first_commit_sha: earliest_commit_sha)
+        repository.update!(first_commit_sha: earliest_commit.sha)
         Sidekiq.logger.info { "The repository: #{repository.name} has had the first_commit_sha set to #{repository.first_commit_sha}. This will prevent historical queries on this repo from being run from now on." }
         return
       end
 
       more_commits_are_available = total_records_fetched < commits_to_get && ((commits_to_get - total_records_fetched) < available_commits_count)
+
       if more_commits_are_available
-        self.grab_commits_from_bitbucket(commits_to_get - total_records_fetched, bitbucket, repository)
+        remaining_commits_to_get = commits_to_get - total_records_fetched
+        Sidekiq.logger.debug { "More commits were found to be available for repository: #{repository.name}. Asking for #{remaining_commits_to_get} more." }
+        self.grab_commits_from_bitbucket(remaining_commits_to_get, bitbucket, repository)
       end
     end
 
@@ -122,7 +130,8 @@ module Importers
 
           ExecuteFilters.perform_async(commit.id)
         rescue ActiveRecord::RecordNotUnique => e
-          Sidekiq.logger.error { "Commit with sha: #{changeset['raw_node']} is already in the database! Are you trying to run the filter import multi-threaded? Error was: #{e}" }
+          Sidekiq.logger.warn { "Commit with sha: #{changeset['raw_node']} is already in the database! Are you trying to run the filter import multi-threaded? Error was: #{e}" }
+          retry
         end
       end
     end
@@ -133,7 +142,11 @@ module Importers
 
     def self.find_or_create_new_user(changeset)
       account_name = changeset['author'].to_s
-      user = User.find_or_create_by(account_name: account_name) #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
+      begin
+        user = User.find_or_create_by(account_name: account_name) #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
+      rescue ActiveRecord::RecordNotUnique
+        retry
+      end
 
       email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s.downcase
 
