@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file. Un-notable 
 been forgotten by the time I went to write these notes. Obviously they weren't important, right?
 This project adheres to [Semantic Versioning](http://semver.org/) starting when version 1.0.0 is released.
 
-## [v0.0.7] : 2017-2-5
+## [v0.0.7] : 2017-2-13
 ### Added
 - Meh
   - meh
@@ -26,7 +26,11 @@ This project adheres to [Semantic Versioning](http://semver.org/) starting when 
 - Truncating
   - Commit messages, usernames, and repository names are all truncated to help keep the UI looking
   more consistent. This should *hopefully* fix the horrendous horizontal scrollbar crap.
-  
+- Caching
+  - I learned about some cache behaviors that make it reasonable to use `.as_json` on the 
+  results from ActiveRecord. There's more to tweak here. Filtersets run 50ms faster now that 
+  they have to make less DB queries.
+
 ## [v0.0.6] : 2017-2-5
 ### Added
 - Keyword highlighting
