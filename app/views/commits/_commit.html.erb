@@ -1,14 +1,14 @@
 <% cache "commits/#{commit.id}/without_avatar=#{local_assigns[:without_avatar]}" do %>
-  <tr id="commit_id=<%= commit.id %>" class="row" data-no-turbolink>
+  <tr id="commit_id=<%= commit.id %>" data-no-turbolink>
     <% if local_assigns[:without_avatar] %>
-      <td class="col-xs-2">
+      <td>
         <%= link_to commit.repository.name, repository_path(commit.repository.id) %>
       </td>
-      <td class="small col-xs-2">
+      <td>
         <p class="small"><%= commit.utc_commit_time %></p>
       </td>
     <% else %>
-      <td class="col-xs-4 col-sm-2">
+      <td>
         <table>
           <tr>
             <td>
@@ -38,7 +38,7 @@
         </table>
       </td>
     <% end %>
-    <td id="commit_message_id <%= commit.id %>" filter_word="<%= commit.filter_words.map { |fw| fw.word.value }.uniq.to_json %>" class="col-xs-8 col-sm-10">
+    <td id="commit_message_id <%= commit.id %>" filter_word="<%= commit.filter_words.map { |fw| fw.word.value }.uniq.to_json %>"  style="word-break: break-all;">
       <%= truncate(commit.message, length: 500) %>
     </td>
   </tr>

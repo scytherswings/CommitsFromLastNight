@@ -1,17 +1,27 @@
 <% provide(:title, @repository.name) %>
 <div class="row">
-  <h1><%= @repository.name %></h1>
+    <h1>
+      <%= link_to(image_tag(@repository.image_uri, class: 'profile_avatar'), @repository.resource_uri) %><%= @repository.name %>
+    </h1>
+    <p class="small"><%= @repository.description %></p>
   <div class="table-responsive">
     <table class="table table-hover table-condensed">
       <thead>
-      <th>Total Commits</th>
+      <tr>
+        <th>Total Commits</th>
+        <th>Languages</th>
+      </tr>
       </thead>
       <tbody>
-      <td><%= @repository.commits.size %></td>
+      <tr>
+        <td><%= @repository.commits.size %></td>
+        <td><%= @repository.repository_languages.try(:map) { |repository_language| repository_language.word.value }.join(', ') %></td>
+      </tr>
       </tbody>
     </table>
   </div>
-  <%= link_to 'Back', 'javascript:history.go(-1);', class: 'btn btn-default' %>
+</div>
+<div class="row">
   <div class="table-responsive">
     <table class="table table-hover sortable table-condensed">
       <thead>

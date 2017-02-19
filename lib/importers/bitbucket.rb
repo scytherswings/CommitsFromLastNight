@@ -1,13 +1,18 @@
 module Importers
   class Bitbucket
+
+    def self.create_bitbucket_client
+      config_file = YAML.load_file('config.yml')
+      BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
+    end
+
     def self.fetch_latest_commits
       repositories = Rails.cache.fetch('repositories', expires_in: 60.seconds) do
         Sidekiq.logger.debug { 'Cache for repositories was empty, querying repositories from database.' }
         Repository.all
       end
 
-      config_file = YAML.load_file('config.yml')
-      bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
+      bitbucket = create_bitbucket_client
 
       Sidekiq.logger.info { 'Starting to fetch commits from BitBucket for known repositories using the username: ' + config_file['username'] }
       Sidekiq.logger.info { 'Fetching latest commits finished' }
@@ -20,17 +25,42 @@ module Importers
 
       log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
       ActiveRecord::Base.logger.silence(log_level) do
-        config_file = YAML.load_file('config.yml')
-        bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
+        bitbucket = create_bitbucket_client
         repos = bitbucket.repos.list do |repo|
           Sidekiq.logger.info { "Working on repo: #{repo['owner']}:#{repo['slug']}." }
           begin
-            repository = Repository.find_or_create_by(name: repo['slug'].to_s, owner: repo['owner'].to_s, description: repo['description'].to_s)
-            language = Word.find_or_create_by(value: repo['language'])
-          rescue ActiveRecord::RecordNotUnique
+            if repo['name']
+              name = repo['name']
+            else
+              name = repo['slug']
+            end
+
+            repository = Repository.find_or_create_by(name: name.to_s.downcase, owner: repo['owner'].to_s) do |create|
+              create.description = repo['description'].to_s
+              create.image_uri = repo['logo'].to_s
+              create.resource_uri = repo['resource_uri'].to_s
+            end
+
+            if repository.image_uri.blank?
+              avatar_uri = repo['logo']
+              avatar_uri.gsub!(/\/avatar\/\d+\//, '/avatar/96/')
+              Sidekiq.logger.debug { "Found a repo: #{repository.name} whose image_uri was empty or nil. Setting image_uri to one retrieved from API." }
+              repository.update!(image_uri: avatar_uri)
+            end
+            repository.update(description: repo['description'].to_s)
+
+            downcased_language = repo['language'].to_s.downcase
+            if downcased_language.blank?
+              Sidekiq.logger.warn { "The API returned a blank language for repo: #{repository.name}. This repo will not be tagged with any languages!" }
+            else
+              language = Word.find_or_create_by!(value: downcased_language)
+              RepositoryLanguage.find_or_create_by(repository: repository, word: language)
+            end
+
+          rescue ActiveRecord::RecordNotUnique => e
+            Sidekiq.logger.error { "ActiveRecord returned an error for repository: #{repository.name}. Error: #{e}" }
             retry
           end
-          RepositoryLanguage.create(repository: repository, word: language)
         end
       end
       Sidekiq.logger.debug { 'Requesting repositories finished.' }
@@ -41,8 +71,7 @@ module Importers
     def self.fetch_old_commits(commits_to_grab_from_each_repo)
       commits_to_get = Integer(commits_to_grab_from_each_repo)
 
-      config_file = YAML.load_file('config.yml')
-      bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
+      bitbucket = create_bitbucket_client
       ActiveRecord::Base.logger.silence(Logger::WARN) do
         Sidekiq.logger.info { 'Starting to fetch data from BitBucket for repos and commits using the username: ' + config_file['username'] }
         repositories = Repository.all
@@ -85,10 +114,13 @@ module Importers
       end
 
       begin
+        retries_left ||= 2
         Sidekiq.logger.debug { "Fetching #{commits_to_get} commits from #{repository.owner}:#{repository.name}." }
         changeset_list = bitbucket.repos.changesets.list(repository.owner, repository.name, params)
       rescue StandardError => error
-        Sidekiq.logger.warn { "Query to get changesets from #{repository.name} resulted in an error: #{error}" }
+        retries_left -= 1
+        Sidekiq.logger.warn { "Query to get changesets from #{repository.name} resulted in an error: #{error}. Retries left: #{retries_left}" }
+        retry if retries_left > 0
         return
       end
 
@@ -123,16 +155,16 @@ module Importers
         user = find_or_create_new_user(changeset)
 
         find_or_set_user_avatar_uri(bitbucket, user)
-        begin
-          commit = Commit.find_or_create_by(sha: changeset['raw_node'], message: changeset['message'],
-                                            utc_commit_time: changeset['utctimestamp'], branch_name: changeset['branch'],
-                                            user: user, repository: repository)
 
-          ExecuteFilters.perform_async(commit.id)
-        rescue ActiveRecord::RecordNotUnique => e
-          Sidekiq.logger.warn { "Commit with sha: #{changeset['raw_node']} is already in the database! Are you trying to run the filter import multi-threaded? Error was: #{e}" }
+        begin
+          commit = Commit.find_or_create_by(sha: changeset['raw_node'], message: changeset['message'].to_s,
+                                            utc_commit_time: changeset['utctimestamp'], branch_name: changeset['branch'].to_s,
+                                            resource_uri: changeset['resource_uri'].to_s, user: user, repository: repository)
+        rescue ActiveRecord::RecordNotUnique
           retry
         end
+
+        ExecuteFilters.perform_async(commit.id)
       end
     end
 
@@ -143,14 +175,14 @@ module Importers
     def self.find_or_create_new_user(changeset)
       account_name = changeset['author'].to_s
       begin
-        user = User.find_or_create_by(account_name: account_name) #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
+        user = User.find_or_create_by(account_name: account_name, resource_uri: changeset['resource_uri'].to_s) #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
       rescue ActiveRecord::RecordNotUnique
         retry
       end
 
       email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s.downcase
 
-      Rails.cache.fetch("users/#{account_name.slice 0..15}/email_address/#{email.slice 0..15}", expires_in: 120.seconds) do
+      Rails.cache.fetch("users/#{account_name.slice 0..32}/email_address/#{email.slice 0..32}", expires_in: 120.seconds) do
         EmailAddress.create(email: email, user: user)
       end
 

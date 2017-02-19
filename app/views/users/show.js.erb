@@ -1,4 +1,4 @@
-$('#commits').append('<%= escape_javascript render(@commits, without_avatar: true)%>');
+$('#commits_table_body').append('<%= escape_javascript render(@commits, without_avatar: true)%>');
 <% if @commits.next_page %>
 $('.pagination').replaceWith('<%= escape_javascript will_paginate(@commits, without_avatar: true) %>');
 <% else %>
