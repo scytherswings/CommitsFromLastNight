@@ -156,10 +156,15 @@ module Importers
 
         find_or_set_user_avatar_uri(bitbucket, user)
 
+        message = changeset['message'].to_s.gsub(/\s+/, ' ').strip
+
         begin
-          commit = Commit.find_or_create_by(sha: changeset['raw_node'], message: changeset['message'].to_s,
-                                            utc_commit_time: changeset['utctimestamp'], branch_name: changeset['branch'].to_s,
-                                            resource_uri: changeset['resource_uri'].to_s, user: user, repository: repository)
+          commit = Commit.find_or_create_by(sha: changeset['raw_node'].to_s,
+                                            message: message,
+                                            utc_commit_time: changeset['utctimestamp'],
+                                            resource_uri: changeset['resource_uri'].to_s,
+                                            user: user,
+                                            repository: repository)
         rescue ActiveRecord::RecordNotUnique
           retry
         end
