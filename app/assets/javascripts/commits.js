@@ -37,15 +37,13 @@ function getListOfFilterWordsAndHighlight(listOfCategories) {
 }
 
 function disableHighlighting() {
-    var mark_hoverable = $('mark.hoverable');
-    mark_hoverable.css('background', 'none');
-    console.log("Keywords should not be highlighted now.")
+   $('mark.hoverable').css('background', 'none');
+    console.log("Keywords should not be highlighted now.");
 }
 
 function enableHighlighting() {
-    var mark_hoverable = $('mark.hoverable');
-    mark_hoverable.css('background', 'lemonchiffon');
-    console.log("Keywords should be highlighted now.")
+    $('mark.hoverable').css('background', 'lemonchiffon');
+    console.log("Keywords should be highlighted now.");
 }
 
 jQuery.changeHighlighting = function () {
