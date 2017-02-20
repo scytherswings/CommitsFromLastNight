@@ -67,15 +67,7 @@ class CommitsController < ApplicationController
       respond_to do |format|
         format.html
         format.js
-        format.json {
-          render :json => {
-              :selected_categories => @selected_categories,
-              :current_page => @commits.current_page,
-              :per_page => @commits.per_page,
-              :total => @commits.total_entries,
-              :entities => @commits
-          }
-        }
+        format.json
       end
     end
   end
