@@ -2,7 +2,7 @@ require 'importers/bitbucket'
 
 desc 'Fetches all repositories'
 task bitbucket_fetch_all_repositories: :environment do
-  Importers::Bitbucket.fetch_all_repositories
+  BitbucketRepos.perform_async
 end
 
 desc "Fetches 'n' historical commits per repository."

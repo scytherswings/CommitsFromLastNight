@@ -20,7 +20,7 @@ class CommitsController < ApplicationController
       else
         selected_categories = params[:categories]
         if selected_categories.is_a? String
-          selected_categories = params[:categories].gsub(/\s+/, '').split(',')
+          selected_categories = selected_categories.gsub(/\s+/, '').split(',')
         end
         @list_of_category_ids = selected_categories.reject { |i| /\D+/.match(i) }.uniq.sort
       end
@@ -126,10 +126,5 @@ class CommitsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_commit
     @commit = Commit.find(params[:id])
-  end
-
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def commit_params
-    params.require(:commit).permit(:username, :user_avatar, :message, :commit_time, :repository, :branch, :raw_node)
   end
 end

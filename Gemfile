@@ -25,6 +25,7 @@ gem 'bootstrap-toggle-rails'
 gem 'postgresql_cursor', '~> 0.6.1'
 gem 'draper'
 gem 'hashie', '3.4.6'
+gem 'lograge'
 
 group :development, :test do
   gem 'pry'

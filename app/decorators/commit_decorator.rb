@@ -2,7 +2,7 @@ class CommitDecorator < Draper::Decorator
   include Draper::LazyHelpers
   delegate_all
   decorates_associations :user, :repository
-
+  decorates_finders
   def self.collection_decorator_class
     PaginationDecorator
   end

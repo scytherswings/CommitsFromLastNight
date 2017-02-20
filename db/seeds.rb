@@ -29,14 +29,14 @@ def generate_random_message
   message.join(' ').strip
 end
 
-unless Rails.env == 'development'
+if Rails.env == 'test'
   account_names = Array.new
   repository_names = Array.new
 
   50.times { account_names << Faker::Internet.user_name }
   20.times { repository_names << Faker::App.name }
   5000.times do
-    user = User.find_or_create_by(account_name: account_names[rand(0..49)], avatar_uri: 'https://bitbucket.org/account/unknown/avatar/48/?ts=0')
+    user = User.find_or_create_by(account_name: account_names[rand(0..49)], avatar_uri: 'https://bitbucket.org/account/unknown/avatar/96/?ts=0')
     EmailAddress.create(email: Faker::Internet::email, user: user)
 
     repository = Repository.find_or_create_by(name: repository_names[rand(0..19)])

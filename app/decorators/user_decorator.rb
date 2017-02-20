@@ -2,6 +2,7 @@ class UserDecorator < Draper::Decorator
   include Draper::LazyHelpers
   delegate_all
   decorates_associations :repository, :commit
+  decorates_finders
 
   def self.collection_decorator_class
     PaginationDecorator
@@ -15,7 +16,7 @@ class UserDecorator < Draper::Decorator
     truncate(object.account_name, length: 20)
   end
 
-  def make_avatar_link
-    link_to(image_tag(object.avatar_uri, class: 'avatar_wrapper'), user_path(object.id))
+  def make_avatar_link(css_class='avatar_wrapper')
+    link_to(image_tag(object.avatar_uri, class: css_class), user_path(object.id))
   end
 end

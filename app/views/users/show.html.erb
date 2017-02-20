@@ -1,8 +1,7 @@
 <% provide(:title, @user.account_name) %>
 <div class="row">
-
   <h1>
-    <%= image_tag @user.avatar_uri, class: 'profile_avatar' %><%= @user.account_name %>
+    <%= @user.make_avatar_link('profile_avatar') %><%= @user.account_name %>
   </h1>
 
   <div class="table-responsive">

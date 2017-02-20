@@ -7,11 +7,14 @@ class RepositoriesController < ApplicationController
   # GET /repositories
   # GET /repositories.json
   def index
-    ActiveRecord::Base.logger.silence(Logger::WARN) do
-      @repositories = Repository.all
+    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+
+    ActiveRecord::Base.logger.silence(log_level) do
+      @repositories = Repository.all.order(:id).paginate(page: params[:page]).decorate
       respond_to do |format|
         format.html
         format.js
+        format.json
       end
     end
   end
