@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     ActiveRecord::Base.logger.silence(Logger::WARN) do
-      @users = User.all.paginate(page: params[:page])
+      @users = User.all.paginate(page: params[:page]).decorate
       respond_to do |format|
         format.html
         format.js
@@ -18,7 +18,8 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     ActiveRecord::Base.logger.silence(Logger::WARN) do
-      @commits = @user.commits.order('utc_commit_time DESC').uniq(&:id).paginate(page: params[:page])
+      @commits = @user.commits.order('utc_commit_time DESC').uniq(&:id).paginate(page: params[:page]).decorate
+
       respond_to do |format|
         format.html
         format.js

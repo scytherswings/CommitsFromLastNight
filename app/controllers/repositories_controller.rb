@@ -1,4 +1,6 @@
 require 'will_paginate/array'
+require 'arel-helpers'
+
 class RepositoriesController < ApplicationController
   before_action :set_repository, only: [:show]
 
@@ -17,8 +19,25 @@ class RepositoriesController < ApplicationController
   # GET /repositories/1
   # GET /repositories/1.json
   def show
-    ActiveRecord::Base.logger.silence(Logger::WARN) do
-      @repository_users = @repository.users.uniq(&:id).paginate(page: params[:page])
+    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+
+    ActiveRecord::Base.logger.silence(log_level) do
+      @repository_users = User.select([
+                                          User[:id],
+                                          User[:account_name],
+                                          User[:avatar_uri],
+                                          User[:resource_uri]
+                                      ])
+                              .joins(:commits)
+                              .where(Commit[:repository_id].eq(@repository.id))
+                              .uniq
+                              .paginate(page: params[:page])
+                              .decorate
+      # @repository_users = @repository.users
+      #                         .uniq(&:id)
+      #                         .paginate(page: params[:page])
+      #                         .decorate
+
       respond_to do |format|
         format.html
         format.js

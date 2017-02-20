@@ -4,7 +4,7 @@
       <div class="jumbotron">
         <h1>Well this is disappointing...</h1>
         <h2>It looks like these developers aren't as
-          <% @selected_categories.map(&['name']).map { |category_name| category_name.humanize } %>-ed as you
+          <% @selected_categories.map {|category| category['name']}.map { |category_name| category_name.humanize } %>-ed as you
           thought.</h2>
       </div>
     <% else %>
@@ -13,11 +13,7 @@
         <%= render @commits %>
         </tbody>
       </table>
-      <% begin %>
         <%= will_paginate @commits %>
-      <% rescue Exception => e %>
-        <% logger.error "Exception was encountered because of the shitty pagination gem. Fuck this. #{e}" %>
-      <% end %>
     <% end %>
   </div>
 </div>

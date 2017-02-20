@@ -1,16 +1,16 @@
-<% commit = repository_user.commits.where(repository: @repository).order('utc_commit_time DESC').first %>
+<% commit = repository_user.commits.where(repository: @repository).order('utc_commit_time DESC').first.decorate %>
 <tr id="repository_user_id:<%= repository_user.id %>" class="row" data-no-turbolink>
   <td>
     <table>
       <tr>
         <td>
-          <%= link_to(image_tag(repository_user.avatar_uri, class: 'avatar_wrapper'), '/users') %>
+          <%= repository_user.make_avatar_link %>
         </td>
         <td style="padding-left: 1px; vertical-align: top">
           <table class="avatar_header">
             <tr class="small">
               <td>
-                <%= link_to repository_user.account_name, user_path(commit.user.id), style: 'margin:0' %>
+                <%= repository_user.make_link %>
               </td>
             </tr>
           </table>
@@ -25,6 +25,6 @@
     <p class="small"><%= commit.utc_commit_time %></p>
   </td>
   <td>
-    <p><%= commit.message %></p>
+    <p><%= commit.show_message %></p>
   </td>
 </tr>
