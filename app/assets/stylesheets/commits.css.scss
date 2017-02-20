@@ -10,3 +10,8 @@ mark.hoverable {
   background: none;
   padding: 0;
 }
+
+table.commits {
+  word-wrap: break-word;
+  table-layout: fixed;
+}

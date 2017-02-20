@@ -1,14 +1,14 @@
 <% cache "commits/#{commit.id}/without_avatar=#{local_assigns[:without_avatar]}" do %>
   <tr id="commit_id=<%= commit.id %>" data-no-turbolink>
     <% if local_assigns[:without_avatar] %>
-      <td>
+      <td class="col-xs-2">
         <%= link_to commit.repository.name, repository_path(commit.repository.id) %>
       </td>
-      <td>
+      <td class="col-xs-2">
         <p class="small"><%= commit.utc_commit_time %></p>
       </td>
     <% else %>
-      <td>
+      <td class="col-xs-4 col-sm-2">
         <table>
           <tr>
             <td>
@@ -18,12 +18,12 @@
               <table class="avatar_header" style="word-wrap:break-word; table-layout:fixed;">
                 <tr class="small">
                   <td>
-                    <%= link_to truncate(commit.user.account_name, length: 20), user_path(commit.user.id), style: 'margin:0' %>
+                    <%= link_to truncate(commit.user.account_name, length: 20), user_path(commit.user.id), style: 'margin:0; word-break: break-all;' %>
                   </td>
                 </tr>
                 <tr class="small">
                   <td class="small">
-                    <p style="margin:0" class="small">in <%= link_to truncate(commit.repository.name, length: 25), repository_path(commit.repository.id) %></p>
+                    <p style="margin:0" class="small">in <%= link_to truncate(commit.repository.name, length: 25), repository_path(commit.repository.id), style: 'word-break: break-all;' %></p>
                   </td>
                 </tr>
                 <tr class="small">
@@ -38,7 +38,7 @@
         </table>
       </td>
     <% end %>
-    <td id="commit_message_id <%= commit.id %>" filter_word="<%= commit.filter_words.map { |fw| fw.word.value }.uniq.to_json %>" style="word-break: break-all;">
+    <td id="commit_message_id <%= commit.id %>" filter_word="<%= commit.filter_words.map { |fw| fw.word.value }.uniq.to_json %>" class="col-xs-8 col-sm-10">
       <%= truncate(commit.message, length: 500) %>
     </td>
   </tr>

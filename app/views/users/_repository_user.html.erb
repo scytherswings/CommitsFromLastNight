@@ -1,6 +1,5 @@
 <% commit = repository_user.commits.where(repository: @repository).order('utc_commit_time DESC').first %>
-
-<tr id="repository_user_id:<%= repository_user.id %>" data-no-turbolink>
+<tr id="repository_user_id:<%= repository_user.id %>" class="row" data-no-turbolink>
   <td>
     <table>
       <tr>
@@ -20,12 +19,12 @@
     </table>
   </td>
   <td>
-    <%= repository_user.commits.where(repository: @repository).size %>
+    <p><%= repository_user.commits.where(repository: @repository).size %></p>
   </td>
   <td>
-    <%= commit.utc_commit_time %>
+    <p class="small"><%= commit.utc_commit_time %></p>
   </td>
   <td>
-    <%= commit.message %>
+    <p><%= commit.message %></p>
   </td>
 </tr>

@@ -3,18 +3,28 @@ module Importers
 
     def self.create_bitbucket_client
       config_file = YAML.load_file('config.yml')
+      Sidekiq.logger.info { 'Starting to fetch data from BitBucket using the username: ' + config_file['username'] }
       BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
     end
 
     def self.fetch_latest_commits
-      repositories = Rails.cache.fetch('repositories', expires_in: 60.seconds) do
-        Sidekiq.logger.debug { 'Cache for repositories was empty, querying repositories from database.' }
-        Repository.all
-      end
+      repositories = Repository.all
 
       bitbucket = create_bitbucket_client
 
-      Sidekiq.logger.info { 'Starting to fetch commits from BitBucket for known repositories using the username: ' + config_file['username'] }
+      repositories.each do |repository|
+        Sidekiq.logger.info { "Working on repo: #{repository.owner}:#{repository.name}." }
+
+        begin
+
+          grab_commits_from_bitbucket(commits_to_get, bitbucket, repository)
+
+        rescue BitBucket::Error => error
+          Sidekiq.logger.error { "An error occurred trying to query the changesets for #{repository['slug']}. Error was #{error}" }
+          next
+        end
+      end
+
       Sidekiq.logger.info { 'Fetching latest commits finished' }
     end
 
@@ -73,7 +83,7 @@ module Importers
 
       bitbucket = create_bitbucket_client
       ActiveRecord::Base.logger.silence(Logger::WARN) do
-        Sidekiq.logger.info { 'Starting to fetch data from BitBucket for repos and commits using the username: ' + config_file['username'] }
+
         repositories = Repository.all
 
         repositories.each do |repository|
