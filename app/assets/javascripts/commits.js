@@ -27,12 +27,11 @@ function getListOfFilterWordsAndHighlight(listOfCategories) {
             enableHighlighting();
         },
         error: function (response, status, error) {
-            $("#error_modal_body").html("<p>If you think there's a real problem, " +
+            window.alert("If you think there's a real problem, " +
                 "then go ahead and complain about the incompetence of the " +
                 "complete idiot who designed this piece of garbage loudly to yourself. " +
-                "</p><pre class='well'><code>Sum ting wong:\n " + error + response.responseText +
-                "</code></pre><p>This is payback for your shitty error messages, Zack.</p>");
-            $("#error_modal").modal("show");
+                "Sum ting wong:\n " + error + response.responseText +
+                "This is payback for your shitty error messages, Zack.");
         }
     });
 }

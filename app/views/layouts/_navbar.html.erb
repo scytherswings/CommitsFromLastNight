@@ -12,10 +12,10 @@
       <a class="navbar-brand" href=<%= root_path %>>Commits From Last Night</a>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="navbar">
-      <div class="nav navbar-nav navbar-right">
-        <% if current_page?(controller: 'commits', action: 'index') && !@commits.blank? %>
+    <% if current_page?(controller: 'commits', action: 'index') && !@commits.blank? %>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-right" id="navbar">
+
           <form class="navbar-form" role="form" method="get" action="">
             <div class="form-group">
               <select id="multiselect_commits" class="selectpicker" multiple="" data-actions-box="true" title="Filter Category Select">
@@ -27,7 +27,6 @@
               </select>
               <button type="button" class="btn btn-default" onClick="refreshWithSelectedCategories()">Filter</button>
             </div>
-
             <div class="form-group">
               <input id="HighlightToggle" type="checkbox" data-toggle="toggle" data-on="Highlight On" data-off="Highlight Off" data-onstyle="default" data-width="114px" title="Highlight Toggle">
             </div>
@@ -44,21 +43,10 @@
                   })
               })
           </script>
-          </div>
-
-
-          </div>
-          </div>
-          <!-- /.navbar-collapse -->
-          </div>
-          <!-- /.container -->
-          </nav>
-          <%= render 'layouts/error_modal' %>
-        <% else %>
-          </div>
-          </div>
-          <!-- /.navbar-collapse -->
-          </div>
-          <!-- /.container -->
-          </nav>
-        <% end %>
+    <% end %>
+    </div>
+  </div>
+  <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav>
