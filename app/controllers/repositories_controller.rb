@@ -25,6 +25,7 @@ class RepositoriesController < ApplicationController
     log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
 
     ActiveRecord::Base.logger.silence(log_level) do
+      @repository = RepositoryDecorator.find(params[:id])
       @repository_users = User.select([
                                           User[:id],
                                           User[:account_name],
@@ -36,10 +37,6 @@ class RepositoriesController < ApplicationController
                               .uniq
                               .paginate(page: params[:page])
                               .decorate
-      # @repository_users = @repository.users
-      #                         .uniq(&:id)
-      #                         .paginate(page: params[:page])
-      #                         .decorate
 
       respond_to do |format|
         format.html

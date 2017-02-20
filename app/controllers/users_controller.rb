@@ -21,9 +21,9 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = UserDecorator.find(params[:id])
     log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
     ActiveRecord::Base.logger.silence(log_level) do
+      @user = UserDecorator.find(params[:id])
       @commits = @user.commits.order('utc_commit_time DESC').uniq(&:id).paginate(page: params[:page]).decorate
 
       respond_to do |format|

@@ -20,6 +20,6 @@ class RepositoryDecorator < Draper::Decorator
   end
 
   def make_avatar_link(css_class='profile_avatar')
-    link_to(image_tag(object.avatar_uri, class: css_class), repository_path(object.id))
+    link_to(image_tag(object.avatar_uri, class: css_class), object.resource_uri)
   end
 end
