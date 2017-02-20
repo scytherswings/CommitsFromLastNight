@@ -16,7 +16,7 @@ class RepositoryDecorator < Draper::Decorator
   end
 
   def import_complete?
-    object.first_commit_sha.present?
+    object.first_commit_sha.present? ? 'Complete' : 'Incomplete'
   end
 
   def make_avatar_link(css_class='profile_avatar')

@@ -7,14 +7,16 @@
   <div class="table-responsive">
     <table class="table table-condensed">
       <thead>
-      <tr>
-        <th>Total Commits</th>
-        <th>Languages</th>
+      <tr class="row">
+        <th  class="col-xs-1">Commits&nbsp;Imported</th>
+        <th  class="col-xs-1">Import&nbsp;Status</th>
+        <th class="col-xs-10">Languages</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
+      <tr class="row">
         <td><%= @repository.commits.size %></td>
+        <td><%= @repository.import_complete? %></td>
         <td><%= @repository.repository_languages.try(:map) { |repository_language| repository_language.word.value }.join(', ') %></td>
       </tr>
       </tbody>
