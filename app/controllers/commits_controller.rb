@@ -44,7 +44,6 @@ class CommitsController < ApplicationController
                 Commit[:message],
                 Commit[:user_id],
                 Commit[:repository_id],
-                Commit[:branch_name],
                 Commit[:sha]
             ])
                        .where(Filterset[:category_id].in(@list_of_category_ids))
