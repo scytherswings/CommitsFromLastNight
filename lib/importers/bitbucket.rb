@@ -44,6 +44,7 @@ module Importers
             else
               name = repo['slug']
             end
+            Sdiekiq.logger.debug {repo}
 
             repository = Repository.find_or_create_by(name: name.to_s.downcase, owner: repo['owner'].to_s) do |create|
               create.description = repo['description'].to_s
@@ -84,7 +85,7 @@ module Importers
       bitbucket = create_bitbucket_client
       ActiveRecord::Base.logger.silence(Logger::WARN) do
 
-        repositories = Repository.all
+        repositories = Repository.all.shuffle
 
         repositories.each do |repository|
           Sidekiq.logger.info { "Working on repo: #{repository.owner}:#{repository.name}." }
@@ -113,7 +114,6 @@ module Importers
         return
       end
       commits_to_get = commits_to_get < 50 ? commits_to_get : 50
-
       oldest_commit = find_oldest_commit_in_repo(repository.id)
 
       if oldest_commit
@@ -126,6 +126,7 @@ module Importers
       begin
         retries_left ||= 2
         Sidekiq.logger.debug { "Fetching #{commits_to_get} commits from #{repository.owner}:#{repository.name}." }
+
         changeset_list = bitbucket.repos.changesets.list(repository.owner, repository.name, params)
       rescue StandardError => error
         retries_left -= 1
@@ -190,7 +191,10 @@ module Importers
     def self.find_or_create_new_user(changeset)
       account_name = changeset['author'].to_s
       begin
-        user = User.find_or_create_by(account_name: account_name, resource_uri: changeset['resource_uri'].to_s) #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
+        user = User.find_or_create_by(account_name: account_name) do |user|
+          user.resource_uri = changeset['resource_uri'].to_s #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
+        end
+
       rescue ActiveRecord::RecordNotUnique
         retry
       end

@@ -47,7 +47,7 @@ GEM
     arel (6.0.4)
     arel-helpers (2.3.0)
       activerecord (>= 3.1.0, < 6)
-    autoprefixer-rails (6.7.3)
+    autoprefixer-rails (6.7.4)
       execjs
     bitbucket_rest_api (0.1.7)
       faraday (~> 0.9.0)
@@ -153,7 +153,7 @@ GEM
     pry-byebug (3.4.2)
       byebug (~> 9.0)
       pry (~> 0.10)
-    puma (3.7.0)
+    puma (3.7.1)
     rack (1.6.5)
     rack-mini-profiler (0.10.2)
       rack (>= 1.2.0)
