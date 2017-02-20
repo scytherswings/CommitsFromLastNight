@@ -17,7 +17,7 @@ function getListOfFilterWordsAndHighlight(listOfCategories) {
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: "/highlight_keywords",
+        url: "/highlight_keywords.json",
         data: {'categories': listOfCategories},
         success: function (response) {
             console.log(response);
@@ -30,7 +30,7 @@ function getListOfFilterWordsAndHighlight(listOfCategories) {
             window.alert("If you think there's a real problem, " +
                 "then go ahead and complain about the incompetence of the " +
                 "complete idiot who designed this piece of garbage loudly to yourself. " +
-                "Sum ting wong:\n " + error + response.responseText +
+                "Sum ting wong:\n " + status +  error + response.responseText +
                 "This is payback for your shitty error messages, Zack.");
         }
     });

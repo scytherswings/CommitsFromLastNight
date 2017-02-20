@@ -4,7 +4,7 @@ json.categories @selected_categories do |category|
   json.default category['default']
 end
 
-json.keywords do |_|
-  json.array! @keywords
-end
+json.keywords_count @keywords.size
+json.keywords @keywords
+
 

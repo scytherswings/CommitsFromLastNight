@@ -16,7 +16,7 @@ class CommitsController < ApplicationController
       end
 
       if params[:categories].blank?
-        @list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) { Category.select(Category[:id]).where(default: true).map(&:id).as_json }
+        @list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) { Category.where(default: true).pluck(:id).as_json }
       else
         selected_categories = params[:categories]
         if selected_categories.is_a? String
@@ -73,14 +73,19 @@ class CommitsController < ApplicationController
 
   def highlight_keywords
     if params[:categories].blank?
-      list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) { |_| Category.all.where(default: true).map(&:id) }
+      list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) { Category.where(default: true).pluck(:id).as_json }
     else
-      list_of_category_ids = params[:categories].reject { |i| /\D+/.match(i) }.uniq.sort
+      selected_categories = params[:categories]
+      if selected_categories.is_a? String
+        selected_categories = selected_categories.gsub(/\s+/, '').split(',')
+      end
+      list_of_category_ids = selected_categories.reject { |i| /\D+/.match(i) }.uniq.sort
     end
     cleaned_categories_params = list_of_category_ids.join(',')
 
+
     @selected_categories = Rails.cache.fetch("categories_by_id/#{cleaned_categories_params}", expires_in: 24.hours) do
-      Category.where(id: list_of_category_ids)
+      Category.where(id: list_of_category_ids).as_json
     end
 
     @keywords = Rails.cache.fetch("highlight_keywords/#{cleaned_categories_params}", expires_in: 24.hours) do
