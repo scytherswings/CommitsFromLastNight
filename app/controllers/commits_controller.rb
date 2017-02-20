@@ -25,7 +25,7 @@ class CommitsController < ApplicationController
         @list_of_category_ids = selected_categories.reject { |i| /\D+/.match(i) }.uniq.sort
       end
       cleaned_categories_params = @list_of_category_ids.join(',')
-      Rails.logger.error { @list_of_category_ids }
+
       @selected_categories = Rails.cache.fetch("categories_by_id/#{cleaned_categories_params}", expires_in: 24.hours) do
         Category.select([Category[:id], Category[:name], Category[:default]]).where(id: @list_of_category_ids).as_json
       end
