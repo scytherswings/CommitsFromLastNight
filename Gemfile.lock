@@ -67,6 +67,7 @@ GEM
       jstz-rails3-plus
       rails (>= 3.1)
     builder (3.2.3)
+    byebug (9.0.6)
     coderay (1.1.1)
     coffee-rails (4.2.1)
       coffee-script (>= 2.2.0)
@@ -98,7 +99,7 @@ GEM
     flamegraph (0.9.5)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    hashie (3.5.3)
+    hashie (3.4.6)
     i18n (0.8.0)
     jbuilder (2.6.1)
       activesupport (>= 3.0.0, < 5.1)
@@ -149,6 +150,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (3.4.2)
+      byebug (~> 9.0)
+      pry (~> 0.10)
     puma (3.7.0)
     rack (1.6.5)
     rack-mini-profiler (0.10.2)
@@ -247,11 +251,13 @@ DEPENDENCIES
   bootstrap-sass
   bootstrap-toggle-rails
   browser-timezone-rails (~> 1.0.1)
+  byebug
   coffee-rails
   coveralls
   draper
   faker!
   flamegraph
+  hashie (= 3.4.6)
   jbuilder
   jquery-rails
   jquery-turbolinks
@@ -263,6 +269,7 @@ DEPENDENCIES
   pghero
   postgresql_cursor (~> 0.6.1)
   pry
+  pry-byebug
   puma (~> 3.6, >= 3.6.2)
   rack-mini-profiler
   rails (= 4.2.7.1)
@@ -282,4 +289,4 @@ DEPENDENCIES
   will_paginate-bootstrap
 
 BUNDLED WITH
-   1.13.7
+   1.14.4
