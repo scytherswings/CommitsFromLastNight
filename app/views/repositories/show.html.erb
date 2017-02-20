@@ -8,8 +8,8 @@
     <table class="table table-condensed">
       <thead>
       <tr class="row">
-        <th  class="col-xs-1">Commits&nbsp;Imported</th>
-        <th  class="col-xs-1">Import&nbsp;Status</th>
+        <th class="col-xs-1">Commits&nbsp;Imported</th>
+        <th class="col-xs-1">Import&nbsp;Status</th>
         <th class="col-xs-10">Languages</th>
       </tr>
       </thead>
@@ -17,7 +17,7 @@
       <tr class="row">
         <td><%= @repository.commits.size %></td>
         <td><%= @repository.import_complete? %></td>
-        <td><%= @repository.repository_languages.try(:map) { |repository_language| repository_language.word.value }.join(', ') %></td>
+        <td><%= @repository.make_language_list %></td>
       </tr>
       </tbody>
     </table>

@@ -22,4 +22,8 @@ class RepositoryDecorator < Draper::Decorator
   def make_avatar_link(css_class='profile_avatar')
     link_to(image_tag(object.avatar_uri, class: css_class), object.resource_uri)
   end
+
+  def make_language_list
+    object.repository_languages.try(:map) { |repository_language| repository_language.word.value.humanize }.join(', ')
+  end
 end

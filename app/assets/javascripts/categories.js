@@ -87,3 +87,33 @@ $(function () {
         });
     }
 });
+
+var button_for_select = null;
+var parent_of_select = null;
+
+$(function () {
+    $('#hamburger').click(function () {
+        $('#navbar').css('overflow-y', '');
+        if (!parent_of_select) {
+            parent_of_select = $('#multiselect_commits').closest('div');
+        }
+        if (!button_for_select) {
+            button_for_select = $('#multiselect_commits').siblings("button[data-id='multiselect_commits']");
+        }
+        register_multiselect_for_clicks();
+    });
+});
+
+function register_multiselect_for_clicks() {
+    $(parent_of_select).click(function () {
+        if ($('#multiselect_commits').parent().hasClass("open")) {
+            console.log('Multiselect changing state from open to closed.');
+            $('#navbar').css('overflow-y', '')
+        } else {
+            console.log('Multiselect changing state from closed to open.');
+            $('#navbar').css('overflow-y', 'visible')
+        }
+    })
+}
+
+

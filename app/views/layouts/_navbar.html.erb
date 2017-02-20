@@ -3,7 +3,7 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+      <button id="hamburger" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -15,38 +15,32 @@
     <% if current_page?(controller: 'commits', action: 'index') && !@commits.blank? %>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse navbar-right" id="navbar">
-
-          <form class="navbar-form" role="form" method="get" action="">
-            <div class="form-group">
-              <select id="multiselect_commits" class="selectpicker" multiple="" data-actions-box="true" title="Filter Category Select">
-                <% @categories.try(:each) do |category| %>
-                  <option id="category_id_<%= category['id'] %>"
-                          <% if category['default'] %> default="true"
-                          <% end %> name="<%= category['name'] %>" value="<%= category['id'] %>"><%= category['name'].humanize %></option>
-                <% end %>
-              </select>
-              <button type="button" class="btn btn-default" onClick="refreshWithSelectedCategories()">Filter</button>
-            </div>
-            <div class="form-group">
-              <input id="HighlightToggle" type="checkbox" data-toggle="toggle" data-on="Highlight On" data-off="Highlight Off" data-onstyle="default" data-width="114px" title="Highlight Toggle">
-            </div>
-          </form>
-          <script>
-              $(function () {
-                  $('#HighlightToggle').change(function () {
-                      if ($('#HighlightToggle').is(':checked')) {
-                          getListOfFilterWordsAndHighlight(getListOfSelectedCategories());
-                          $.changeHighlighting();
-                      } else {
-                          $.changeHighlighting();
-                      }
-                  })
-              })
-          </script>
+        <form class="category-form pull-right" role="form" method="get" action="">
+          <select id="multiselect_commits" class="selectpicker" multiple="" data-actions-box="true" title="Filter Category Select">
+            <% @categories.try(:each) do |category| %>
+              <option id="category_id_<%= category['id'] %>"
+                      <% if category['default'] %> default="true"
+                      <% end %> name="<%= category['name'] %>" value="<%= category['id'] %>"><%= category['name'].humanize %></option>
+            <% end %>
+          </select>
+          <button type="button" class="btn btn-default" onClick="refreshWithSelectedCategories()">Filter</button>
+          <input id="HighlightToggle" type="checkbox" data-toggle="toggle" data-on="Highlight On" data-off="Highlight Off" data-onstyle="default" data-width="114px" title="Highlight Toggle">
+        </form>
+        <script>
+            $(function () {
+                $('#HighlightToggle').change(function () {
+                    if ($('#HighlightToggle').is(':checked')) {
+                        getListOfFilterWordsAndHighlight(getListOfSelectedCategories());
+                        $.changeHighlighting();
+                    } else {
+                        $.changeHighlighting();
+                    }
+                })
+            });
+        </script>
+      </div>
     <% end %>
-    </div>
-  </div>
   <!-- /.navbar-collapse -->
-  </div>
   <!-- /.container -->
+  </div>
 </nav>
