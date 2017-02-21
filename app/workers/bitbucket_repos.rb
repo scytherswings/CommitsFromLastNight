@@ -1,3 +1,4 @@
+require 'importers/bitbucket'
 class BitbucketRepos
   include Sidekiq::Worker
   sidekiq_options(queue: 'bitbucket', retry: false)

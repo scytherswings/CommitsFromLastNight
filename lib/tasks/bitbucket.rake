@@ -5,6 +5,11 @@ task bitbucket_fetch_all_repositories: :environment do
   BitbucketRepos.perform_async
 end
 
+desc 'Fetches the latest commits from all repositories'
+task bitbucket_fetch_latest_commits: :environment do
+  BitbucketLatest.perform_async
+end
+
 desc "Fetches 'n' historical commits per repository."
 task :bitbucket_fetch_historical_commits, [:commits_to_grab_from_each_repo] => :environment do |_, args|
   commits_to_get = Integer(args[:commits_to_grab_from_each_repo])

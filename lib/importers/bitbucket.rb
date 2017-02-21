@@ -13,35 +13,70 @@ module Importers
       create_bitbucket_client
 
       repositories.each do |repo|
-        Sidekiq.logger.info { "Working on repo: #{repo.owner}:#{repo.name}." }
-
-        begin
-          #get newest sha
-          newest_sha = find_newest_commit_in_repo(repo.id)
-          #query repo
-          changeset_list = @bitbucket.repos.changesets.list(repo.owner, repo.name)
-
-            #is newest sha in response?
-            #yes: stop
-            #no: continue until max commits have been added.
-
-        rescue BitBucket::Error => error
-          Sidekiq.logger.error { "An error occurred trying to query the changesets for #{repository['slug']}. Error was #{error}" }
-          next
-        end
+        Sidekiq.logger.info { "Fetching latest commits for repo: #{repo.owner}:#{repo.name}." }
+        #get newest sha
+        newest_sha = find_newest_commit_in_repo(repo.id)
+        fetch_commits_from_bitbucket(repo, newest_sha)
       end
 
       Sidekiq.logger.info { 'Fetching latest commits finished' }
     end
 
+    def self.fetch_commits_from_bitbucket(repo, newest_sha, starting_sha=nil, attempts=10)
+      if attempts <= 0
+        Sidekiq.logger.warn { "Maximum retries hit for repo: #{repo.name}. Stopping queries for latest commits. Did someone rebase the repo? The history for this repo will be incomplete since the history has now been broken." }
+        return
+      end
+
+      if starting_sha
+        params = {'limit': 50, 'start': starting_sha}
+      else
+        params = {'limit': 50}
+      end
+
+
+      #query repo
+      begin
+        changeset_list = @bitbucket.repos.changesets.list(repo.owner, repo.name, params)
+      rescue BitBucket::Error::BitBucketError => error
+        Sidekiq.logger.error { "An error occurred trying to query the changesets for repo: #{repo.name}. Error was #{error}" }
+        return
+      end
+
+      process_changeset_list(changeset_list, repo)
+      #is newest sha in response?
+      if newest_sha_is_in_response?(newest_sha, changeset_list)
+        #yes: stop
+        Sidekiq.logger.debug { "Finished getting lastest commits for repo: #{repo.name}" }
+        return
+      end
+
+      if changeset_list['changesets'].size < 50
+        Sidekiq.logger.debug { "Repo: #{repo.name} returned less than 50 commits. Moving on to next repo." }
+        return
+      end
+
+      oldest_recent_sha_fetched = find_oldest_sha_in_changeset(changeset_list)
+      #no: continue until max commits have been added.
+      attempts -= 1
+      Sidekiq.logger.debug { "Repo: #{repo.name} has more unfetched commits to get. Querying up to #{attempts} more times." }
+      fetch_commits_from_bitbucket(repo, newest_sha, oldest_recent_sha_fetched, attempts)
+    end
+
+    def self.find_oldest_sha_in_changeset(changeset_list)
+      changeset_list['changesets'].sort_by { |changeset| changeset['utctimestamp'].to_datetime }.first['raw_node']
+    end
+
+    def self.newest_sha_is_in_response?(newest_sha, changeset_list)
+      changeset_list['changesets'].map { |changeset| changeset['raw_node'].to_s }.include? newest_sha
+    end
+
     def self.fetch_all_repositories
-
-
       log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
       ActiveRecord::Base.logger.silence(log_level) do
         create_bitbucket_client
         @bitbucket.repos.list do |repo|
-          Sidekiq.logger.info { "Working on repo: #{repo['owner']}:#{repo['slug']}." }
+          Sidekiq.logger.info { "Fetching historical commits for repo: #{repo['owner']}:#{repo['slug']}." }
           begin
             repository = Repository.find_or_create_by(name: repo['slug'].to_s.downcase, owner: repo['owner'].to_s) do |create|
               create.description = repo['description'].to_s
@@ -110,25 +145,22 @@ module Importers
         Sidekiq.logger.debug { 'grab_commits_from_bitbucket was called with commits_to_get of 0 or less. Returning.' }
         return
       end
-      commits_to_get = commits_to_get < 50 ? commits_to_get : 50
+      commits_to_get_from_api = commits_to_get < 50 ? commits_to_get : 50
       oldest_commit = find_oldest_commit_in_repo(repository.id)
 
       if oldest_commit
-        Sidekiq.logger.debug { "A commit was found in repo: #{repository.name}. Using this commit's sha to query from: #{oldest_commit}." }
-        params = {'limit': commits_to_get, 'start': oldest_commit}
+        Sidekiq.logger.debug { "A commit was found in repo: #{repository.name}. Using it to query history." }
+        params = {'limit': commits_to_get_from_api, 'start': oldest_commit}
       else
-        params = {'limit': commits_to_get}
+        params = {'limit': commits_to_get_from_api}
       end
 
       begin
-        retries_left ||= 2
-        Sidekiq.logger.debug { "Fetching #{commits_to_get} commits from #{repository.owner}:#{repository.name}." }
+        Sidekiq.logger.debug { "Fetching #{commits_to_get_from_api} commits from #{repository.owner}:#{repository.name}." }
 
         changeset_list = @bitbucket.repos.changesets.list(repository.owner, repository.name, params)
-      rescue StandardError => error
-        retries_left -= 1
-        Sidekiq.logger.warn { "Query to get changesets from #{repository.name} resulted in an error: #{error}. Retries left: #{retries_left}" }
-        retry if retries_left > 0
+      rescue BitBucket::Error::BitBucketError => error
+        Sidekiq.logger.warn { "Query to get changesets from #{repository.name} resulted in an error: #{error}." }
         return
       end
 
@@ -145,7 +177,7 @@ module Importers
           return
         end
         repository.update!(first_commit_sha: earliest_commit_sha)
-        Sidekiq.logger.info { "The repository: #{repository.name} has had the first_commit_sha set to #{repository.first_commit_sha}. This will prevent historical queries on this repo from being run from now on." }
+        Sidekiq.logger.info { "The repository: #{repository.name} has had the first_commit_sha set. This will prevent historical queries on this repo from being run from now on." }
         return
       end
 
@@ -162,7 +194,7 @@ module Importers
       message = changeset['message'].to_s.gsub(/\s+/, ' ').strip
 
       begin
-        return Commit.find_or_create_by!(sha: changeset['raw_node'].to_s, repository: repository) do |create_commit|
+        return Commit.find_or_create_by(sha: changeset['raw_node'].to_s, repository: repository) do |create_commit|
           create_commit.utc_commit_time = changeset['utctimestamp']
           create_commit.user = user
           create_commit.message = message
