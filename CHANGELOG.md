@@ -5,15 +5,18 @@ This project adheres to [Semantic Versioning](http://semver.org/) starting when 
 
 ## [v0.0.8] : 2017-2-20
 ### Added
-- Repositories
+- Things for repositories
   - avatars
   - languages
   - import status
+  - description
 
 ### Changed
 - Fixed navigation bar so mobile users will be able to interact with the multiselect.
   - This involved more JS.
 - Layouts in several sections were fixed for mobile viewing. I need help making these things look pretty.
+- Randomized the array of repositories to refresh historical commits on. This should even out efforts when import
+jobs are interrupted.
 
 ### Removed
 - Branch name from Commits. It's hardly ever there and I have no plans for it.
