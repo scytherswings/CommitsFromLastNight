@@ -3,6 +3,7 @@ class RepositoryDecorator < Draper::Decorator
   delegate_all
   decorates_associations :user, :commit
   decorates_finders
+
   def self.collection_decorator_class
     PaginationDecorator
   end
@@ -24,6 +25,10 @@ class RepositoryDecorator < Draper::Decorator
   end
 
   def make_language_list
-    object.repository_languages.try(:map) { |repository_language| repository_language.word.value.humanize }.join(', ')
+    if object.repository_languages.size > 0
+      object.repository_languages.map { |repository_language| repository_language.word.value.humanize }.join(', ')
+    else
+       'No languages listed :('
+    end
   end
 end

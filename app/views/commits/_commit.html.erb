@@ -1,5 +1,5 @@
 <% cache "commits/#{commit.id}/without_avatar=#{local_assigns[:without_avatar]}" do %>
-  <tr id="commit_id=<%= commit.id %>" data-no-turbolink>
+  <tr id="commit_id=<%= commit.id %>" class="row" data-no-turbolink>
     <% if local_assigns[:without_avatar] %>
       <td class="col-xs-2 col-sm-2">
         <%= commit.repository.make_link %>

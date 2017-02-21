@@ -3,6 +3,21 @@ All notable changes to this project will be documented in this file. Un-notable 
 been forgotten by the time I went to write these notes. Obviously they weren't important, right?
 This project adheres to [Semantic Versioning](http://semver.org/) starting when version 1.0.0 is released.
 
+## [v0.0.8] : 2017-2-20
+### Added
+- Repositories
+  - avatars
+  - languages
+  - import status
+  
+### Changed
+- Fixed navigation bar so mobile users will be able to interact with the multiselect.
+  - This involved more JS.
+- Layouts in several sections were fixed for mobile viewing. I need help making these things look pretty.
+
+### Removed
+- Branch name from Commits. It's hardly ever there and I have no plans for it.
+
 ## [v0.0.7] : 2017-2-13
 ### Added
 - Meh

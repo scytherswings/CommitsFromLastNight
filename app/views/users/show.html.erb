@@ -1,32 +1,31 @@
 <% provide(:title, @user.account_name) %>
 <div class="row">
-  <h1>
-    <%= @user.make_avatar_link('profile_avatar') %><%= @user.account_name %>
-  </h1>
-
-  <div class="table-responsive">
-    <table class="table table-hover table-condensed">
+  <div class="col-xs-12">
+    <h1>
+      <%= @user.make_avatar_link('profile_avatar') %><%= @user.account_name %>
+    </h1>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+        <tr class="row">
+          <th class="col-xs-12">Total Commits</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="row">
+          <td>
+            <%= @user.commits.size %>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <table class="table table-hover table-condensed table-responsive sortable commits">
       <thead>
-      <tr>
-        <th>Total Commits</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>
-          <%= @user.commits.size %>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="table-responsive">
-    <table class="table table-hover sortable table-condensed">
-      <thead>
-      <tr>
-        <th>Repository</th>
-        <th>Time</th>
-        <th>Commit</th>
+      <tr class="row">
+        <th class="col-xs-2 col-sm-2">Repository</th>
+        <th class="col-xs-2 col-sm-0">Time</th>
+        <th class="col-xs-8 col-sm-10">Commit</th>
       </tr>
       </thead>
       <tbody id="commits_table_body">
@@ -35,4 +34,5 @@
     </table>
     <%= will_paginate @commits, without_avatar: true %>
   </div>
+
 </div>
