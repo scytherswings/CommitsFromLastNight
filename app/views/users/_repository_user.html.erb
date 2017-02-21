@@ -22,9 +22,6 @@
     <p><%= repository_user.commits.where(repository: @repository).size %></p>
   </td>
   <td>
-    <p class="small"><%= commit.utc_commit_time %></p>
-  </td>
-  <td>
     <p><%= commit.show_message %></p>
   </td>
 </tr>

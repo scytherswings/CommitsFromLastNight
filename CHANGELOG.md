@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) starting when 
   - avatars
   - languages
   - import status
-  
+
 ### Changed
 - Fixed navigation bar so mobile users will be able to interact with the multiselect.
   - This involved more JS.
