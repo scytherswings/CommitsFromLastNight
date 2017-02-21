@@ -168,7 +168,8 @@ module Importers
       process_changeset_list(changeset_list, repository)
 
       total_records_fetched = changeset_list['changesets'].count
-
+    #something still isn't quite right with this logic. It needs tests.
+      # if less than the desired amount are retrieved, it will query one at a time until it gets below 50. then it stops. broken.
       if (commits_to_get < 50) && (total_records_fetched < commits_to_get)
         Sidekiq.logger.debug { "The number of records received: #{total_records_fetched} for repository: #{repository.name} was less than the number asked for: #{commits_to_get}. There are no more commits to grab." }
         earliest_commit_sha = find_oldest_commit_in_repo(repository.id)
