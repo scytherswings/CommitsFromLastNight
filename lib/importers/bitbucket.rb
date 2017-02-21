@@ -4,23 +4,26 @@ module Importers
     def self.create_bitbucket_client
       config_file = YAML.load_file('config.yml')
       Sidekiq.logger.info { 'Starting to fetch data from BitBucket using the username: ' + config_file['username'] }
-      BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
+      @bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
     end
 
     def self.fetch_latest_commits
       repositories = Repository.all.shuffle
 
-      bitbucket = create_bitbucket_client
+      create_bitbucket_client
 
-      repositories.each do |repository|
-        Sidekiq.logger.info { "Working on repo: #{repository.owner}:#{repository.name}." }
+      repositories.each do |repo|
+        Sidekiq.logger.info { "Working on repo: #{repo.owner}:#{repo.name}." }
 
         begin
           #get newest sha
+          newest_sha = find_newest_commit_in_repo(repo.id)
           #query repo
-          #is newest sha in response?
-          #yes: stop
-          #no: continue until max commits have been added.
+          changeset_list = @bitbucket.repos.changesets.list(repo.owner, repo.name)
+
+            #is newest sha in response?
+            #yes: stop
+            #no: continue until max commits have been added.
 
         rescue BitBucket::Error => error
           Sidekiq.logger.error { "An error occurred trying to query the changesets for #{repository['slug']}. Error was #{error}" }
@@ -32,13 +35,12 @@ module Importers
     end
 
     def self.fetch_all_repositories
-      start = Time.now
-      Sidekiq.logger.debug { 'Requesting repositories from BitBucket.' }
+
 
       log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
       ActiveRecord::Base.logger.silence(log_level) do
-        bitbucket = create_bitbucket_client
-        bitbucket.repos.list do |repo|
+        create_bitbucket_client
+        @bitbucket.repos.list do |repo|
           Sidekiq.logger.info { "Working on repo: #{repo['owner']}:#{repo['slug']}." }
           begin
             repository = Repository.find_or_create_by(name: repo['slug'].to_s.downcase, owner: repo['owner'].to_s) do |create|
@@ -57,7 +59,7 @@ module Importers
 
             downcased_language = repo['language'].to_s.downcase
             if downcased_language.blank?
-              Sidekiq.logger.warn { "The API returned a blank language for repo: #{repository.name}. This repo will not be tagged with any languages!" }
+              Sidekiq.logger.debug { "The API returned a blank language for repo: #{repository.name}. This repo will not be tagged with any languages." }
             else
               language = Word.find_or_create_by!(value: downcased_language)
               RepositoryLanguage.find_or_create_by(repository: repository, word: language)
@@ -69,15 +71,12 @@ module Importers
           end
         end
       end
-      Sidekiq.logger.debug { 'Requesting repositories finished.' }
-      end_time = Time.now
-      Sidekiq.logger.debug { "Fetching #{repos.size} repos took: #{(end_time-start).round(2)} seconds." }
     end
 
     def self.fetch_old_commits(commits_to_grab_from_each_repo)
       commits_to_get = Integer(commits_to_grab_from_each_repo)
 
-      bitbucket = create_bitbucket_client
+      create_bitbucket_client
 
       log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
 
@@ -94,7 +93,7 @@ module Importers
               next
             end
 
-            grab_commits_from_bitbucket(commits_to_get, bitbucket, repository)
+            grab_commits_from_bitbucket(commits_to_get, repository)
 
           rescue BitBucket::Error => error
             Sidekiq.logger.error { "An error occurred trying to query the changesets for #{repository['slug']}. Error was #{error}" }
@@ -106,7 +105,7 @@ module Importers
       end
     end
 
-    def self.grab_commits_from_bitbucket(commits_to_get, bitbucket, repository)
+    def self.grab_commits_from_bitbucket(commits_to_get, repository)
       if commits_to_get <= 0
         Sidekiq.logger.debug { 'grab_commits_from_bitbucket was called with commits_to_get of 0 or less. Returning.' }
         return
@@ -115,8 +114,8 @@ module Importers
       oldest_commit = find_oldest_commit_in_repo(repository.id)
 
       if oldest_commit
-        Sidekiq.logger.debug { "A commit was found in repo: #{repository.name}. Using this commit's sha to query from: #{oldest_commit.sha}." }
-        params = {'limit': commits_to_get, 'start': oldest_commit.sha}
+        Sidekiq.logger.debug { "A commit was found in repo: #{repository.name}. Using this commit's sha to query from: #{oldest_commit}." }
+        params = {'limit': commits_to_get, 'start': oldest_commit}
       else
         params = {'limit': commits_to_get}
       end
@@ -125,7 +124,7 @@ module Importers
         retries_left ||= 2
         Sidekiq.logger.debug { "Fetching #{commits_to_get} commits from #{repository.owner}:#{repository.name}." }
 
-        changeset_list = bitbucket.repos.changesets.list(repository.owner, repository.name, params)
+        changeset_list = @bitbucket.repos.changesets.list(repository.owner, repository.name, params)
       rescue StandardError => error
         retries_left -= 1
         Sidekiq.logger.warn { "Query to get changesets from #{repository.name} resulted in an error: #{error}. Retries left: #{retries_left}" }
@@ -134,18 +133,18 @@ module Importers
       end
 
       available_commits_count = changeset_list['count']
-      add_commits_to_db(changeset_list, bitbucket, repository)
+      process_changeset_list(changeset_list, repository)
 
       total_records_fetched = changeset_list['changesets'].count
 
       if (commits_to_get < 50) && (total_records_fetched < commits_to_get)
         Sidekiq.logger.debug { "The number of records received: #{total_records_fetched} for repository: #{repository.name} was less than the number asked for: #{commits_to_get}. There are no more commits to grab." }
-        earliest_commit = find_oldest_commit_in_repo(repository.id)
-        unless earliest_commit
+        earliest_commit_sha = find_oldest_commit_in_repo(repository.id)
+        unless earliest_commit_sha
           Sidekiq.logger.error { "No commits were found for repository: #{repository.name}. There should have been commits since BitBucket was queried for them or something." }
           return
         end
-        repository.update!(first_commit_sha: earliest_commit.sha)
+        repository.update!(first_commit_sha: earliest_commit_sha)
         Sidekiq.logger.info { "The repository: #{repository.name} has had the first_commit_sha set to #{repository.first_commit_sha}. This will prevent historical queries on this repo from being run from now on." }
         return
       end
@@ -155,45 +154,49 @@ module Importers
       if more_commits_are_available
         remaining_commits_to_get = commits_to_get - total_records_fetched
         Sidekiq.logger.debug { "More commits were found to be available for repository: #{repository.name}. Asking for #{remaining_commits_to_get} more." }
-        self.grab_commits_from_bitbucket(remaining_commits_to_get, bitbucket, repository)
+        self.grab_commits_from_bitbucket(remaining_commits_to_get, repository)
       end
     end
 
-    def self.add_commits_to_db(changeset_list, bitbucket, repository)
+    def self.add_commit_to_db(changeset, user, repository)
+      message = changeset['message'].to_s.gsub(/\s+/, ' ').strip
+
+      begin
+        return Commit.find_or_create_by!(sha: changeset['raw_node'].to_s, repository: repository) do |create_commit|
+          create_commit.utc_commit_time = changeset['utctimestamp']
+          create_commit.user = user
+          create_commit.message = message
+          # create_commit.resource_uri = changeset['resource_uri'].to_s
+        end
+      rescue ActiveRecord::RecordNotUnique
+        retry
+      end
+    end
+
+    def self.process_changeset_list(changeset_list, repository)
       changeset_list['changesets'].each do |changeset|
         user = find_or_create_new_user(changeset)
 
-        find_or_set_user_avatar_uri(bitbucket, user)
+        find_or_set_user_avatar_uri(user)
 
-        message = changeset['message'].to_s.gsub(/\s+/, ' ').strip
-
-        begin
-          commit = Commit.find_or_create_by(sha: changeset['raw_node'].to_s) do |create_commit|
-            create_commit.utc_commit_time = changeset['utctimestamp']
-            create_commit.user = user
-            create_commit.repository = repository
-            create_commit.message = message
-            # create_commit.resource_uri = changeset['resource_uri'].to_s
-          end
-        rescue ActiveRecord::RecordNotUnique
-          retry
-        end
-
-        ExecuteFilters.perform_async(commit.id)
+        add_commit_to_db(changeset, user, repository)
       end
     end
 
     def self.find_oldest_commit_in_repo(repo_id)
-      Commit.where(repository_id: repo_id).order('utc_commit_time ASC').first
+      Commit.where(repository_id: repo_id).order('utc_commit_time ASC').pluck(:sha).first
+    end
+
+    def self.find_newest_commit_in_repo(repo_id)
+      Commit.where(repository_id: repo_id).order('utc_commit_time DESC').pluck(:sha).first
     end
 
     def self.find_or_create_new_user(changeset)
       account_name = changeset['author'].to_s
       begin
-        user = User.find_or_create_by(account_name: account_name) do |create_user| #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
+        user = User.find_or_create_by!(account_name: account_name) #do |create_user| #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
           # create_user.resource_uri = changeset['resource_uri'].to_s
-        end
-
+          #end
       rescue ActiveRecord::RecordNotUnique
         retry
       end
@@ -207,13 +210,13 @@ module Importers
       user
     end
 
-    def self.find_or_set_user_avatar_uri(bitbucket, user)
+    def self.find_or_set_user_avatar_uri(user)
       if user.account_name && !user.avatar_uri
         Sidekiq.logger.debug { "Found a user: #{user.account_name} whose avatar_uri was empty or nil. Querying profile for avatar_uri." }
 
         begin
           user_to_query = URI.encode(user.account_name)
-          user_profile= bitbucket.users.account.profile(user_to_query)
+          user_profile= @bitbucket.users.account.profile(user_to_query)
 
         rescue BitBucket::Error::NotFound
           Sidekiq.logger.warn { "Query looking for #{user_to_query} resulted in a 404. Setting avatar to the default." }
