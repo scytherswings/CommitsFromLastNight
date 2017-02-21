@@ -16,8 +16,11 @@ module Importers
         Sidekiq.logger.info { "Working on repo: #{repository.owner}:#{repository.name}." }
 
         begin
-
-          grab_commits_from_bitbucket(commits_to_get, bitbucket, repository)
+          #get newest sha
+          #query repo
+          #is newest sha in response?
+          #yes: stop
+          #no: continue until max commits have been added.
 
         rescue BitBucket::Error => error
           Sidekiq.logger.error { "An error occurred trying to query the changesets for #{repository['slug']}. Error was #{error}" }
@@ -38,17 +41,10 @@ module Importers
         bitbucket.repos.list do |repo|
           Sidekiq.logger.info { "Working on repo: #{repo['owner']}:#{repo['slug']}." }
           begin
-            if repo['name']
-              name = repo['name']
-            else
-              name = repo['slug']
-            end
-            Sidekiq.logger.debug {repo}
-
-            repository = Repository.find_or_create_by(name: name.to_s.downcase, owner: repo['owner'].to_s) do |create|
+            repository = Repository.find_or_create_by(name: repo['slug'].to_s.downcase, owner: repo['owner'].to_s) do |create|
               create.description = repo['description'].to_s
               create.avatar_uri = repo['logo'].to_s
-              create.resource_uri = repo['resource_uri'].to_s
+              # create.resource_uri = 'https://bitbucket.org/' + repo['resource_uri'].to_s
             end
 
             if repository.avatar_uri.blank?
@@ -172,12 +168,13 @@ module Importers
         message = changeset['message'].to_s.gsub(/\s+/, ' ').strip
 
         begin
-          commit = Commit.find_or_create_by(sha: changeset['raw_node'].to_s,
-                                            message: message,
-                                            utc_commit_time: changeset['utctimestamp'],
-                                            resource_uri: changeset['resource_uri'].to_s,
-                                            user: user,
-                                            repository: repository)
+          commit = Commit.find_or_create_by(sha: changeset['raw_node'].to_s) do |create_commit|
+            create_commit.utc_commit_time = changeset['utctimestamp']
+            create_commit.user = user
+            create_commit.repository = repository
+            create_commit.message = message
+            # create_commit.resource_uri = changeset['resource_uri'].to_s
+          end
         rescue ActiveRecord::RecordNotUnique
           retry
         end
@@ -194,7 +191,7 @@ module Importers
       account_name = changeset['author'].to_s
       begin
         user = User.find_or_create_by(account_name: account_name) do |create_user| #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
-          create_user.resource_uri = changeset['resource_uri'].to_s
+          # create_user.resource_uri = changeset['resource_uri'].to_s
         end
 
       rescue ActiveRecord::RecordNotUnique
