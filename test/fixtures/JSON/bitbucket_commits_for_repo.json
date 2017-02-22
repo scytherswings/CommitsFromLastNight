@@ -12,9 +12,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "DAMON PORCH <damonporch@gmail.com>",
+      "raw_author": "BOB LOB <boblob@example.com>",
       "utctimestamp": "2015-05-09 23:38:21+00:00",
-      "author": "damonporch",
+      "author": "boblob",
       "timestamp": "2015-05-10 01:38:21",
       "raw_node": "d74ffa02c82438ba5777035a5d517ff41e4ef5ed",
       "parents": [],
@@ -32,9 +32,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "DAMON PORCH <damonporch@gmail.com>",
+      "raw_author": "BOB LOB <boblob@example.com>",
       "utctimestamp": "2015-05-09 23:57:29+00:00",
-      "author": "damonporch",
+      "author": "boblob",
       "timestamp": "2015-05-10 01:57:29",
       "raw_node": "2ac13bf4cda72038a8f6aec94cae0cb387fdb167",
       "parents": [
@@ -106,9 +106,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "DAMON PORCH <damonporch@gmail.com>",
+      "raw_author": "BOB LOB <boblob@example.com>",
       "utctimestamp": "2015-05-10 00:01:29+00:00",
-      "author": "damonporch",
+      "author": "boblob",
       "timestamp": "2015-05-10 02:01:29",
       "raw_node": "dfeecc071c936547aad1b71b1b32edb777f31c91",
       "parents": [
@@ -132,9 +132,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-05-11 21:55:21+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-05-11 23:55:21",
       "raw_node": "ef2fe85d7dbecfbb5f951c42de544915204513ac",
       "parents": [
@@ -154,9 +154,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-05-11 22:20:31+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-05-12 00:20:31",
       "raw_node": "732680deba10dc3610f29e5aa40a1e63c26b3eef",
       "parents": [
@@ -176,9 +176,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-05-11 22:21:23+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-05-12 00:21:23",
       "raw_node": "d4f44abdf3ea701565bd7cbfa5a6591d290d34ee",
       "parents": [
@@ -206,9 +206,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "sunmark007 <mark.allen.cordell@gmail.com>",
+      "raw_author": "schnoblobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-05-14 01:51:46+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-05-14 03:51:46",
       "raw_node": "2d4e4b3503a01934998ccc5f24c0eaaa0bf3a068",
       "parents": [
@@ -233,9 +233,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-05-14 02:55:02+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-05-14 04:55:02",
       "raw_node": "241f398cdad208bff58a1ec79a4013433dd73c09",
       "parents": [
@@ -255,9 +255,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-05-29 03:00:03+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-05-29 05:00:03",
       "raw_node": "f14d60aa591317c2b6fd3963c975fa90c1a43065",
       "parents": [
@@ -277,9 +277,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-05-29 04:21:14+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-05-29 06:21:14",
       "raw_node": "38ff21e8ffe6382c0f27f40fe0b5ec427b1b6242",
       "parents": [
@@ -299,9 +299,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "sunmark007 <mark.allen.cordell@gmail.com>",
+      "raw_author": "schnoblobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-06-12 04:58:37+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-06-12 06:58:37",
       "raw_node": "d6f3d18b2d44753d2caab1a8a6817d0b4f0ac805",
       "parents": [
@@ -322,9 +322,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-06-15 02:08:03+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-06-15 04:08:03",
       "raw_node": "5a3fc522acd78de4bdccdb4d513eb4e2df2a3414",
       "parents": [
@@ -344,9 +344,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "scytherswings <scytherswings@gmail.com>",
+      "raw_author": "truve.gepshpan <truve.gepshpanexample.com>",
       "utctimestamp": "2015-06-17 01:55:49+00:00",
-      "author": "scytherswings",
+      "author": "truve.gepshpan",
       "timestamp": "2015-06-17 03:55:49",
       "raw_node": "dd015bfb09511b125da163529c660145196657da",
       "parents": [
@@ -366,9 +366,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Andrew Newell <scytherswings@gmail.com>",
+      "raw_author": "Truve Gepshpan <truve.gepshpanexample.com>",
       "utctimestamp": "2015-06-17 03:08:07+00:00",
-      "author": "scytherswings",
+      "author": "truve.gepshpan",
       "timestamp": "2015-06-17 05:08:07",
       "raw_node": "7b80c7aba1b6df3e3294cb9371752b76f1bc2ab4",
       "parents": [
@@ -393,9 +393,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-06-18 03:22:29+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-06-18 05:22:29",
       "raw_node": "e8186ad8a11845c2d935e56927caba8384de231c",
       "parents": [
@@ -415,9 +415,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-06-18 03:36:48+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-06-18 05:36:48",
       "raw_node": "7e0ee7fb2fa5253b38a72e0ea3e58f1b5a2f4a3c",
       "parents": [
@@ -437,9 +437,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-06-18 03:42:57+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-06-18 05:42:57",
       "raw_node": "44b6e51205864c0eaafdd845f823564ef977039b",
       "parents": [
@@ -459,9 +459,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-06-18 03:46:03+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-06-18 05:46:03",
       "raw_node": "053d826e40e58f1caab9e1228d42b08491714623",
       "parents": [
@@ -509,9 +509,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "scytherswings <scytherswings@gmail.com>",
+      "raw_author": "truve.gepshpan <truve.gepshpanexample.com>",
       "utctimestamp": "2015-06-18 03:46:37+00:00",
-      "author": "scytherswings",
+      "author": "truve.gepshpan",
       "timestamp": "2015-06-18 05:46:37",
       "raw_node": "3692c3980591dce6035a4fcf1cf98cf7706937d8",
       "parents": [
@@ -531,9 +531,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "scytherswings <scytherswings@gmail.com>",
+      "raw_author": "truve.gepshpan <truve.gepshpanexample.com>",
       "utctimestamp": "2015-06-18 03:49:06+00:00",
-      "author": "scytherswings",
+      "author": "truve.gepshpan",
       "timestamp": "2015-06-18 05:49:06",
       "raw_node": "5d584fecc7b73df1b41d7cf4b33890b48e08ca8f",
       "parents": [
@@ -553,9 +553,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "scytherswings <scytherswings@gmail.com>",
+      "raw_author": "truve.gepshpan <truve.gepshpanexample.com>",
       "utctimestamp": "2015-06-18 03:49:27+00:00",
-      "author": "scytherswings",
+      "author": "truve.gepshpan",
       "timestamp": "2015-06-18 05:49:27",
       "raw_node": "02e3299a5e912b5920def11b516367755f66e3db",
       "parents": [
@@ -600,9 +600,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-06-18 03:57:22+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-06-18 05:57:22",
       "raw_node": "911d24affbfb8568b9a63cdaefeb696014ee0d25",
       "parents": [
@@ -622,9 +622,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "scytherswings <scytherswings@gmail.com>",
+      "raw_author": "truve.gepshpan <truve.gepshpanexample.com>",
       "utctimestamp": "2015-06-18 04:05:00+00:00",
-      "author": "scytherswings",
+      "author": "truve.gepshpan",
       "timestamp": "2015-06-18 06:05:00",
       "raw_node": "5ccce961102dc7b8dcfb75909fea61b25d578d1f",
       "parents": [
@@ -644,9 +644,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "scytherswings <scytherswings@gmail.com>",
+      "raw_author": "truve.gepshpan <truve.gepshpanexample.com>",
       "utctimestamp": "2015-06-18 04:08:11+00:00",
-      "author": "scytherswings",
+      "author": "truve.gepshpan",
       "timestamp": "2015-06-18 06:08:11",
       "raw_node": "9e21a1cfdc8b5b0f68a91d1ea7aedeafaebcb72a",
       "parents": [
@@ -666,9 +666,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-06-18 04:19:52+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-06-18 06:19:52",
       "raw_node": "d1a7c1857933fa75fef9e9c6280d4878cda87add",
       "parents": [
@@ -692,9 +692,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-06-18 05:10:05+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-06-18 07:10:05",
       "raw_node": "65b47fe2968c45f110d5f808a165ecd470e93c20",
       "parents": [
@@ -726,9 +726,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "sunmark007 <mark.allen.cordell@gmail.com>",
+      "raw_author": "schnoblobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-06-18 05:14:08+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-06-18 07:14:08",
       "raw_node": "2550ca4d1982ef737216b926b07dd253de4a6b4c",
       "parents": [
@@ -749,9 +749,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopperexample.com>",
       "utctimestamp": "2015-06-28 17:27:47+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-06-28 19:27:47",
       "raw_node": "6cf1ded9af9426e96322fb578092bbcf7ae3b9ad",
       "parents": [
@@ -771,9 +771,9 @@
         }
       ],
       "branches": [],
-      "raw_author": "Mark Cordell <mark.allen.cordell@gmail.com>",
+      "raw_author": "Schnob Lobtopper <schnob.cobcopper.lobtopper@example.com>",
       "utctimestamp": "2015-07-03 19:37:51+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-07-03 21:37:51",
       "raw_node": "55defda912548bf3c074a65c1afde7b476e25a57",
       "parents": [
@@ -792,9 +792,9 @@
           "file": "app/templates/index.html"
         }
       ],
-      "raw_author": "sunmark007 <mark.allen.cordell@gmail.com>",
+      "raw_author": "schnoblobtopper <schnob.cobcopper.lobtopper@example.com>",
       "utctimestamp": "2015-07-03 21:27:36+00:00",
-      "author": "sunmark007",
+      "author": "schnoblobtopper",
       "timestamp": "2015-07-03 23:27:36",
       "raw_node": "c2c8e34a20a3c5ed19df39550e4f606ed40faa34",
       "parents": [

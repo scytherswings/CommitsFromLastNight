@@ -5,6 +5,11 @@ profane_commit:
   utc_commit_time: 2016-12-14 00:43:02
   user: bob
 
+toy_app_commit:
+  sha: be9ef91dcf63fa438bcd274dddcba939aa591881
+  message: "scaffolding is neat\n"
+  utc_commit_time: "2015-09-04 12:49:31+00:00"
+  user: scytherswings
 #
 #two:
 #  username: MyString

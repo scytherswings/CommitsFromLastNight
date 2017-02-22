@@ -49,13 +49,13 @@ group :test do
   gem 'coveralls', require: false
   gem 'minitest-reporters'
   gem 'mini_backtrace'
-  # gem 'webmock'
+  gem 'webmock'
   # gem 'capybara', '~> 2.6.2'
   # gem 'poltergeist', '~> 1.9.0'
   # gem 'phantomjs', require: 'phantomjs/poltergeist'
   # gem 'capybara-screenshot'
-  # gem 'vcr', '~> 3.0.1'
-  # gem 'minitest-vcr', '~> 1.4.0'
+  gem 'vcr'
+  gem 'minitest-vcr'
   # gem 'fabrication'
 end
 
