@@ -6,6 +6,7 @@ require 'rails/test_help'
 require 'webmock/minitest'
 require 'minitest/reporters'
 require 'vcr'
+require 'webmock'
 Minitest::Reporters.use!
 
 class ActiveSupport::TestCase
@@ -19,6 +20,9 @@ class ActiveSupport::TestCase
         :record => :new_episodes
     }
   end
+
+  # VCR.turn_off!(ignore_cassettes: true)
+  # WebMock.disable!
 
 
   def setup

@@ -10,6 +10,7 @@ toy_app_commit:
   message: "scaffolding is neat\n"
   utc_commit_time: "2015-09-04 12:49:31+00:00"
   user: scytherswings
+  repository: toy_app
 #
 #two:
 #  username: MyString
