@@ -3,10 +3,10 @@ Coveralls.wear!('rails')
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require 'webmock'
 require 'webmock/minitest'
 require 'minitest/reporters'
 require 'vcr'
-require 'webmock'
 Minitest::Reporters.use!
 
 class ActiveSupport::TestCase
