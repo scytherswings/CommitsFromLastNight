@@ -4,12 +4,12 @@ rvm:
   - 2.4.0
 cache: bundler
 
+addons:
+  postgresql: "9.6"
+
 services:
   - postgresql
   - redis
-
-addons:
-  postgresql: "9.6"
 
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
