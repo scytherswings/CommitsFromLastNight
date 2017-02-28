@@ -1,0 +1,253 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://bitbucket.org/api/1.0/repositories/scytherswings/toy_app/changesets?limit=50
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - BitBucket Ruby Gem 0.1.7
+      Authorization:
+      - Basic c2N5dGhlcnN3aW5nc0BnbWFpbC5jb206VXc0JVh4RTljV0c1c3JJZQ=="
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Vary:
+      - Authorization, Accept-Encoding
+      Content-Type:
+      - application/json; charset=utf-8
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Date:
+      - Tue, 28 Feb 2017 03:54:34 GMT
+      X-Served-By:
+      - app-142
+      Transfer-Encoding:
+      - chunked
+      Etag:
+      - '"058d763ca4d394c1667af32aaa35d74f"'
+      X-Static-Version:
+      - c4a7121149e9
+      X-Content-Type-Options:
+      - nosniff
+      X-Accepted-Oauth-Scopes:
+      - repository
+      X-Render-Time:
+      - '0.206039905548'
+      Connection:
+      - keep-alive
+      X-Request-Count:
+      - '510'
+      X-Version:
+      - c4a7121149e9
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Cache-Info:
+      - not cacheable; request contained Authorization header
+    body:
+      encoding: ASCII-8BIT
+      string: '{"count": 5, "start": null, "limit": 50, "changesets": [{"node": "39767db1de86",
+        "files": [{"type": "added", "file": ".gitignore"}, {"type": "added", "file":
+        "Gemfile"}, {"type": "added", "file": "Gemfile.lock"}, {"type": "added", "file":
+        "README.rdoc"}, {"type": "added", "file": "Rakefile"}, {"type": "added", "file":
+        "app/assets/images/.keep"}, {"type": "added", "file": "app/assets/javascripts/application.js"},
+        {"type": "added", "file": "app/assets/stylesheets/application.css"}, {"type":
+        "added", "file": "app/controllers/application_controller.rb"}, {"type": "added",
+        "file": "app/controllers/concerns/.keep"}, {"type": "added", "file": "app/helpers/application_helper.rb"},
+        {"type": "added", "file": "app/mailers/.keep"}, {"type": "added", "file":
+        "app/models/.keep"}, {"type": "added", "file": "app/models/concerns/.keep"},
+        {"type": "added", "file": "app/views/layouts/application.html.erb"}, {"type":
+        "added", "file": "bin/bundle"}, {"type": "added", "file": "bin/rails"}, {"type":
+        "added", "file": "bin/rake"}, {"type": "added", "file": "bin/setup"}, {"type":
+        "added", "file": "bin/spring"}, {"type": "added", "file": "config.ru"}, {"type":
+        "added", "file": "config/application.rb"}, {"type": "added", "file": "config/boot.rb"},
+        {"type": "added", "file": "config/database.yml"}, {"type": "added", "file":
+        "config/environment.rb"}, {"type": "added", "file": "config/environments/development.rb"},
+        {"type": "added", "file": "config/environments/production.rb"}, {"type": "added",
+        "file": "config/environments/test.rb"}, {"type": "added", "file": "config/initializers/assets.rb"},
+        {"type": "added", "file": "config/initializers/backtrace_silencers.rb"}, {"type":
+        "added", "file": "config/initializers/cookies_serializer.rb"}, {"type": "added",
+        "file": "config/initializers/filter_parameter_logging.rb"}, {"type": "added",
+        "file": "config/initializers/inflections.rb"}, {"type": "added", "file": "config/initializers/mime_types.rb"},
+        {"type": "added", "file": "config/initializers/session_store.rb"}, {"type":
+        "added", "file": "config/initializers/wrap_parameters.rb"}, {"type": "added",
+        "file": "config/locales/en.yml"}, {"type": "added", "file": "config/routes.rb"},
+        {"type": "added", "file": "config/secrets.yml"}, {"type": "added", "file":
+        "db/seeds.rb"}, {"type": "added", "file": "lib/assets/.keep"}, {"type": "added",
+        "file": "lib/tasks/.keep"}, {"type": "added", "file": "log/.keep"}, {"type":
+        "added", "file": "public/404.html"}, {"type": "added", "file": "public/422.html"},
+        {"type": "added", "file": "public/500.html"}, {"type": "added", "file": "public/favicon.ico"},
+        {"type": "added", "file": "public/robots.txt"}, {"type": "added", "file":
+        "test/controllers/.keep"}, {"type": "added", "file": "test/fixtures/.keep"},
+        {"type": "added", "file": "test/helpers/.keep"}, {"type": "added", "file":
+        "test/integration/.keep"}, {"type": "added", "file": "test/mailers/.keep"},
+        {"type": "added", "file": "test/models/.keep"}, {"type": "added", "file":
+        "test/test_helper.rb"}, {"type": "added", "file": "vendor/assets/javascripts/.keep"},
+        {"type": "added", "file": "vendor/assets/stylesheets/.keep"}], "branches":
+        [], "raw_author": "Andrew <scytherswings@gmail.com>", "utctimestamp": "2015-09-03
+        20:10:44+00:00", "author": "scytherswings", "timestamp": "2015-09-03 22:10:44",
+        "raw_node": "39767db1de863d941a7fe07f4cb4cce29ff43bb9", "parents": [], "branch":
+        null, "message": "initialized repo\n", "revision": null, "size": -1}, {"node":
+        "be9ef91dcf63", "files": [{"type": "modified", "file": "Gemfile"}, {"type":
+        "added", "file": "app/assets/javascripts/users.coffee"}, {"type": "added",
+        "file": "app/assets/stylesheets/scaffolds.scss"}, {"type": "added", "file":
+        "app/assets/stylesheets/users.scss"}, {"type": "added", "file": "app/controllers/users_controller.rb"},
+        {"type": "added", "file": "app/helpers/users_helper.rb"}, {"type": "added",
+        "file": "app/models/user.rb"}, {"type": "added", "file": "app/views/users/_form.html.erb"},
+        {"type": "added", "file": "app/views/users/edit.html.erb"}, {"type": "added",
+        "file": "app/views/users/index.html.erb"}, {"type": "added", "file": "app/views/users/index.json.jbuilder"},
+        {"type": "added", "file": "app/views/users/new.html.erb"}, {"type": "added",
+        "file": "app/views/users/show.html.erb"}, {"type": "added", "file": "app/views/users/show.json.jbuilder"},
+        {"type": "modified", "file": "config/routes.rb"}, {"type": "added", "file":
+        "db/migrate/20150903201755_create_users.rb"}, {"type": "added", "file": "db/schema.rb"},
+        {"type": "added", "file": "spring/71407a84084e047001b70fe8bfaa1ed9.pid"},
+        {"type": "added", "file": "test/controllers/users_controller_test.rb"}, {"type":
+        "added", "file": "test/fixtures/users.yml"}, {"type": "added", "file": "test/models/user_test.rb"}],
+        "branches": [], "raw_author": "Andrew <scytherswings@gmail.com>", "utctimestamp":
+        "2015-09-04 12:49:31+00:00", "author": "scytherswings", "timestamp": "2015-09-04
+        14:49:31", "raw_node": "be9ef91dcf63fa438bcd274dddcba939aa591881", "parents":
+        ["39767db1de86"], "branch": null, "message": "scaffolding is neat\n", "revision":
+        null, "size": -1}, {"node": "ee7b1e175bc4", "files": [{"type": "modified",
+        "file": "Gemfile"}, {"type": "modified", "file": "Gemfile.lock"}, {"type":
+        "added", "file": "app/assets/javascripts/microposts.coffee"}, {"type": "added",
+        "file": "app/assets/stylesheets/microposts.scss"}, {"type": "added", "file":
+        "app/controllers/microposts_controller.rb"}, {"type": "added", "file": "app/helpers/microposts_helper.rb"},
+        {"type": "added", "file": "app/models/micropost.rb"}, {"type": "modified",
+        "file": "app/models/user.rb"}, {"type": "added", "file": "app/views/microposts/_form.html.erb"},
+        {"type": "added", "file": "app/views/microposts/edit.html.erb"}, {"type":
+        "added", "file": "app/views/microposts/index.html.erb"}, {"type": "added",
+        "file": "app/views/microposts/index.json.jbuilder"}, {"type": "added", "file":
+        "app/views/microposts/new.html.erb"}, {"type": "added", "file": "app/views/microposts/show.html.erb"},
+        {"type": "added", "file": "app/views/microposts/show.json.jbuilder"}, {"type":
+        "modified", "file": "config/routes.rb"}, {"type": "added", "file": "db/migrate/20150904131207_create_microposts.rb"},
+        {"type": "modified", "file": "db/schema.rb"}, {"type": "added", "file": "spring/7595e4a4aa56f900b163ebd70d48b492.pid"},
+        {"type": "added", "file": "test/controllers/microposts_controller_test.rb"},
+        {"type": "added", "file": "test/fixtures/microposts.yml"}, {"type": "added",
+        "file": "test/models/micropost_test.rb"}], "branches": [], "raw_author": "Andrew
+        <scytherswings@gmail.com>", "utctimestamp": "2015-09-04 14:18:23+00:00", "author":
+        "scytherswings", "timestamp": "2015-09-04 16:18:23", "raw_node": "ee7b1e175bc4b905af30b873111cfe6b2e9b4911",
+        "parents": ["be9ef91dcf63"], "branch": null, "message": "shit\n", "revision":
+        null, "size": -1}, {"node": "260dd9156617", "files": [{"type": "modified",
+        "file": "app/models/micropost.rb"}, {"type": "modified", "file": "app/models/user.rb"},
+        {"type": "modified", "file": "config/routes.rb"}], "branches": [], "raw_author":
+        "Andrew <scytherswings@gmail.com>", "utctimestamp": "2015-09-04 14:26:48+00:00",
+        "author": "scytherswings", "timestamp": "2015-09-04 16:26:48", "raw_node":
+        "260dd9156617deb2bdc7655df3924ad589b61cd6", "parents": ["ee7b1e175bc4"], "branch":
+        null, "message": "fixed autosave not being turned on......\n", "revision":
+        null, "size": -1}, {"node": "f25fa166822e", "files": [{"type": "modified",
+        "file": "app/models/micropost.rb"}, {"type": "modified", "file": "app/models/user.rb"}],
+        "raw_author": "Andrew <scytherswings@gmail.com>", "utctimestamp": "2015-09-04
+        14:31:42+00:00", "author": "scytherswings", "timestamp": "2015-09-04 16:31:42",
+        "raw_node": "f25fa166822eaf3f4b9dfeb78b0471db77c185e7", "parents": ["260dd9156617"],
+        "branch": "master", "message": "Added more validation\n", "revision": null,
+        "size": -1}]}'
+    http_version: 
+  recorded_at: Tue, 28 Feb 2017 03:54:34 GMT
+- request:
+    method: get
+    uri: https://bitbucket.org/api/1.0/users/scytherswings
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - BitBucket Ruby Gem 0.1.7
+      Authorization:
+      - Basic c2N5dGhlcnN3aW5nc0BnbWFpbC5jb206VXc0JVh4RTljV0c1c3JJZQ=="
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Vary:
+      - Authorization, Accept-Encoding
+      Content-Type:
+      - application/json; charset=utf-8
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Date:
+      - Tue, 28 Feb 2017 03:54:34 GMT
+      X-Served-By:
+      - app-143
+      Transfer-Encoding:
+      - chunked
+      X-Static-Version:
+      - c4a7121149e9
+      Etag:
+      - '"5d4a116beb2a6171e32ac3294333b0b0"'
+      X-Content-Type-Options:
+      - nosniff
+      X-Render-Time:
+      - '0.0323948860168'
+      X-Accepted-Oauth-Scopes:
+      - account
+      Connection:
+      - keep-alive
+      X-Version:
+      - c4a7121149e9
+      X-Request-Count:
+      - '209'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Cache-Info:
+      - not cacheable; request contained Authorization header
+    body:
+      encoding: ASCII-8BIT
+      string: '{"repositories": [{"scm": "git", "has_wiki": false, "last_updated":
+        "2017-02-05T08:29:25.298", "no_forks": false, "created_on": "2017-01-29T11:39:48.208",
+        "owner": "scytherswings", "logo": "https://bitbucket.org/scytherswings/jesseforhire/avatar/32/?ts=1486279765",
+        "email_mailinglist": "", "is_mq": false, "size": 62964, "read_only": false,
+        "fork_of": null, "mq_of": null, "state": "available", "utc_created_on": "2017-01-29
+        10:39:48+00:00", "website": "", "description": "Do I have to fill this out?",
+        "has_issues": false, "is_fork": false, "slug": "jesseforhire", "is_private":
+        true, "name": "jesseforhire", "language": "", "utc_last_updated": "2017-02-05
+        07:29:25+00:00", "no_public_forks": true, "creator": null, "resource_uri":
+        "/1.0/repositories/scytherswings/jesseforhire"}, {"scm": "git", "has_wiki":
+        false, "last_updated": "2016-02-08T04:02:13.025", "no_forks": false, "created_on":
+        "2016-02-07T19:43:11.400", "owner": "scytherswings", "logo": "https://bitbucket.org/scytherswings/indi/avatar/32/?ts=1454900533",
+        "email_mailinglist": "", "is_mq": false, "size": 790757, "read_only": false,
+        "fork_of": null, "mq_of": null, "state": "available", "utc_created_on": "2016-02-07
+        18:43:11+00:00", "website": "", "description": "", "has_issues": false, "is_fork":
+        false, "slug": "indi", "is_private": true, "name": "INDI", "language": "",
+        "utc_last_updated": "2016-02-08 03:02:13+00:00", "no_public_forks": true,
+        "creator": null, "resource_uri": "/1.0/repositories/scytherswings/indi"},
+        {"scm": "git", "has_wiki": false, "last_updated": "2015-09-07T00:30:20.169",
+        "no_forks": false, "created_on": "2015-09-04T16:38:06.088", "owner": "scytherswings",
+        "logo": "https://bitbucket.org/scytherswings/sample_app/avatar/32/?ts=1441578620",
+        "email_mailinglist": "", "is_mq": false, "size": 865212, "read_only": false,
+        "fork_of": null, "mq_of": null, "state": "available", "utc_created_on": "2015-09-04
+        14:38:06+00:00", "website": "", "description": "", "has_issues": false, "is_fork":
+        false, "slug": "sample_app", "is_private": true, "name": "sample_app", "language":
+        "", "utc_last_updated": "2015-09-06 22:30:20+00:00", "no_public_forks": true,
+        "creator": null, "resource_uri": "/1.0/repositories/scytherswings/sample_app"},
+        {"scm": "git", "has_wiki": false, "last_updated": "2015-09-04T16:31:45.759",
+        "no_forks": false, "created_on": "2015-09-03T22:16:04.028", "owner": "scytherswings",
+        "logo": "https://bitbucket.org/scytherswings/toy_app/avatar/32/?ts=1441377105",
+        "email_mailinglist": "", "is_mq": false, "size": 433411, "read_only": false,
+        "fork_of": null, "mq_of": null, "state": "available", "utc_created_on": "2015-09-03
+        20:16:04+00:00", "website": "", "description": "", "has_issues": false, "is_fork":
+        false, "slug": "toy_app", "is_private": true, "name": "toy_app", "language":
+        "", "utc_last_updated": "2015-09-04 14:31:45+00:00", "no_public_forks": true,
+        "creator": null, "resource_uri": "/1.0/repositories/scytherswings/toy_app"}],
+        "user": {"username": "scytherswings", "first_name": "Andrew", "last_name":
+        "Newell", "display_name": "Andrew Newell", "is_staff": false, "avatar": "https://bitbucket.org/account/scytherswings/avatar/32/?ts=1488251860",
+        "resource_uri": "/1.0/users/scytherswings", "is_team": false}}'
+    http_version: 
+  recorded_at: Tue, 28 Feb 2017 03:54:34 GMT
+recorded_with: VCR 3.0.3
