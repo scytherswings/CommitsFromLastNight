@@ -5,7 +5,7 @@ rvm:
 cache: bundler
 
 addons:
-  postgresql: "9.6"
+  postgresql: "9.4"
 
 services:
   - postgresql
