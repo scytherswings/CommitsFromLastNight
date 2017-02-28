@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/scytherswings/CommitsFromLastNight.svg?branch=master)](https://travis-ci.org/scytherswings/CommitsFromLastNight)
+[![Coverage Status](https://coveralls.io/repos/github/scytherswings/CommitsFromLastNight/badge.svg?branch=master)](https://coveralls.io/github/scytherswings/CommitsFromLastNight?branch=master)
 
 # Commits From Last Night
 ## Version 0.0.8

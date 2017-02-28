@@ -6,8 +6,6 @@ module Importers
       @logger ||= logger
     end
 
-
-
     def create_bitbucket_client
       config_file = YAML.load_file('config.yml')
       logger.info { 'Starting to fetch data from BitBucket using the username: ' + config_file['username'] }

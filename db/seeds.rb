@@ -28,24 +28,24 @@ def generate_random_message
   message << (rand(0..1).times.collect { |_| Faker::Hacker.say_something_smart }).join('')
   message.join(' ').strip
 end
-
-if Rails.env == 'test'
-  account_names = Array.new
-  repository_names = Array.new
-
-  50.times { account_names << Faker::Internet.user_name }
-  20.times { repository_names << Faker::App.name }
-  5000.times do
-    user = User.find_or_create_by(account_name: account_names[rand(0..49)], avatar_uri: 'https://bitbucket.org/account/unknown/avatar/96/?ts=0')
-    EmailAddress.create(email: Faker::Internet::email, user: user)
-
-    repository = Repository.find_or_create_by(name: repository_names[rand(0..19)])
-
-    message = generate_random_message
-    sha = Faker::Crypto.sha1
-    commit_time = Faker::Time.between(DateTime.now - 2.months, DateTime.now, :between)
-    commit = Commit.create!(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
-    ExecuteFilters.perform_async(commit.id)
-  end
-end
+#
+# if Rails.env == 'test'
+#   account_names = Array.new
+#   repository_names = Array.new
+#
+#   50.times { account_names << Faker::Internet.user_name }
+#   20.times { repository_names << Faker::App.name }
+#   5000.times do
+#     user = User.find_or_create_by(account_name: account_names[rand(0..49)], avatar_uri: 'https://bitbucket.org/account/unknown/avatar/96/?ts=0')
+#     EmailAddress.create(email: Faker::Internet::email, user: user)
+#
+#     repository = Repository.find_or_create_by(name: repository_names[rand(0..19)])
+#
+#     message = generate_random_message
+#     sha = Faker::Crypto.sha1
+#     commit_time = Faker::Time.between(DateTime.now - 2.months, DateTime.now, :between)
+#     commit = Commit.create!(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
+#     ExecuteFilters.perform_async(commit.id)
+#   end
+# end
 
