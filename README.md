@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/scytherswings/CommitsFromLastNight.svg?branch=master)](https://travis-ci.org/scytherswings/CommitsFromLastNight)
+
 # Commits From Last Night
 ## Version 0.0.8
 
