@@ -19,6 +19,7 @@ class ActiveSupport::TestCase
     config.default_cassette_options = {
         :record => :new_episodes
     }
+    config.filter_sensitive_data('<AUTHORIZATION>', :authorization) { ENV['BB_AUTH_TOKEN']}
   end
 
   # VCR.turn_off!(ignore_cassettes: true)

@@ -31,7 +31,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-byebug'
   gem 'byebug'
-  gem 'faker', git: 'https://github.com/stympy/faker'
+  gem 'faker'
 end
 
 group :development do
