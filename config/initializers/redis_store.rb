@@ -1,4 +1,4 @@
-CommitsFromLastNight::Application.config do |config|
+CommitsFromLastNight::Application.configure do
   if Rails.env == 'production'
       config.cache_store = :redis_store, "redis://#{ENV['REDIS_STORE_URI']}/0/#{Rails.env}/cache"
   else
