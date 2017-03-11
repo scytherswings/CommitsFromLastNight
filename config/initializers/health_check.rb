@@ -1,3 +1,4 @@
+require 'health_check'
 HealthCheck.setup do |config|
 
   # uri prefix (no leading slash)
