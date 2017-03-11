@@ -15,6 +15,8 @@ before_script:
 script:
 - "/bin/bash travisSetup.sh"
 - bundle exec rake
+before_deploy:
+- git reset --hard
 
 deploy:
   provider: elasticbeanstalk
@@ -26,3 +28,4 @@ deploy:
   env: stage
   on:
     repo: scytherswings/CommitsFromLastNight
+    branch: stage

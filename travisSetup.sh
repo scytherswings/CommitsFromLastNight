@@ -4,7 +4,6 @@ SECRET="$(bundle exec rake secret)"
 BOGUS="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 # rm $SECRETS
 echo -e "test:\n  secret_key_base: " $BOGUS "\n" >> $SECRETS
-# rm db/*sqlite3
 touch "config.yml"
 echo -e "username: " $BB_USERNAME "\n" >> "config.yml"
 echo -e "password: " $BB_PASSWORD "\n" >> "config.yml"
