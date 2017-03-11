@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   post 'clear_cache' => 'commits#clear_cache'
   get 'highlight_keywords' => 'commits#highlight_keywords'
 
+  health_check_routes
 
   mount Sidekiq::Web => '/sidekiq', constraints: lambda { |request| /127\.0\.0\.1/.match(request.remote_ip) }
   Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]

@@ -32,6 +32,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'byebug'
   gem 'faker'
+  gem 'puma', '~> 3.6', '>= 3.6.2'
 end
 
 group :development do
@@ -60,6 +61,6 @@ group :test do
 end
 
 group :production do
-  gem 'puma', '~> 3.6', '>= 3.6.2'
+  gem 'health_check'
 end
 
