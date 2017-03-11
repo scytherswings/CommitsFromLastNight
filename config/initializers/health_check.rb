@@ -27,7 +27,7 @@ HealthCheck.setup do |config|
   config.standard_checks = %w(database cache)
 
   # You can set what tests are run with the 'full' or 'all' parameter
-  config.full_checks = %w(database migrations cache redis)
+  config.full_checks = %w(database migrations cache cache_redis sidekiq_redis)
 
   # max-age of response in seconds
   # cache-control is public when max_age > 1 and basic_auth_username is not set
@@ -41,4 +41,38 @@ HealthCheck.setup do |config|
 
   # http status code used when the ip is not allowed for the request
   config.http_status_for_ip_whitelist_error = 403
+  config.add_custom_check('cache_redis') do
+    begin
+      if Rails.env == 'production'
+        redis_uri = "redis://#{ENV['REDIS_STORE_URI']}/0/#{Rails.env}/cache"
+      else
+        redis_uri = "redis://127.0.0.1:6379/0/#{Rails.env}/cache"
+      end
+
+      unless defined?(::Redis)
+        raise "Wrong configuration. Missing 'redis' gem"
+      end
+      res = ::Redis.new(url: redis_uri).ping
+      res == 'PONG' ? '' : "Redis.ping returned #{res.inspect} instead of PONG"
+    rescue Exception => e
+      create_error 'redis', e.message
+    end
+  end
+  config.add_custom_check('sidekiq_redis') do
+    begin
+      if Rails.env == 'production'
+        redis_uri = "redis://#{ENV['SIDEKIQ_REDIS_URI']}/0/#{Rails.env}/cache"
+      else
+        redis_uri = "redis://127.0.0.1:6379/0/#{Rails.env}/cache"
+      end
+
+      unless defined?(::Redis)
+        raise "Wrong configuration. Missing 'redis' gem"
+      end
+      res = ::Redis.new(url: redis_uri).ping
+      res == 'PONG' ? '' : "Redis.ping returned #{res.inspect} instead of PONG"
+    rescue Exception => e
+      create_error 'redis', e.message
+    end
+  end
 end
