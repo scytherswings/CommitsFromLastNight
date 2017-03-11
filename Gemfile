@@ -18,7 +18,7 @@ gem 'will_paginate-bootstrap'
 gem 'browser-timezone-rails', '~> 1.0.1'
 gem 'sidekiq', '~> 4.2', '>= 4.2.7'
 gem 'silencer'
-gem 'redis'
+gem 'redis', '~>3.2'
 gem 'redis-store'
 gem 'redis-rails', '~> 4'
 gem 'arel-helpers'
@@ -62,6 +62,6 @@ group :test do
 end
 
 group :production do
-  gem 'health_check'
+  gem 'health_check', '~> 2.0'
 end
 
