@@ -1,4 +1,5 @@
 require 'health_check'
+require 'healthchecks/redis_checker'
 HealthCheck.setup do |config|
 
   # uri prefix (no leading slash)
@@ -48,7 +49,7 @@ HealthCheck.setup do |config|
     else
       redis_uri = "redis://127.0.0.1:6379/0/#{Rails.env}/cache"
     end
-    RedisChecker.ping_redis('cache_redis', redis_uri)
+    RedisChecker.check('cache_redis', redis_uri)
   end
   config.add_custom_check('sidekiq_redis') do
     if Rails.env == 'production'
@@ -56,6 +57,6 @@ HealthCheck.setup do |config|
     else
       redis_uri = "redis://127.0.0.1:6379/0/#{Rails.env}/cache"
     end
-    RedisChecker.ping_redis('sidekiq_redis', redis_uri)
+    RedisChecker.check('sidekiq_redis', redis_uri)
   end
 end
