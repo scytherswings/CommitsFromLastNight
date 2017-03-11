@@ -28,7 +28,6 @@ deploy:
   env: stage
   bucket_name: cfln
   on:
-    repo: scytherswings/CommitsFromLastNight
     branch: stage
 - provider: elasticbeanstalk
   access_key_id: AKIAIPT55LFVKTPTEXAQ
@@ -39,5 +38,4 @@ deploy:
   env: CFLN-prod
   bucket_name: cfln
   on:
-    repo: scytherswings/CommitsFromLastNight
     branch: master
