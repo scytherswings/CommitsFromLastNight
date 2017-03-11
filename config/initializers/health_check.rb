@@ -41,38 +41,21 @@ HealthCheck.setup do |config|
 
   # http status code used when the ip is not allowed for the request
   config.http_status_for_ip_whitelist_error = 403
-  config.add_custom_check('cache_redis') do
-    begin
-      if Rails.env == 'production'
-        redis_uri = "redis://#{ENV['REDIS_STORE_URI']}/0/#{Rails.env}/cache"
-      else
-        redis_uri = "redis://127.0.0.1:6379/0/#{Rails.env}/cache"
-      end
 
-      unless defined?(::Redis)
-        raise "Wrong configuration. Missing 'redis' gem"
-      end
-      res = ::Redis.new(url: redis_uri).ping
-      res == 'PONG' ? '' : "Redis.ping returned #{res.inspect} instead of PONG"
-    rescue Exception => e
-      BaseHealthCheck.new.create_error('cache_redis', e.message)
+  config.add_custom_check('cache_redis') do
+    if Rails.env == 'production'
+      redis_uri = "redis://#{ENV['REDIS_STORE_URI']}/0/#{Rails.env}/cache"
+    else
+      redis_uri = "redis://127.0.0.1:6379/0/#{Rails.env}/cache"
     end
+    RedisChecker.ping_redis('cache_redis', redis_uri)
   end
   config.add_custom_check('sidekiq_redis') do
-    begin
-      if Rails.env == 'production'
-        redis_uri = "redis://#{ENV['SIDEKIQ_REDIS_URI']}/0/#{Rails.env}/cache"
-      else
-        redis_uri = "redis://127.0.0.1:6379/0/#{Rails.env}/cache"
-      end
-
-      unless defined?(::Redis)
-        raise "Wrong configuration. Missing 'redis' gem"
-      end
-      res = ::Redis.new(url: redis_uri).ping
-      res == 'PONG' ? '' : "Redis.ping returned #{res.inspect} instead of PONG"
-    rescue Exception => e
-      BaseHealthCheck.new.create_error('sidekiq_redis', e.message)
+    if Rails.env == 'production'
+      redis_uri = "redis://#{ENV['SIDEKIQ_REDIS_URI']}/0/#{Rails.env}/cache"
+    else
+      redis_uri = "redis://127.0.0.1:6379/0/#{Rails.env}/cache"
     end
+    RedisChecker.ping_redis('sidekiq_redis', redis_uri)
   end
 end
