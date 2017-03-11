@@ -26,7 +26,7 @@ deploy:
   region: us-east-1
   app: CFLN
   env: stage
-  bucket_name: cfln
+  bucket_name: cfln-stage
   on:
     branch: stage
 - provider: elasticbeanstalk
@@ -36,6 +36,6 @@ deploy:
   region: us-east-1
   app: CFLN
   env: CFLN-prod
-  bucket_name: cfln
+  bucket_name: cfln-prod
   on:
     branch: master
