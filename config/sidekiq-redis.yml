@@ -1,0 +1,6 @@
+development:
+ uri: localhost:6379
+test:
+ uri: localhost:6379
+production:
+ uri: <%= ENV['SIDEKIQ_REDIS_URI'] %>
