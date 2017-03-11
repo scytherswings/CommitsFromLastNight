@@ -6,5 +6,5 @@ CommitsFromLastNight::Application.configure do
         params: event.payload[:params].except(*exceptions)
     }
   end
-  # config.lograge.ignore_actions = ['HealthCheck::HealthCheckController#index']
+  config.lograge.ignore_actions = ['HealthCheck::HealthCheckController#index']
 end
