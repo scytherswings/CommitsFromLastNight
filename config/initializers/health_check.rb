@@ -55,7 +55,7 @@ HealthCheck.setup do |config|
       res = ::Redis.new(url: redis_uri).ping
       res == 'PONG' ? '' : "Redis.ping returned #{res.inspect} instead of PONG"
     rescue Exception => e
-      raise "cache_redis failed the healthcheck: #{e.message}"
+      BaseHealthCheck.new.create_error('cache_redis', e.message)
     end
   end
   config.add_custom_check('sidekiq_redis') do
@@ -72,7 +72,7 @@ HealthCheck.setup do |config|
       res = ::Redis.new(url: redis_uri).ping
       res == 'PONG' ? '' : "Redis.ping returned #{res.inspect} instead of PONG"
     rescue Exception => e
-      raise "sidekiq_redis failed the healthcheck: #{e.message}"
+      BaseHealthCheck.new.create_error('sidekiq_redis', e.message)
     end
   end
 end
