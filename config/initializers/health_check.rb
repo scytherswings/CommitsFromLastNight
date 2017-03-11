@@ -27,7 +27,7 @@ HealthCheck.setup do |config|
   config.standard_checks = %w(database cache)
 
   # You can set what tests are run with the 'full' or 'all' parameter
-  config.full_checks = %w(database migrations cache redis sidekiq-redis)
+  config.full_checks = %w(database migrations cache redis)
 
   # max-age of response in seconds
   # cache-control is public when max_age > 1 and basic_auth_username is not set
