@@ -1,15 +1,7 @@
 concurrency: 2
 pidfile: tmp/pids/sidekiq.pid
-development:
-  host: localhost
-  port: 6379
-test:
-  host: localhost
-  port: 6379
 production:
   concurrency: 4
-  host: 'cfln-stage.tivqek.0001.use1.cache.amazonaws.com'
-  port: 6379
 queues:
   - [bitbucket, 1]
   - [github, 1]

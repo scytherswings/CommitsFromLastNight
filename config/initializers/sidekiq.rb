@@ -1,7 +1,6 @@
 Sidekiq::Logging.logger = Logger.new("log/sidekiq_#{Rails.env}.log")
 
-rails_root = Rails.root || File.dirname(__FILE__) + '/../..'
-redis_config = YAML.load_file(rails_root.to_s + '/config/redis.yml')
+redis_config = YAML.load_file(Rails.root.join '/config/redis.yml')
 redis_config.merge! redis_config.fetch(Rails.env, {})
 redis_config.symbolize_keys!
 Sidekiq.configure_server do |config|
