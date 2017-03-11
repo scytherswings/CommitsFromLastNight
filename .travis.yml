@@ -18,6 +18,7 @@ script:
 before_deploy:
 - git reset --hard
 - "rm -rf vendor/bundle/"
+- "/bin/bash prod_secret.sh"
 deploy:
 - provider: elasticbeanstalk
   access_key_id: AKIAIPT55LFVKTPTEXAQ
