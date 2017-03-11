@@ -36,7 +36,7 @@ deploy:
     secure: LQTwvr70g8sHmAPJlfIEJpBo+Zokkx1OTmT02PM3Yiq4NQLNZHfePik98Wp79xcHBtlRf2gs8PltsIn/GDne65wEECnv3WnCH7xs83/daQmLvBtl7g1h7FQ8LIpxUmmZ6nGfj3v33sM0cNfknbY7LR4mj8jaq9tpVstXjzNoSYSQoQgFaWFSOuR0j+kKaDqU+dJ0y1qypfTdmfrhXKHsQS7ZEpQXJhHmcQYu5Fx9KNuddnL+H5eAOPJhU3XFNGJr5IIWd/5g05Dy9nOshzGlJGy8obk+qotmueGCSI8rTY0QKaTL1brfncDyc09ZAM5Bby/FjIWVBmOVouAjIqV2ya7Zy0vZwd/bVPL6UTp1h6daF3AQoS+Mnmcog8AbgX7TZz1cIMWA0LurToC8wT8p6zit/Z5ctPUX/cyAtKCSp32fA5agQobUyClb2YSI4gbNnCbZvToLsDkOCa1SA1OetPY4seQZ/Wao8meZ0myKz6taRLkBhvjq9UX2U35YJDmoSMZB0jRE6qNDcBlk77xs2OjdVe5mJzG80uIqQRRh0FatCWddczlv4/SDRmCB76JM7Zs1FwFOr64JSnFBGacxaFkMf+trdCv+DrBeTIdiZN5aRjYRjI45MInBMQJG4wgl5yqXsuzA3iKnmySGEObC8z7KsxX602484zBec4PhTB8=
   region: us-east-1
   app: CFLN
-  env: prod
+  env: CFLN-prod
   bucket_name: cfln
   on:
     repo: scytherswings/CommitsFromLastNight
