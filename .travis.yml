@@ -13,7 +13,7 @@ before_script:
 - psql -c 'create database travis_ci_test;' -U postgres
 - cp config/database.yml.travis config/database.yml
 script:
-- "/bin/bash travisSetup.sh"
+- "/bin/bash .deploy/travisSetup.sh"
 - bundle exec rake
 before_deploy:
 - git reset --hard
