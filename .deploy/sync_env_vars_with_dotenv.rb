@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
-require 'yaml'
-require 'dotenv'
+require 'dotenv/load'
 
 class SyncEnvVarsWithDotenv
   def self.sync(file_name, env_vars = nil)
