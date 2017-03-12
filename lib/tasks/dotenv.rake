@@ -1,8 +1,6 @@
-task :bitbucket_fetch_historical_commits, [:commits_to_grab_from_each_repo] => :environment do |_, args|
-  desc 'Sync .env file with envioronment variables'
-  task :sync_dotenv, [:file_path] => :environment do |_, args|
-    SyncEnvVarsWithDotenv.sync(args[:file_path])
-  end
+desc 'Sync .env file with envioronment variables'
+task :sync_dotenv, [:file_path] => :environment do |_, args|
+  SyncEnvVarsWithDotenv.sync(args[:file_path])
 end
 
 
