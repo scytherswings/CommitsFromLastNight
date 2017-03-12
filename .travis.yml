@@ -27,6 +27,7 @@ deploy:
   app: CFLN
   env: stage
   bucket_name: cfln-stage
+  bucket_path: images
   on:
     branch: stage
 
@@ -38,6 +39,7 @@ deploy:
   app: CFLN
   env: stage-sidekiq
   bucket_name: cfln-stage
+  bucket_path: images
   on:
     branch: stage
 
@@ -49,6 +51,7 @@ deploy:
   app: CFLN
   env: prod
   bucket_name: cfln-prod
+  bucket_path: images
   on:
     branch: master
 
@@ -60,5 +63,6 @@ deploy:
   app: CFLN
   env: prod-sidekiq
   bucket_name: cfln-prod
+  bucket_path: images
   on:
     branch: master
