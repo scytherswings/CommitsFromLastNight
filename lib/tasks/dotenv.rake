@@ -22,7 +22,7 @@ class SyncEnvVarsWithDotenv
 
     if env_vars.nil? || env_vars.empty?
       puts 'The list of environment variables passed in was empty. Using default list.'
-      env_vars = %w(RDS_DB_NAME RDS_USERNAME RDS_PASSWORD RDS_HOSTNAME RDS_PORT)
+      env_vars = %w(RDS_DB_NAME RDS_USERNAME RDS_PASSWORD RDS_HOSTNAME RDS_PORT SECRET_KEY_BASE REDIS_STORE_URI SIDEKIQ_REDIS_URI CONFIG_URI)
     end
 
     env_vars.each do |env_var|
