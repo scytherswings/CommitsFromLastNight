@@ -7,7 +7,16 @@ module Importers
     end
 
     def create_bitbucket_client
-      bb_config = YAML.load_file('config.yml') || {}
+      default_config_file = Rails.root.join 'config.yml'
+      if File.exist? default_config_file
+        bb_config = YAML.load_file(default_config_file)
+        unless bb_config
+          logger.warn "The bitbucket config file: #{default_config_file} was empty. Maybe it shouldn't be?"
+          bb_config = {}
+        end
+      else
+        bb_config = {}
+      end
       bb_config['username'] ||= ENV['BB_USERNAME']
       bb_config['password'] ||= ENV['BB_PASSWORD']
 
