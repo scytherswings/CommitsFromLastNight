@@ -3,9 +3,7 @@
     <% if @commits.blank? %>
       <div class="jumbotron">
         <h1>Well this is disappointing...</h1>
-        <h2>It looks like these developers aren't as
-          <% @selected_categories.map {|category| category['name']}.map { |category_name| category_name.humanize } %>-ed as you
-          thought.</h2>
+        <h2>It looks like these developers aren't as angry/happy/meh as you thought.</h2>
       </div>
     <% else %>
       <table class="table table-hover table-condensed table-responsive table-responsive commits">
