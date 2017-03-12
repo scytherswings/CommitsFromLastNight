@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'yaml'
-require 'active_support/core_ext/object/blank'
 
 class SyncEnvVarsWithDotenv
   def self.sync(file_name, env_vars = nil)
@@ -11,7 +10,7 @@ class SyncEnvVarsWithDotenv
       yaml = {}
     end
 
-    if env_vars.blank?
+    if env_vars.nil? || env_vars.empty?
       puts 'The list of environment variables passed in was empty. Using default list.'
       env_vars = %w(RDS_DB_NAME RDS_USERNAME RDS_PASSWORD RDS_HOSTNAME RDS_PORT)
     end
@@ -36,7 +35,7 @@ class SyncEnvVarsWithDotenv
 end
 
 if __FILE__ == $0
-  if ARGV.blank?
+  if ARGV.nil? || ARGV.empty?
     default_args = ['/var/app/current/.env']
     puts "No arguments were supplied. Defaulting to: #{default_args}"
     args = default_args
