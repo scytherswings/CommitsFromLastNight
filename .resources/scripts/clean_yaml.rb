@@ -20,7 +20,7 @@ end
 if __FILE__ == $0
   ARGV.each do |argument|
     if File.directory?(argument)
-      puts "\n\nIt looks like a directory was passed in. Trying to clean all files in: #{argument} that end with '.yml'"
+      puts "\nIt looks like a directory was passed in. Trying to clean all files in: #{argument} that end with '.yml'"
       absolute_path = File.absolute_path(argument)
       Dir.glob(absolute_path + '/*.yml').each do |arg|
         CleanYaml.clean(arg)
