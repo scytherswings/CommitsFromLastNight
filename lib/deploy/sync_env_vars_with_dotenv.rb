@@ -36,7 +36,15 @@ class SyncEnvVarsWithDotenv
 end
 
 if __FILE__ == $0
-  ARGV.each do |argument|
+  if ARGV.blank?
+    default_args = ['/var/app/current/.env']
+    puts "No arguments were supplied. Defaulting to: #{default_args}"
+    args = default_args
+  else
+    args = ARGV
+  end
+
+  args.each do |argument|
     if File.directory?(argument)
       puts "\n\nIt looks like a directory was passed in. Will try to inject environment variables found in: #{argument} that end with '.env'"
       absolute_path = File.absolute_path(argument)
@@ -46,8 +54,7 @@ if __FILE__ == $0
     elsif File.exists?(argument)
       SyncEnvVarsWithDotenv.sync(argument)
     else
-      puts "Could not find file: \"#{argument}\". Is it reachable from: \"#{Dir.pwd}\"?"
+      puts "Could not find file: '#{argument}'. Skipping."
     end
-
   end
 end
