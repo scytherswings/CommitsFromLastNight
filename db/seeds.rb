@@ -8,7 +8,7 @@
 require 'faker'
 require 'importers/filter'
 
-filter_files = Dir.glob('lib/resources/filter_categories/*.yml')
+filter_files = Dir.glob('.resources/filter_categories/*.yml')
 
 filter_files.each do |file|
   Importers::Filter.new.create_filterset_from_file(file)
