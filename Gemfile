@@ -27,6 +27,7 @@ gem 'postgresql_cursor', '~> 0.6.1'
 gem 'draper'
 gem 'hashie', '3.4.6'
 gem 'lograge'
+gem 'dotenv'
 
 group :development, :test do
   gem 'pry'

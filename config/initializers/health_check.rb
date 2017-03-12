@@ -23,7 +23,6 @@ HealthCheck.setup do |config|
 
   config.http_status_for_error_object = 500
 
-
   # You can customize which checks happen on a standard health check, eg to set an explicit list use:
   config.standard_checks = %w(database cache)
 

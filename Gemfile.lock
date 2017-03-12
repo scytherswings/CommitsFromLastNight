@@ -82,6 +82,7 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     docile (1.1.5)
+    dotenv (2.2.0)
     draper (2.1.0)
       actionpack (>= 3.0)
       activemodel (>= 3.0)
@@ -287,6 +288,7 @@ DEPENDENCIES
   byebug
   coffee-rails
   coveralls
+  dotenv
   draper
   faker
   flamegraph
