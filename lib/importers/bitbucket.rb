@@ -7,9 +7,12 @@ module Importers
     end
 
     def create_bitbucket_client
-      config_file = YAML.load_file('config.yml')
-      logger.info { 'Starting to fetch data from BitBucket using the username: ' + config_file['username'] }
-      @bitbucket = BitBucket.new basic_auth: config_file['username'] + ':' + config_file['password']
+      bb_config = YAML.load_file('config.yml') || {}
+      bb_config['username'] ||= ENV['BB_USERNAME']
+      bb_config['password'] ||= ENV['BB_PASSWORD']
+
+      logger.info { 'Starting to fetch data from BitBucket using the username: ' + bb_config['username'] }
+      @bitbucket = BitBucket.new basic_auth: bb_config['username'] + ':' + bb_config['password']
     end
 
     def fetch_latest_commits
