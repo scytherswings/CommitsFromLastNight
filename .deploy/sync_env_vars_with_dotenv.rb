@@ -50,10 +50,8 @@ if __FILE__ == $0
       Dir.glob(absolute_path + '/*.env').each do |arg|
         SyncEnvVarsWithDotenv.sync(arg)
       end
-    elsif File.exists?(argument)
-      SyncEnvVarsWithDotenv.sync(argument)
     else
-      puts "Could not find file: '#{argument}'. Skipping."
+      SyncEnvVarsWithDotenv.sync(argument)
     end
   end
 end
