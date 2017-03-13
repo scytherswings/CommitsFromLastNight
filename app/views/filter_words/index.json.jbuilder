@@ -1,1 +1,0 @@
-json.array! @filter_words, partial: 'filter_words/filter_word', as: :filter_word
