@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   health_check_routes
 
-  mount Sidekiq::Web => '/sidekiq', constraints: lambda { |request| /127\.0\.0\.1/.match(request.remote_ip) }
+  mount Sidekiq::Web => '/sidekiq'
   Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
 
   if Rails.env == 'development'

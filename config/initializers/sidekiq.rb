@@ -1,3 +1,6 @@
+require 'sidekiq'
+require 'sidekiq/web'
+
 Sidekiq::Logging.logger = Logger.new("log/sidekiq_#{Rails.env}.log")
 
 if Rails.env == 'production'
@@ -18,4 +21,8 @@ end
 
 if Rails.env == 'production'
   Sidekiq::Logging.logger.level = Logger::INFO
+  Sidekiq::Web.use(Rack::Auth::Basic) do |user, password|
+    [user, password] == ['sidekiqadmin', ENV['SIDEKIQ_PASSWORD']]
+  end
 end
+
