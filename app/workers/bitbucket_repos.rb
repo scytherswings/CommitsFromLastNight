@@ -1,9 +1,9 @@
 require 'importers/bitbucket'
 class BitbucketRepos
   include Sidekiq::Worker
-  sidekiq_options(queue: 'bitbucket', retry: false)
+  sidekiq_options(queue: 'bitbucket', retry: false, backtrace: true)
 
-  def perform
-    Importers::Bitbucket.fetch_all_repositories
+  def perform(logger=Sidekiq.logger)
+    Importers::Bitbucket.new(logger).fetch_all_repositories
   end
 end

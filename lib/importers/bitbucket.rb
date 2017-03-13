@@ -4,6 +4,7 @@ module Importers
 
     def initialize(logger = Sidekiq.logger)
       @logger ||= logger
+      create_bitbucket_client
     end
 
     def create_bitbucket_client
@@ -12,22 +13,19 @@ module Importers
         bb_config = YAML.load_file(default_config_file)
         unless bb_config
           logger.warn "The bitbucket config file: #{default_config_file} was empty. Maybe it shouldn't be?"
-          bb_config = {}
         end
       else
         bb_config = {}
       end
       bb_config['username'] ||= ENV['BB_USERNAME']
       bb_config['password'] ||= ENV['BB_PASSWORD']
-
+      logger.debug {"bb_config: #{bb_config}"}
       logger.info { 'Starting to fetch data from BitBucket using the username: ' + bb_config['username'] }
       @bitbucket = BitBucket.new basic_auth: bb_config['username'] + ':' + bb_config['password']
     end
 
     def fetch_latest_commits
       repositories = Repository.all.shuffle
-
-      create_bitbucket_client
 
       repositories.each do |repo|
         logger.info { "Fetching latest commits for repo: #{repo.owner}:#{repo.name}." }
@@ -91,7 +89,6 @@ module Importers
     def fetch_all_repositories
       log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
       ActiveRecord::Base.logger.silence(log_level) do
-        create_bitbucket_client
         @bitbucket.repos.list do |repo|
           logger.info { "Fetching historical commits for repo: #{repo['owner']}:#{repo['slug']}." }
           begin
@@ -127,8 +124,6 @@ module Importers
 
     def fetch_old_commits(commits_to_grab_from_each_repo)
       commits_to_get = Integer(commits_to_grab_from_each_repo)
-
-      create_bitbucket_client
 
       log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
 
@@ -185,7 +180,7 @@ module Importers
       process_changeset_list(changeset_list, repository)
 
       total_records_fetched = changeset_list['changesets'].count
-    #something still isn't quite right with this logic. It needs tests.
+      #something still isn't quite right with this logic. It needs tests.
       # if less than the desired amount are retrieved, it will query one at a time until it gets below 50. then it stops. broken.
       if (commits_to_get < 50) && (total_records_fetched < commits_to_get)
         logger.debug { "The number of records received: #{total_records_fetched} for repository: #{repository.name} was less than the number asked for: #{commits_to_get}. There are no more commits to grab." }
