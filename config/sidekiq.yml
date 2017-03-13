@@ -1,7 +1,7 @@
-concurrency: 2
+:concurrency: 2
 production:
-  concurrency: 4
-queues:
+  :concurrency: 4
+:queues:
   - [bitbucket, 1]
   - [github, 1]
   - [filter, 1]
