@@ -28,22 +28,6 @@ class Filterset < ActiveRecord::Base
     end
   end
 
-  def reexecute(commit)
-    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
-
-    ActiveRecord::Base.logger.silence(log_level) do
-      filter_word_id_and_word_values = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 24.hours) do
-        FilterWord.select([FilterWord[:id], Word[:value]]).where(FilterWord[:filterset_id].eq(id)).joins(:word).as_json
-      end
-
-      filter_word_id_and_word_values.each do |filter_word_id_and_word_value|
-        if commit.message =~ /\b#{Regexp.escape(filter_word_id_and_word_value['value'])}\b/i
-          return FilteredMessage.create!(commit: commit, filterset: self, filter_word_id: filter_word_id_and_word_value['id'])
-        end
-      end
-    end
-  end
-
   def update_filterset_from_file(filterset_file)
     filterset_file_hash = convert_filterset_file_to_hash(filterset_file)
 
