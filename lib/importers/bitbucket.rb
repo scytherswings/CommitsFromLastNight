@@ -224,7 +224,7 @@ module Importers
 
         find_or_set_user_avatar_uri(user)
 
-        add_commit_to_db(changeset, user, repository)
+        ExecuteFilters.perform_async(add_commit_to_db(changeset, user, repository))
       end
     end
 
