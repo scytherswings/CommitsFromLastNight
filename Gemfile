@@ -28,6 +28,7 @@ gem 'draper'
 gem 'hashie', '3.4.6'
 gem 'lograge'
 gem 'dotenv'
+gem 'sidekiq-status'
 
 group :development, :test do
   gem 'pry'

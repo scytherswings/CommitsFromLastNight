@@ -122,7 +122,7 @@ module Importers
       end
     end
 
-    def fetch_old_commits(commits_to_grab_from_each_repo)
+    def fetch_historical_commits(commits_to_grab_from_each_repo)
       commits_to_get = Integer(commits_to_grab_from_each_repo)
 
       log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG

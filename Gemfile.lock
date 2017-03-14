@@ -232,6 +232,8 @@ GEM
       connection_pool (~> 2.2, >= 2.2.0)
       rack-protection (>= 1.5.0)
       redis (~> 3.2, >= 3.2.1)
+    sidekiq-status (0.6.0)
+      sidekiq (>= 2.7)
     silencer (1.0.0)
     simple_form (3.4.0)
       actionpack (> 4, < 5.1)
@@ -316,6 +318,7 @@ DEPENDENCIES
   redis-store
   sass-rails
   sidekiq (~> 4.2, >= 4.2.7)
+  sidekiq-status
   silencer
   simple_form
   simplecov

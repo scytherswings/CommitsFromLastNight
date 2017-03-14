@@ -1,4 +1,5 @@
 require 'sidekiq/web'
+require 'sidekiq-status/web'
 Rails.application.routes.draw do
   resources :categories
   resources :repositories
@@ -9,8 +10,9 @@ Rails.application.routes.draw do
   # get 'contact' => 'about#contact'
   namespace :bitbucket do
     post 'fetch_latest_commits'
-    post 'fetch_old_commits'
+    post 'fetch_historical_commits'
     post 'fetch_all_repositories'
+    post 'clear_queue'
   end
 
   post 'clear_cache' => 'commits#clear_cache'
