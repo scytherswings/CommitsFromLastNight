@@ -3,7 +3,8 @@ require 'arel-helpers'
 
 class CommitsController < ApplicationController
   before_action :set_commit, only: [:show]
-
+  protect_from_forgery except: :clear_cache
+  http_basic_authenticate_with name:  'admin', password: 'password', except: [:index, :highlight_keywords]
   # GET /commits
   # GET /commits.json
   def index
@@ -109,17 +110,10 @@ class CommitsController < ApplicationController
 
   def clear_cache
     Rails.cache.clear
-    redirect_to '#'
-  end
-
-  def fetch_old_commits
-    BitbucketHistorical.perform_async(100)
-    redirect_to '#'
-  end
-
-  def fetch_all_repositories
-    BitbucketRepos.perform_async
-    redirect_to '#'
+    'success'
+    respond_to do |format|
+      format.json
+    end
   end
 
   # GET /commits/1

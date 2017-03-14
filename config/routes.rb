@@ -1,19 +1,18 @@
 require 'sidekiq/web'
 Rails.application.routes.draw do
-  resources :filter_words
   resources :categories
-  resources :filter_words
-  resources :words
-  resources :filtersets
   resources :repositories
   resources :users
   root 'commits#index'
   resources :commits
   # get 'about' => 'about#about'
   # get 'contact' => 'about#contact'
-  post 'fetch_latest_commits' => 'commits#fetch_latest_commits'
-  post 'fetch_old_commits' => 'commits#fetch_old_commits'
-  post 'fetch_all_repositories' => 'commits#fetch_all_repositories'
+  namespace :bitbucket do
+    post 'fetch_latest_commits'
+    post 'fetch_old_commits'
+    post 'fetch_all_repositories'
+  end
+
   post 'clear_cache' => 'commits#clear_cache'
   get 'highlight_keywords' => 'commits#highlight_keywords'
 
