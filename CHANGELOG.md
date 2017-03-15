@@ -9,7 +9,6 @@ This project adheres to [Semantic Versioning](http://semver.org/) starting when 
   - tons of scripts
   - stuff and things. big stuff, ya know?
 
-
 ## [v0.0.8] : 2017-2-20
 ### Added
 - Things for repositories
