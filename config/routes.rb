@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     post 'update_env_from_s3'
     post 'clear_cache'
     post 'clear_queue'
+    post 'refilter_all_commits'
   end
 
   get 'highlight_keywords' => 'commits#highlight_keywords'
