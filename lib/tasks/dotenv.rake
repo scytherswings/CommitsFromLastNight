@@ -29,7 +29,7 @@ class SyncEnvVarsWithDotenv
       puts "Working on var: #{env_var}"
       if dotenv_file[env_var].nil?
         puts "Var: #{env_var} was not in: #{file_name}"
-        live_env = ENV[env_var]
+        live_env = "\"#{ENV[env_var]}\""
         if live_env
           puts "Setting #{env_var} to #{live_env}"
           dotenv_file[env_var] = live_env
