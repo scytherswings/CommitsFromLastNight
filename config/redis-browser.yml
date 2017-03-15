@@ -1,0 +1,7 @@
+connections:
+  default:
+    url: redis://127.0.0.1:6379/0
+  production_cache:
+    url: <%= "redis://#{ENV['REDIS_STORE_URL']}/0" %>
+  production_sidekiq:
+    url: <%= "redis://#{ENV['SIDEKIQ_REDIS_URI']}/0" %>
