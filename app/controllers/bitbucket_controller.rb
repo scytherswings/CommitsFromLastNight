@@ -1,6 +1,6 @@
 class BitbucketController < ApplicationController
   skip_before_action :verify_authenticity_token
-  http_basic_authenticate_with name: 'admin', password: ENV['ADMIN_PASSWORD'] || 'password'
+  http_basic_authenticate_with name: 'sidekiqadmin', password: ENV['ADMIN_PASSWORD']
 
   def fetch_historical_commits
     @commits_to_get_from_each_repo = Integer(params[:commits_to_get_from_each_repo] || 50)
