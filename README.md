@@ -2,7 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/scytherswings/CommitsFromLastNight/badge.svg?branch=master)](https://coveralls.io/github/scytherswings/CommitsFromLastNight?branch=master)
 
 # Commits From Last Night
-## Version 0.0.8
+## Version 0.1.0
 
 This project was inspired by [Commit Logs From Last Night](http://www.commitlogsfromlastnight.com/). 
 I wanted to see what shenanigans my coworkers are up to in our internal company repos. 

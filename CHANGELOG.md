@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file. Un-notable 
 been forgotten by the time I went to write these notes. Obviously they weren't important, right?
 This project adheres to [Semantic Versioning](http://semver.org/) starting when version 1.0.0 is released.
 
+## [v0.1.0] : 2017-3-15
+### Added
+- Prod support
+  - tons of scripts
+  - stuff and things. big stuff, ya know?
+
+
 ## [v0.0.8] : 2017-2-20
 ### Added
 - Things for repositories
