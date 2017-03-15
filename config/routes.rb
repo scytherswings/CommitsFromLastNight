@@ -15,7 +15,11 @@ Rails.application.routes.draw do
     post 'clear_queue'
   end
 
-  post 'clear_cache' => 'commits#clear_cache'
+  namespace :admin do
+    post 'update_env_from_s3'
+    post 'clear_cache'
+  end
+
   get 'highlight_keywords' => 'commits#highlight_keywords'
 
   health_check_routes

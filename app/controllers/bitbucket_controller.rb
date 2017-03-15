@@ -27,8 +27,6 @@ class BitbucketController < ApplicationController
     end
   end
 
-
-
   def clear_queue
     @existing_jobs = Sidekiq::Queue.new('bitbucket').size
     Sidekiq::Queue.new('bitbucket').clear

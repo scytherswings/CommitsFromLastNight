@@ -1,4 +1,4 @@
-desc 'Sync .env file with envioronment variables'
+desc 'Sync .env file with environment variables'
 task :sync_dotenv, [:file_path] => :environment do |_, args|
   SyncEnvVarsWithDotenv.sync(args[:file_path])
 end

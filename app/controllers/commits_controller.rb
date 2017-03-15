@@ -3,8 +3,7 @@ require 'arel-helpers'
 
 class CommitsController < ApplicationController
   before_action :set_commit, only: [:show]
-  protect_from_forgery except: :clear_cache
-  http_basic_authenticate_with name:  'admin', password: 'password', except: [:index, :highlight_keywords]
+
   # GET /commits
   # GET /commits.json
   def index
@@ -105,14 +104,6 @@ class CommitsController < ApplicationController
           .map(&:value)
           .each { |word| Regexp.escape(word) }
           .as_json
-    end
-  end
-
-  def clear_cache
-    Rails.cache.clear
-    'success'
-    respond_to do |format|
-      format.json
     end
   end
 
