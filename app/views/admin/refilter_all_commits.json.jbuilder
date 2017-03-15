@@ -1,4 +1,3 @@
 json.total_commits_to_refilter @total_commits_to_refilter
 json.existing_jobs_in_default_queue @existing_jobs_in_default_queue
-json.remaining_jobs_in_default_queue @remaining_jobs_in_default_queue
 json.status 'good luck'

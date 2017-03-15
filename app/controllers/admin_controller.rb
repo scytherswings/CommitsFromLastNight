@@ -12,8 +12,7 @@ class AdminController < ApplicationController
   def refilter_all_commits
     @total_commits_to_refilter = Commit.all.count
     @existing_jobs_in_default_queue = Sidekiq::Queue.new('default').size
-    ReprocessCommits.perform
-    @remaining_jobs_in_default_queue = Sidekiq::Queue.new('default').size
+    ReprocessCommits.perform_async
     respond_to do |format|
       format.json
     end
