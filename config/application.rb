@@ -26,9 +26,9 @@ module CommitsFromLastNight
     config.active_record.raise_in_transactional_callbacks = true
     Readthis.fault_tolerant = true
     if Rails.env == 'production'
-      config.cache_store = :readthis_store, { namespace: "#{Rails.env}/cache", redis: { host: ENV['REDIS_STORE_URI'], port: 6379, db: 0 }, driver: :hiredis }
+      config.cache_store = :readthis_store, {expires_in: 24.hours.to_i, namespace: "cache/#{Rails.env}", redis: {host: ENV['REDIS_STORE_URI'], port: 6379, db: 0}, driver: :hiredis}
     else
-      config.cache_store = :readthis_store, { namespace: "#{Rails.env}/cache", redis: { host: '127.0.0.1', port: 6379, db: 0 }, driver: :hiredis }
+      config.cache_store = :readthis_store, {expires_in: 24.hours.to_i, namespace: "cache/#{Rails.env}", redis: {host: '127.0.0.1', port: 6379, db: 0}, driver: :hiredis}
     end
   end
 end
