@@ -15,4 +15,14 @@ class AdminController < ApplicationController
      format.json
    end
   end
+
+  def clear_queue
+    @queue_name = params[:queue]
+    @existing_jobs = Sidekiq::Queue.new(@queue_name).size
+    Sidekiq::Queue.new(@queue_name).clear
+    @remaining_jobs = Sidekiq::Queue.new(@queue_name).size
+    respond_to do |format|
+      format.json
+    end
+  end
 end

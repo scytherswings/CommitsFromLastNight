@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   namespace :admin do
     post 'update_env_from_s3'
     post 'clear_cache'
+    post 'clear_queue'
   end
 
   get 'highlight_keywords' => 'commits#highlight_keywords'
