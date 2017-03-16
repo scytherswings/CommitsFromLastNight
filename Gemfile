@@ -34,6 +34,7 @@ gem 'lograge'
 gem 'dotenv'
 gem 'sidekiq-status'
 gem 'aws-sdk'
+gem 'appengine'
 
 group :development, :test do
   gem 'pry'
@@ -70,5 +71,6 @@ end
 
 group :production do
   gem 'health_check', '~> 2.0'
+
 end
 
