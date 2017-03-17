@@ -34,6 +34,8 @@ gem 'lograge'
 gem 'dotenv'
 gem 'sidekiq-status'
 gem 'aws-sdk'
+gem 'puma', '~> 3.6', '>= 3.6.2'
+
 
 group :development, :test do
   gem 'pry'
