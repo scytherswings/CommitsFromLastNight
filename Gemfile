@@ -33,17 +33,15 @@ gem 'hashie', '3.4.6'
 gem 'lograge'
 gem 'dotenv'
 gem 'sidekiq-status'
-gem 'aws-sdk'
+# gem 'aws-sdk'
 gem 'appengine'
 gem 'puma', '~> 3.6', '>= 3.6.2'
-
 
 group :development, :test do
   gem 'pry'
   gem 'pry-byebug'
   gem 'byebug'
   gem 'faker'
-  gem 'puma', '~> 3.6', '>= 3.6.2'
 end
 
 group :development do
