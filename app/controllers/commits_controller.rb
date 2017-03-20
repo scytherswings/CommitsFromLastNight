@@ -60,7 +60,7 @@ class CommitsController < ApplicationController
                        .order('utc_commit_time desc')
                        .uniq
                        .paginate(page: params[:page])
-                       .decorate #.reverse_order isn't working for some reason and I don't care enough to figure out why
+                       .decorate
       end
 
       respond_to do |format|
@@ -90,18 +90,17 @@ class CommitsController < ApplicationController
 
     @keywords = Rails.cache.fetch("highlight_keywords/#{cleaned_categories_params}", expires_in: 24.hours) do
       Word.select(Word[:value])
-          .joins(
-              Word.arel_table.join(FilterWord.arel_table).on(Word[:id].eq(FilterWord[:word_id])).join_sources)
-          .joins(
-              Word.arel_table.join(Filterset.arel_table).on(Filterset[:id].eq(FilterWord[:filterset_id])).join_sources)
+          .joins(Word.arel_table.join(FilterWord.arel_table)
+                     .on(Word[:id].eq(FilterWord[:word_id])).join_sources)
+          .joins(Word.arel_table.join(Filterset.arel_table)
+                     .on(Filterset[:id].eq(FilterWord[:filterset_id])).join_sources)
           .where(Filterset[:category_id].in(list_of_category_ids))
-          .joins(
-              Word.arel_table.join(FilteredMessage.arel_table).on(FilteredMessage[:filterset_id].eq(Filterset[:id])).join_sources)
-          .joins(
-              Word.arel_table.join(Commit.arel_table).on(FilteredMessage[:commit_id].eq(Commit[:id])).join_sources)
+          .joins(Word.arel_table.join(FilteredMessage.arel_table)
+                     .on(FilteredMessage[:filterset_id].eq(Filterset[:id])).join_sources)
+          .joins(Word.arel_table.join(Commit.arel_table)
+                     .on(FilteredMessage[:commit_id].eq(Commit[:id])).join_sources)
           .uniq
-          .flatten
-          .map(&:value)
+          .pluck(:value)
           .each { |word| Regexp.escape(word) }
           .as_json
     end

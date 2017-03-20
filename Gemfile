@@ -34,6 +34,7 @@ gem 'lograge'
 gem 'dotenv'
 gem 'sidekiq-status'
 gem 'aws-sdk'
+gem 'xxhash', '~> 0.4.0'
 
 group :development, :test do
   gem 'pry'

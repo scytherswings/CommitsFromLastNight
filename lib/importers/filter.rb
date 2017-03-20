@@ -1,4 +1,5 @@
 require 'yaml'
+require 'xxhash'
 
 module Importers
   class Filter
@@ -10,20 +11,20 @@ module Importers
     end
 
     def import_yaml(filter_file)
-      bl_file = YAML.load_file(filter_file)
-      if bl_file.blank?
+      yaml_file = YAML.load_file(filter_file)
+      if yaml_file.blank?
         raise StandardError.new("File: #{filter_file} was empty or unusable. Skipping.")
       end
 
-      @name = bl_file['name']
-      @default = bl_file.fetch('default', false)
-      @filter_words = @filter_words | bl_file['words']
+      @name = yaml_file['name']
+      @default = yaml_file.fetch('default', false)
+      @filter_words = @filter_words | yaml_file['words']
 
     end
 
     def create_filterset_from_file(filename)
       begin
-      import_yaml(filename)
+        import_yaml(filename)
       rescue StandardError => e
         Rails.logger.info("An exception was caught while trying to import file: #{filename}. Not creating filterset. Error: #{e}")
         return
@@ -45,5 +46,13 @@ module Importers
 
       filterset
     end
+
+    # This needs to get ALL words because it's possible to add the same word to another filterset
+    # which should trigger a filter re-execution
+    def generate_version_hash
+     XXhash.xxh32(ActiveRecord::Base.connection.execute('SELECT "words"."value" FROM "words" ORDER BY "value" ASC')
+                       .map { |element| element['value'] }.to_s)
+    end
+
   end
 end

@@ -320,6 +320,7 @@ GEM
     will_paginate (3.1.5)
     will_paginate-bootstrap (1.0.1)
       will_paginate (>= 3.0.3)
+    xxhash (0.4.0)
 
 PLATFORMS
   ruby
@@ -380,6 +381,7 @@ DEPENDENCIES
   webmock
   will_paginate
   will_paginate-bootstrap
+  xxhash (~> 0.4.0)
 
 BUNDLED WITH
    1.14.4

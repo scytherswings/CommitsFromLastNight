@@ -6,6 +6,7 @@ task import_filters: :environment do
 
   filter_files.each do |file|
     Importers::Filter.new.create_filterset_from_file(file)
+
     Rails.cache.delete_matched('categories_by_id/*')
     Rails.cache.delete_matched('highlight_keywords/*')
   end
