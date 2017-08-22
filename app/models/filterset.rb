@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: filtersets
+#
+#  id            :integer          not null, primary key
+#  name          :string
+#  commits_count :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  category_id   :integer
+#
+
 class Filterset < ActiveRecord::Base
   include ArelHelpers::ArelTable
   has_many :filter_words, dependent: :destroy

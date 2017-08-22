@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: filtersets
+#
+#  id            :integer          not null, primary key
+#  name          :string
+#  commits_count :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  category_id   :integer
+#
+
 require 'test_helper'
 
 class FiltersetTest < ActiveSupport::TestCase
