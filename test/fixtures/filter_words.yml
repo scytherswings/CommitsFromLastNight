@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: filter_words
+#
+#  id           :integer          not null, primary key
+#  word_id      :integer
+#  filterset_id :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 fuck:
