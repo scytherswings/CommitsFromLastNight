@@ -60,7 +60,7 @@ class CommitsController < ApplicationController
                        .order('utc_commit_time desc')
                        .uniq
                        .paginate(page: params[:page])
-                       .decorate #.reverse_order isn't working for some reason and I don't care enough to figure out why
+                        #.reverse_order isn't working for some reason and I don't care enough to figure out why
       end
 
       respond_to do |format|

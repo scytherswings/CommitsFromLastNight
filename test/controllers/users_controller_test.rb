@@ -13,7 +13,7 @@ class UsersControllerTest < ActionController::TestCase
 
 
   test "should show user" do
-    get :show, id: @user
+    get users_url(@user)
     assert_response :success
   end
 

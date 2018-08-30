@@ -1,4 +1,4 @@
-class ChangeNodeFromUuidToString < ActiveRecord::Migration
+class ChangeNodeFromUuidToString < ActiveRecord::Migration[4.2]
   def change
     rename_column :commits, :node, :raw_node
     change_column :commits, :raw_node, :string

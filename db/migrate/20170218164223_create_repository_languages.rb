@@ -1,4 +1,4 @@
-class CreateRepositoryLanguages < ActiveRecord::Migration
+class CreateRepositoryLanguages < ActiveRecord::Migration[4.2]
   def change
     create_table :repository_languages do |t|
       t.integer :repository_id

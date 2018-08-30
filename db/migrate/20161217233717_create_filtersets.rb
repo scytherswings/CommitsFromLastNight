@@ -1,4 +1,4 @@
-class CreateFiltersets < ActiveRecord::Migration
+class CreateFiltersets < ActiveRecord::Migration[4.2]
   def change
     create_table :filtersets do |t|
       t.string :name

@@ -1,4 +1,4 @@
-class CreateFilterWords < ActiveRecord::Migration
+class CreateFilterWords < ActiveRecord::Migration[4.2]
   def change
     create_table :filter_words do |t|
       t.integer :word_id

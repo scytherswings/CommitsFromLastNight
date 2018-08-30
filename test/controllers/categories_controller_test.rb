@@ -12,7 +12,7 @@ class CategoriesControllerTest < ActionController::TestCase
   end
 
   test "should show category" do
-    get :show, id: @category
+    get categories_url(@category)
     assert_response :success
   end
 

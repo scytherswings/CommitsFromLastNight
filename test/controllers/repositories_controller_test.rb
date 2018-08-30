@@ -12,7 +12,7 @@ class RepositoriesControllerTest < ActionController::TestCase
   end
 
   test "should show repository" do
-    get :show, id: @repository
+    get repositories_url(@repository)
     assert_response :success
   end
 

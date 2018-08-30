@@ -20,8 +20,8 @@ module Importers
       bb_config['username'] ||= ENV['BB_USERNAME']
       bb_config['password'] ||= ENV['BB_PASSWORD']
       logger.debug {"bb_config: #{bb_config}"}
-      logger.info { 'Starting to fetch data from BitBucket using the username: ' + bb_config['username'] }
-      @bitbucket = BitBucket.new basic_auth: bb_config['username'] + ':' + bb_config['password']
+      logger.info { 'Starting to fetch data from BitBucket using the username: ' + bb_config.fetch('username')}
+      @bitbucket = BitBucket.new(basic_auth: bb_config.fetch('username') + ':' + bb_config.fetch('password'))
     end
 
     def fetch_latest_commits

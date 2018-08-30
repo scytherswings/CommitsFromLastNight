@@ -1,4 +1,4 @@
-class CreateFilteredMessages < ActiveRecord::Migration
+class CreateFilteredMessages < ActiveRecord::Migration[4.2]
   def change
     create_table :filtered_messages do |t|
       t.integer :filterset_id

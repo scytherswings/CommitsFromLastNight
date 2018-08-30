@@ -1,4 +1,4 @@
-class RemoveUsernameFromCommits < ActiveRecord::Migration
+class RemoveUsernameFromCommits < ActiveRecord::Migration[4.2]
   def change
     remove_column :commits, :username
     remove_column :commits, :user_avatar

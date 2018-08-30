@@ -22,8 +22,6 @@ module CommitsFromLastNight
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
     Readthis.fault_tolerant = true
     if Rails.env == 'production'
       config.cache_store = :readthis_store, {expires_in: 24.hours.to_i, namespace: "cache/#{Rails.env}", redis: {url: 'redis://' + (ENV['REDIS_STORE_URI'].nil? ? '' : ENV['REDIS_STORE_URI'])}, driver: :hiredis}
