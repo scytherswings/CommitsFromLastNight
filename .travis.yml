@@ -2,10 +2,10 @@ language: ruby
 dist: trusty
 sudo: false
 rvm:
-- 2.3.1
+- 2.4.3
 cache: bundler
 addons:
-  postgresql: '9.6'
+  postgresql: 10
 services:
 - postgresql
 - redis
