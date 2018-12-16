@@ -23,6 +23,8 @@ class RepositoryDecorator < Draper::Decorator
   end
 
   def make_avatar_link(css_class = 'profile_avatar')
+    return "" if object.avatar_uri.blank? || object.resource_uri.blank?
+
     link_to(image_tag(object.avatar_uri, class: css_class), object.resource_uri)
   end
 

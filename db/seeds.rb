@@ -12,7 +12,7 @@ filter_files = Dir.glob('.resources/filter_categories/*.yml')
 filter_files.each do |file|
   Importers::Filter.new.create_filterset_from_file(file)
 end
-
+#
 #
 # def generate_random_interjection
 #   ['..damn..', '..fuck!', '..well that makes me sad.', '..how disappointing.', '...yes!', '...oh no..', '..whooppee!',
@@ -29,7 +29,7 @@ end
 #   message.join(' ').strip
 # end
 #
-# if Rails.env == 'test'
+#
 #   require 'faker'
 #   account_names = Array.new
 #   repository_names = Array.new
@@ -48,5 +48,5 @@ end
 #     commit = Commit.create!(message: message, sha: sha, utc_commit_time: commit_time, user: user, repository: repository)
 #     ExecuteFilters.perform_async(commit.id)
 #   end
-# end
-
+#
+#

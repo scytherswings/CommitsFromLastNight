@@ -38,7 +38,7 @@ class CommitsController < ApplicationController
                          .paginate(page: params[:page])
                          .decorate
       else
-        @commits = Commit.select(
+        @commits = Commit.distinct.select(
           [
             Commit[:id],
             Commit[:utc_commit_time],
@@ -62,8 +62,8 @@ class CommitsController < ApplicationController
                                .join_sources
                          )
                          .order('utc_commit_time desc')
-                         .uniq
                          .paginate(page: params[:page])
+                         .decorate
         # .reverse_order isn't working for some reason and I don't care enough to figure out why
       end
 

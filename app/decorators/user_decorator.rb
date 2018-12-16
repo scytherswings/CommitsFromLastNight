@@ -19,6 +19,8 @@ class UserDecorator < Draper::Decorator
   end
 
   def make_avatar_link(css_class = 'avatar_wrapper')
+    return "" if object.avatar_uri.blank? || object.resource_uri.blank?
+
     link_to(image_tag(object.avatar_uri, class: css_class), user_path(object.id))
   end
 end
