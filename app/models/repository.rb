@@ -7,7 +7,7 @@
 #  commits_count    :integer
 #  description      :text
 #  first_commit_sha :string
-#  name             :string
+#  name             :string           not null
 #  owner            :string
 #  resource_uri     :string
 #  created_at       :datetime         not null
@@ -24,5 +24,6 @@ class Repository < ActiveRecord::Base
   has_many :repository_languages, dependent: :destroy
   has_many :users, through: :commits
 
+  validates_presence_of :name
   validates_uniqueness_of :name
 end

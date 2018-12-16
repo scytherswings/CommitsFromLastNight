@@ -7,7 +7,7 @@
 #  commits_count    :integer
 #  description      :text
 #  first_commit_sha :string
-#  name             :string
+#  name             :string           not null
 #  owner            :string
 #  resource_uri     :string
 #  created_at       :datetime         not null
