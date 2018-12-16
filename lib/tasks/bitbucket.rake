@@ -25,7 +25,9 @@ task bitbucket_fetch_all_user_avatars: :environment do
     user.update!(avatar_uri: nil)
     next unless user.account_name && !user.avatar_uri
 
-    Sidekiq.logger.debug { "Found a user: #{user.account_name} whose avatar_uri was empty or nil. Querying profile for avatar_uri." }
+    Sidekiq.logger.debug do
+      "Found a user: #{user.account_name} whose avatar_uri was empty or nil. Querying profile for avatar_uri."
+    end
 
     begin
       user_to_query = URI.encode(user.account_name)

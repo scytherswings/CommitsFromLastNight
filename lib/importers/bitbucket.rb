@@ -102,14 +102,19 @@ module Importers
             if repository.avatar_uri.blank?
               avatar_uri = repo['logo']
               avatar_uri.gsub!(%r{/avatar/\d+/}, '/avatar/96/')
-              logger.debug { "Found a repo: #{repository.name} whose avatar_uri was empty or nil. Setting it to the API value." }
+              logger.debug do
+                "Found a repo: #{repository.name} whose avatar_uri was empty or nil. Setting it to the API value."
+              end
               repository.update!(avatar_uri: avatar_uri)
             end
             repository.update(description: repo['description'].to_s)
 
             downcased_language = repo['language'].to_s.downcase
             if downcased_language.blank?
-              logger.debug { "The API returned a blank language for repo: #{repository.name}. This repo will not be tagged with any languages." }
+              logger.debug do
+                "The API returned a blank language for repo: #{repository.name}. "\
+                  "This repo will not be tagged with any languages."
+              end
             else
               language = Word.find_or_create_by!(value: downcased_language)
               RepositoryLanguage.find_or_create_by(repository: repository, word: language)
@@ -141,7 +146,9 @@ module Importers
 
             grab_commits_from_bitbucket(commits_to_get, repository)
           rescue BitBucket::Error => error
-            logger.error { "An error occurred trying to query the changesets for #{repository['slug']}. Error was #{error}" }
+            logger.error do
+              "An error occurred trying to query the changesets for #{repository['slug']}. Error was #{error}"
+            end
             next
           end
         end
@@ -181,14 +188,23 @@ module Importers
       # something still isn't quite right with this logic. It needs tests.
       # if less than the desired amount are retrieved, it will query one at a time until it gets below 50. then it stops. broken.
       if (commits_to_get < 50) && (total_records_fetched < commits_to_get)
-        logger.debug { "The number of records received: #{total_records_fetched} for repository: #{repository.name} was less than the number asked for: #{commits_to_get}. There are no more commits to grab." }
+        logger.debug do
+          "The number of records received: #{total_records_fetched} for repository: #{repository.name} was less than "\
+            "the number asked for: #{commits_to_get}. There are no more commits to grab."
+        end
         earliest_commit_sha = find_oldest_commit_in_repo(repository.id)
         unless earliest_commit_sha
-          logger.error { "No commits were found for repository: #{repository.name}. There should have been commits since BitBucket was queried for them or something." }
+          logger.error do
+            "No commits were found for repository: #{repository.name}. There should have been commits since "\
+            "BitBucket was queried for them or something."
+          end
           return
         end
         repository.update!(first_commit_sha: earliest_commit_sha)
-        logger.info { "The repository: #{repository.name} has had the first_commit_sha set. This will prevent historical queries on this repo from being run from now on." }
+        logger.info do
+          "The repository: #{repository.name} has had the first_commit_sha set. This will prevent historical "\
+          "queries on this repo from being run from now on."
+        end
         return
       end
 
@@ -196,7 +212,9 @@ module Importers
 
       if more_commits_are_available
         remaining_commits_to_get = commits_to_get - total_records_fetched
-        logger.debug { "More commits were found to be available for repository: #{repository.name}. Asking for #{remaining_commits_to_get} more." }
+        logger.debug do
+          "More commits were found to be available for repository: #{repository.name}. Asking for #{remaining_commits_to_get} more."
+        end
         grab_commits_from_bitbucket(remaining_commits_to_get, repository)
       end
     end
@@ -237,7 +255,9 @@ module Importers
     def find_or_create_new_user(changeset)
       account_name = changeset['author'].to_s
       begin
-        user = User.find_or_create_by!(account_name: account_name) # do |create_user| #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
+        # do |create_user| #Don't cache this because it will cause excess api calls for a new user's
+        # avatar_uri until it expires
+        user = User.find_or_create_by!(account_name: account_name)
       # create_user.resource_uri = changeset['resource_uri'].to_s
       # end
       rescue ActiveRecord::RecordNotUnique
@@ -246,7 +266,8 @@ module Importers
 
       email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i.match(changeset['raw_author']).to_s.downcase
 
-      Rails.cache.fetch("users/#{account_name.slice 0..32}/email_address/#{email.slice 0..32}", expires_in: 120.seconds) do
+      Rails.cache.fetch("users/#{account_name.slice 0..32}/email_address/#{email.slice 0..32}",
+                        expires_in: 120.seconds) do
         EmailAddress.create(email: email, user: user)
       end
 

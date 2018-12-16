@@ -6,3 +6,16 @@
 require File.expand_path('config/application', __dir__)
 
 Rails.application.load_tasks
+
+task default: %i[rubocop test]
+
+# desc 'Run tests'
+# task :test do
+#   rake test
+# end
+
+desc 'Run rubocop'
+task :rubocop do
+  require 'rubocop/rake_task'
+  RuboCop::RakeTask.new
+end
