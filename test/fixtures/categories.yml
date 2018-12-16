@@ -3,11 +3,15 @@
 # Table name: categories
 #
 #  id            :integer          not null, primary key
-#  name          :string           not null
 #  commits_count :integer
+#  default       :boolean          not null
+#  name          :string           not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  default       :boolean          not null
+#
+# Indexes
+#
+#  index_categories_on_name  (name) UNIQUE
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

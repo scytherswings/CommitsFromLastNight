@@ -3,12 +3,16 @@
 # Table name: users
 #
 #  id            :integer          not null, primary key
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
 #  account_name  :string           not null
 #  avatar_uri    :string
 #  commits_count :integer
 #  resource_uri  :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+# Indexes
+#
+#  index_users_on_account_name  (account_name)
 #
 
 class User < ActiveRecord::Base

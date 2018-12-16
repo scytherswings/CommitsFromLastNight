@@ -55,7 +55,7 @@ group :development do
   gem 'stackprof'
   gem 'pghero'
   gem 'pg_query'
-  gem 'annotate', require: false
+  gem 'annotate', '~> 2.7.4', require: false
 end
 
 group :test do

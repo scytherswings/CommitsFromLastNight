@@ -3,10 +3,15 @@
 # Table name: filter_words
 #
 #  id           :integer          not null, primary key
-#  word_id      :integer
-#  filterset_id :integer
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  filterset_id :integer
+#  word_id      :integer
+#
+# Indexes
+#
+#  index_filter_words_on_filterset_id  (filterset_id)
+#  index_filter_words_on_word_id       (word_id)
 #
 
 require 'test_helper'

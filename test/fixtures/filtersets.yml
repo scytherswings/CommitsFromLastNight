@@ -3,11 +3,16 @@
 # Table name: filtersets
 #
 #  id            :integer          not null, primary key
-#  name          :string
 #  commits_count :integer
+#  name          :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  category_id   :integer
+#
+# Indexes
+#
+#  index_filtersets_on_category_id  (category_id)
+#  index_filtersets_on_name         (name)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

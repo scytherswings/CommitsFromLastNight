@@ -7,6 +7,10 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_words_on_value  (value) UNIQUE
+#
 
 class Word < ActiveRecord::Base
   include ArelHelpers::ArelTable

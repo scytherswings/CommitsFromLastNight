@@ -3,15 +3,19 @@
 # Table name: repositories
 #
 #  id               :integer          not null, primary key
-#  name             :string
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  owner            :string
-#  first_commit_sha :string
+#  avatar_uri       :string
 #  commits_count    :integer
 #  description      :text
-#  avatar_uri       :string
+#  first_commit_sha :string
+#  name             :string
+#  owner            :string
 #  resource_uri     :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
+# Indexes
+#
+#  index_repositories_on_name  (name) UNIQUE
 #
 
 require 'test_helper'

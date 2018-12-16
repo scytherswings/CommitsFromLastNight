@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_02_20_185203) do
+ActiveRecord::Schema.define(version: 2018_12_16_155621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,8 +33,7 @@ ActiveRecord::Schema.define(version: 2017_02_20_185203) do
     t.string "resource_uri"
     t.datetime "utc_commit_time"
     t.integer "repository_id"
-    t.index ["repository_id"], name: "index_commits_on_repository_id"
-    t.index ["sha"], name: "index_commits_on_sha", unique: true
+    t.index ["repository_id", "sha"], name: "index_commits_on_repository_id_and_sha", unique: true
     t.index ["user_id"], name: "index_commits_on_user_id"
     t.index ["utc_commit_time"], name: "index_commits_on_utc_commit_time", order: :desc
   end

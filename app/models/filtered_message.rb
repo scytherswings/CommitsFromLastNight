@@ -3,11 +3,17 @@
 # Table name: filtered_messages
 #
 #  id             :integer          not null, primary key
-#  filterset_id   :integer
-#  commit_id      :integer
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  commit_id      :integer
 #  filter_word_id :integer
+#  filterset_id   :integer
+#
+# Indexes
+#
+#  index_filtered_messages_on_commit_id       (commit_id)
+#  index_filtered_messages_on_filter_word_id  (filter_word_id)
+#  index_filtered_messages_on_filterset_id    (filterset_id)
 #
 
 class FilteredMessage < ActiveRecord::Base
