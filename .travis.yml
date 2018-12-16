@@ -2,7 +2,7 @@ language: ruby
 dist: trusty
 sudo: false
 rvm:
-- 2.6.0-rc2
+- 2.5.3
 cache: bundler
 addons:
   postgresql: "9.6"
