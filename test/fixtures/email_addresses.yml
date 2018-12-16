@@ -10,6 +10,7 @@
 #
 # Indexes
 #
+#  index_email_addresses_on_email    (email) UNIQUE
 #  index_email_addresses_on_user_id  (user_id)
 #
 
