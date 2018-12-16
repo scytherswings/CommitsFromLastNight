@@ -13,6 +13,6 @@ namespace :sidekiq do
 
     def finished?
       ps = Sidekiq::ProcessSet.new
-      ps.empty? || ps.detect { |process| process['busy'] == 0 }
+      ps.empty? || ps.detect { |process| process['busy'].zero? }
     end
 end

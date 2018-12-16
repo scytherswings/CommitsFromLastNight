@@ -28,8 +28,8 @@ class FiltersetTest < ActiveSupport::TestCase
 
   test 'filtersets should be valid' do
     assert @profanity.valid?
-    assert @profanity.filter_words.count > 0
-    assert @happy.filter_words.count > 0
+    assert @profanity.filter_words.count.positive?
+    assert @happy.filter_words.count.positive?
   end
 
   test 'execute will create a new FilteredMessage when a match occurs' do

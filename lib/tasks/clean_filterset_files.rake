@@ -3,7 +3,7 @@
 require 'yaml'
 desc 'cleans up the yaml filterset files by removing duplicates and stuff. Run this when you change those files'
 task clean_yaml: :environment do
-  CleanYaml.clean((Rails.root.join '.resources/filter_categories/').to_s)
+  CleanYaml.clean((Rails.root.join '.resources', 'filter_categories').to_s)
 end
 
 class CleanYaml

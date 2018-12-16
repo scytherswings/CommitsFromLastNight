@@ -41,7 +41,10 @@ Style/StringLiterals:
 Metrics/AbcSize:
   Exclude:
     - db/migrate/**/*
-  Max: 20
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
 
 Metrics/LineLength:
   Max: 120
@@ -51,11 +54,12 @@ Metrics/LineLength:
     - lib/tasks/**/*
 
 Metrics/MethodLength:
-  Max: 20
+  Enabled: false
   Exclude:
     - db/migrate/*
 
 Metrics/BlockLength:
+  Max: 40
   Exclude:
     - lib/tasks/auto_annotate_models.rake
     - config/routes.rb

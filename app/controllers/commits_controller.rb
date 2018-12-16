@@ -17,7 +17,9 @@ class CommitsController < ApplicationController
       end
 
       if params[:categories].blank?
-        @list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) { Category.where(default: true).pluck(:id).as_json }
+        @list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) do
+          Category.where(default: true).pluck(:id).as_json
+        end
       else
         selected_categories = params[:categories]
         selected_categories = selected_categories.gsub(/\s+/, '').split(',') if selected_categories.is_a? String
@@ -75,7 +77,9 @@ class CommitsController < ApplicationController
 
   def highlight_keywords
     if params[:categories].blank?
-      list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) { Category.where(default: true).pluck(:id).as_json }
+      list_of_category_ids = Rails.cache.fetch('categories/default', expires_in: 24.hours) do
+        Category.where(default: true).pluck(:id).as_json
+      end
     else
       selected_categories = params[:categories]
       selected_categories = selected_categories.gsub(/\s+/, '').split(',') if selected_categories.is_a? String

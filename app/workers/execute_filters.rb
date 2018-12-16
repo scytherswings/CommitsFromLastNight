@@ -2,7 +2,7 @@
 
 class ExecuteFilters
   include Sidekiq::Worker
-  sidekiq_options(queue: 'filter', retry: 2)
+  sidekiq_options(queue: 'filter', retry: 1, backtrace: true)
 
   def perform(commit_id)
     return if commit_id.nil?

@@ -30,7 +30,7 @@ task bitbucket_fetch_all_user_avatars: :environment do
     end
 
     begin
-      user_to_query = URI.encode(user.account_name)
+      user_to_query = CGI.escape(user.account_name)
       user_profile = bitbucket.users.account.profile(user_to_query)
     rescue BitBucket::Error::NotFound
       Sidekiq.logger.warn { "Query looking for #{user_to_query} resulted in a 404. Setting avatar to the default." }

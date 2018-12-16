@@ -41,7 +41,11 @@ module Importers
 
     def fetch_commits_from_bitbucket(repo, newest_sha, starting_sha = nil, attempts = 10)
       if attempts <= 0
-        logger.warn { "Maximum retries hit for repo: #{repo.name}. Stopping queries for latest commits. Did someone rebase the repo? The history for this repo will be incomplete since the history has now been broken." }
+        logger.warn do
+          "Maximum retries hit for repo: #{repo.name}. Stopping queries for latest commits. "\
+          "Did someone rebase the repo? The history for this repo will be incomplete since the history has "\
+          "now been broken."
+        end
         return
       end
 
@@ -93,7 +97,8 @@ module Importers
         @bitbucket.repos.list do |repo|
           logger.info { "Fetching historical commits for repo: #{repo['owner']}:#{repo['slug']}." }
           begin
-            repository = Repository.find_or_create_by(name: repo['slug'].to_s.downcase, owner: repo['owner'].to_s) do |create|
+            repository = Repository.find_or_create_by(name: repo['slug'].to_s.downcase,
+                                                      owner: repo['owner'].to_s) do |create|
               create.description = repo['description'].to_s
               create.avatar_uri = repo['logo'].to_s
               # create.resource_uri = 'https://bitbucket.org/' + repo['resource_uri'].to_s
@@ -186,7 +191,8 @@ module Importers
 
       total_records_fetched = changeset_list['changesets'].count
       # something still isn't quite right with this logic. It needs tests.
-      # if less than the desired amount are retrieved, it will query one at a time until it gets below 50. then it stops. broken.
+      # if less than the desired amount are retrieved, it will query one at a time until it gets below 50.
+      # then it stops. broken.
       if (commits_to_get < 50) && (total_records_fetched < commits_to_get)
         logger.debug do
           "The number of records received: #{total_records_fetched} for repository: #{repository.name} was less than "\
@@ -213,7 +219,8 @@ module Importers
       if more_commits_are_available
         remaining_commits_to_get = commits_to_get - total_records_fetched
         logger.debug do
-          "More commits were found to be available for repository: #{repository.name}. Asking for #{remaining_commits_to_get} more."
+          "More commits were found to be available for repository: #{repository.name}. "\
+                "Asking for #{remaining_commits_to_get} more."
         end
         grab_commits_from_bitbucket(remaining_commits_to_get, repository)
       end
@@ -276,10 +283,12 @@ module Importers
 
     def find_or_set_user_avatar_uri(user)
       if user.account_name && !user.avatar_uri
-        logger.debug { "Found a user: #{user.account_name} whose avatar_uri was empty or nil. Querying profile for avatar_uri." }
+        logger.debug do
+          "Found a user: #{user.account_name} whose avatar_uri was empty or nil. Querying profile for avatar_uri."
+        end
 
         begin
-          user_to_query = URI.encode(user.account_name)
+          user_to_query = CGI.escape(user.account_name)
           user_profile = @bitbucket.users.account.profile(user_to_query)
         rescue BitBucket::Error::NotFound
           logger.warn { "Query looking for #{user_to_query} resulted in a 404. Setting avatar to the default." }
