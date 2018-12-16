@@ -16,5 +16,4 @@ class UsersControllerTest < ActionController::TestCase
     get users_url(@user)
     assert_response :success
   end
-
 end
