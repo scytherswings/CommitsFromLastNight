@@ -1,19 +1,19 @@
 require 'test_helper'
 
-class UsersControllerTest < ActionController::TestCase
+class UsersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:scytherswings)
   end
 
   test "should get index" do
-    get :index
+    get users_url
     assert_response :success
     assert_not_nil assigns(:users)
   end
 
 
   test "should show user" do
-    get users_url(@user)
+    get user_url(@user)
     assert_response :success
   end
 end

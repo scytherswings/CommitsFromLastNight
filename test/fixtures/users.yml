@@ -19,9 +19,11 @@
 
 bob:
   account_name: bob
+  avatar_uri: https://example.com/avatar
 
 sally:
   account_name: sally
+  avatar_uri: https://example.com/avatar
 
 scytherswings:
   account_name: scytherswings

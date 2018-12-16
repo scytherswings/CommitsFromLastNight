@@ -1,12 +1,12 @@
 require 'test_helper'
 
-class CommitsControllerTest < ActionController::TestCase
+class CommitsControllerTest <  ActionDispatch::IntegrationTest
   setup do
     @commit = commits(:toy_app_commit)
   end
 
   test "should get index" do
-    get :index
+    get commits_url
     assert_response :success
     assert_not_nil assigns(:commits)
   end

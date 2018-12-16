@@ -23,3 +23,5 @@
 toy_app:
   name: toy_app
   owner: scytherswings
+  avatar_uri: http://example.com/avatar
+  resource_uri: http://example.com/resource

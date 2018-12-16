@@ -1,12 +1,12 @@
 require 'test_helper'
 
-class CategoriesControllerTest < ActionController::TestCase
+class CategoriesControllerTest <  ActionDispatch::IntegrationTest
   setup do
     @category = categories(:profanity)
   end
 
   test "should get index" do
-    get :index
+    get categories_url
     assert_response :success
     assert_not_nil assigns(:categories)
   end

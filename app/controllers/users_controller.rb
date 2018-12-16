@@ -23,8 +23,7 @@ class UsersController < ApplicationController
   def show
     log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
     ActiveRecord::Base.logger.silence(log_level) do
-      @user = UserDecorator.find(params[:id])
-      @commits = @user.commits.order('utc_commit_time DESC').uniq(&:id).paginate(page: params[:page]).decorate
+      @commits = @user.commits.distinct(:id).order(utc_commit_time: :desc).paginate(page: params[:page]).decorate
 
       respond_to do |format|
         format.html
@@ -36,6 +35,6 @@ class UsersController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_user
-    @user = User.find(params[:id])
+    @user =  UserDecorator.find(params[:id])
   end
 end

@@ -25,16 +25,15 @@ class RepositoriesController < ApplicationController
     log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
 
     ActiveRecord::Base.logger.silence(log_level) do
-      @repository = RepositoryDecorator.find(params[:id])
       @repository_users = User.select([
                                           User[:id],
                                           User[:account_name],
                                           User[:avatar_uri],
                                           User[:resource_uri]
                                       ])
+                              .distinct(:id)
                               .joins(:commits)
                               .where(Commit[:repository_id].eq(@repository.id))
-                              .uniq
                               .paginate(page: params[:page])
                               .decorate
 
@@ -47,8 +46,9 @@ class RepositoriesController < ApplicationController
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_repository
-    @repository = Repository.find(params[:id])
+    @repository = RepositoryDecorator.find(params[:id])
   end
 end

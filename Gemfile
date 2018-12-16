@@ -32,7 +32,6 @@ gem 'postgresql_cursor'
 gem 'pg'
 gem 'draper'
 gem 'hashie', '3.4.6'
-gem 'lograge'
 gem 'dotenv'
 gem 'sidekiq-status'
 gem 'aws-sdk'
@@ -74,6 +73,7 @@ group :test do
 end
 
 group :production do
+  gem 'lograge'
   gem 'health_check', '~> 2.0'
 end
 
