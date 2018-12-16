@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 class ExecuteFilters
   include Sidekiq::Worker
   sidekiq_options(queue: 'filter', retry: 2)
 
   def perform(commit_id)
-    if commit_id.nil?
-      return
-    end
-    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+    return if commit_id.nil?
+
+    log_level = Rails.env.production? ? Logger::WARN : Logger::DEBUG
 
     ActiveRecord::Base.logger.silence(log_level) do
       commit = Commit.find(commit_id)

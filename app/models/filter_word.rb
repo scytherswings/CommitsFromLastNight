@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: filter_words
@@ -14,10 +16,10 @@
 #  index_filter_words_on_word_id       (word_id)
 #
 
-class FilterWord < ActiveRecord::Base
+class FilterWord < ApplicationRecord
   include ArelHelpers::ArelTable
   belongs_to :word
   belongs_to :filterset
   has_many :filtered_messages, dependent: :destroy
-  validates_presence_of :word
+  validates :word, presence: true
 end

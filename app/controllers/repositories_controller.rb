@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'will_paginate/array'
 require 'arel-helpers'
 
@@ -7,7 +9,7 @@ class RepositoriesController < ApplicationController
   # GET /repositories
   # GET /repositories.json
   def index
-    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+    log_level = Rails.env.production? ? Logger::WARN : Logger::DEBUG
 
     ActiveRecord::Base.logger.silence(log_level) do
       @repositories = Repository.all.order(:id).paginate(page: params[:page]).decorate
@@ -22,14 +24,14 @@ class RepositoriesController < ApplicationController
   # GET /repositories/1
   # GET /repositories/1.json
   def show
-    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+    log_level = Rails.env.production? ? Logger::WARN : Logger::DEBUG
 
     ActiveRecord::Base.logger.silence(log_level) do
       @repository_users = User.select([
-                                          User[:id],
-                                          User[:account_name],
-                                          User[:avatar_uri],
-                                          User[:resource_uri]
+                                        User[:id],
+                                        User[:account_name],
+                                        User[:avatar_uri],
+                                        User[:resource_uri]
                                       ])
                               .distinct(:id)
                               .joins(:commits)
@@ -47,8 +49,8 @@ class RepositoriesController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_repository
-    @repository = RepositoryDecorator.find(params[:id])
-  end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_repository
+      @repository = RepositoryDecorator.find(params[:id])
+    end
 end

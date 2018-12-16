@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sidekiq/web'
 require 'sidekiq-status/web'
 Rails.application.routes.draw do
@@ -31,7 +33,7 @@ Rails.application.routes.draw do
 
   mount RedisBrowser::Web => '/redis-browser'
 
-  if Rails.env == 'development'
-    mount PgHero::Engine, at: 'pghero', constraints: lambda { |request| /127\.0\.0\.1/.match(request.remote_ip) }
+  if Rails.env.development?
+    mount PgHero::Engine, at: 'pghero', constraints: ->(request) { /127\.0\.0\.1/.match(request.remote_ip) }
   end
 end

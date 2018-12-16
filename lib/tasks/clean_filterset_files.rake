@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'yaml'
 desc 'cleans up the yaml filterset files by removing duplicates and stuff. Run this when you change those files'
 task clean_yaml: :environment do
-  CleanYaml.clean("#{Rails.root.join '.resources/filter_categories/'}")
+  CleanYaml.clean((Rails.root.join '.resources/filter_categories/').to_s)
 end
 
 class CleanYaml
@@ -10,10 +12,10 @@ class CleanYaml
       puts "It looks like a directory was passed in. Trying to clean all files in: #{file_path} that end with '.yml'"
       absolute_path = File.absolute_path(file_path)
       Dir.glob(absolute_path + '/*.yml').each do |file|
-        self.clean_file(file)
+        clean_file(file)
       end
-    elsif File.exists?(file_path)
-      self.clean_file(file_path)
+    elsif File.exist?(file_path)
+      clean_file(file_path)
     else
       puts "Could not find file: \"#{file_path}\"."
     end

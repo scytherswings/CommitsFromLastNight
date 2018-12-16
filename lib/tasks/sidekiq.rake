@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :sidekiq do
   require 'sidekiq/api'
 
@@ -9,8 +11,8 @@ namespace :sidekiq do
 
   private
 
-  def finished?
-    ps = Sidekiq::ProcessSet.new
-    return ps.size == 0 || ps.detect { |process| process['busy'] == 0 }
-  end
+    def finished?
+      ps = Sidekiq::ProcessSet.new
+      ps.empty? || ps.detect { |process| process['busy'] == 0 }
+    end
 end

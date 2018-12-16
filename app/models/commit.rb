@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: commits
@@ -19,7 +21,7 @@
 #  index_commits_on_utc_commit_time        (utc_commit_time)
 #
 
-class Commit < ActiveRecord::Base
+class Commit < ApplicationRecord
   include ArelHelpers::ArelTable
   has_many :filtered_messages, dependent: :destroy
   has_many :filtersets, through: :filtered_messages
@@ -28,8 +30,8 @@ class Commit < ActiveRecord::Base
   belongs_to :user, counter_cache: true
   belongs_to :repository, counter_cache: true
 
-  validates_presence_of :sha, :message, :utc_commit_time, :user, :repository
-  validates_uniqueness_of :sha
+  validates :sha, :message, :utc_commit_time, :user, :repository, presence: true
+  validates :sha, uniqueness: true
 
   self.per_page = 30
 end

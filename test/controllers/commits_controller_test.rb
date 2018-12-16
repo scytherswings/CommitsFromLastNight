@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
-class CommitsControllerTest <  ActionDispatch::IntegrationTest
+class CommitsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @commit = commits(:toy_app_commit)
   end
@@ -15,6 +17,4 @@ class CommitsControllerTest <  ActionDispatch::IntegrationTest
   #   get :show, id: @commit
   #   assert_response :success
   # end
-
-
 end

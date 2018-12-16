@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Importers
   class Bitbucket
     attr_accessor :logger
@@ -19,8 +21,8 @@ module Importers
       end
       bb_config['username'] ||= ENV['BB_USERNAME']
       bb_config['password'] ||= ENV['BB_PASSWORD']
-      logger.debug {"bb_config: #{bb_config}"}
-      logger.info { 'Starting to fetch data from BitBucket using the username: ' + bb_config.fetch('username')}
+      logger.debug { "bb_config: #{bb_config}" }
+      logger.info { 'Starting to fetch data from BitBucket using the username: ' + bb_config.fetch('username') }
       @bitbucket = BitBucket.new(basic_auth: bb_config.fetch('username') + ':' + bb_config.fetch('password'))
     end
 
@@ -29,7 +31,7 @@ module Importers
 
       repositories.each do |repo|
         logger.info { "Fetching latest commits for repo: #{repo.owner}:#{repo.name}." }
-        #get newest sha
+        # get newest sha
         newest_sha = find_newest_commit_in_repo(repo.id)
         fetch_commits_from_bitbucket(repo, newest_sha)
       end
@@ -37,20 +39,19 @@ module Importers
       logger.info { 'Fetching latest commits finished' }
     end
 
-    def fetch_commits_from_bitbucket(repo, newest_sha, starting_sha=nil, attempts=10)
+    def fetch_commits_from_bitbucket(repo, newest_sha, starting_sha = nil, attempts = 10)
       if attempts <= 0
         logger.warn { "Maximum retries hit for repo: #{repo.name}. Stopping queries for latest commits. Did someone rebase the repo? The history for this repo will be incomplete since the history has now been broken." }
         return
       end
 
-      if starting_sha
-        params = {'limit': 50, 'start': starting_sha}
-      else
-        params = {'limit': 50}
-      end
+      params = if starting_sha
+                 { 'limit': 50, 'start': starting_sha }
+               else
+                 { 'limit': 50 }
+               end
 
-
-      #query repo
+      # query repo
       begin
         changeset_list = @bitbucket.repos.changesets.list(repo.owner, repo.name, params)
       rescue BitBucket::Error::BitBucketError => error
@@ -59,9 +60,9 @@ module Importers
       end
 
       process_changeset_list(changeset_list, repo)
-      #is newest sha in response?
+      # is newest sha in response?
       if newest_sha_is_in_response?(newest_sha, changeset_list)
-        #yes: stop
+        # yes: stop
         logger.debug { "Finished getting lastest commits for repo: #{repo.name}" }
         return
       end
@@ -72,14 +73,14 @@ module Importers
       end
 
       oldest_recent_sha_fetched = find_oldest_sha_in_changeset(changeset_list)
-      #no: continue until max commits have been added.
+      # no: continue until max commits have been added.
       attempts -= 1
       logger.debug { "Repo: #{repo.name} has more unfetched commits to get. Querying up to #{attempts} more times." }
       fetch_commits_from_bitbucket(repo, newest_sha, oldest_recent_sha_fetched, attempts)
     end
 
     def find_oldest_sha_in_changeset(changeset_list)
-      changeset_list['changesets'].sort_by { |changeset| changeset['utctimestamp'].to_datetime }.first['raw_node']
+      changeset_list['changesets'].min_by { |changeset| changeset['utctimestamp'].to_datetime }['raw_node']
     end
 
     def newest_sha_is_in_response?(newest_sha, changeset_list)
@@ -87,7 +88,7 @@ module Importers
     end
 
     def fetch_all_repositories
-      log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+      log_level = Rails.env.production? ? Logger::WARN : Logger::DEBUG
       ActiveRecord::Base.logger.silence(log_level) do
         @bitbucket.repos.list do |repo|
           logger.info { "Fetching historical commits for repo: #{repo['owner']}:#{repo['slug']}." }
@@ -100,7 +101,7 @@ module Importers
 
             if repository.avatar_uri.blank?
               avatar_uri = repo['logo']
-              avatar_uri.gsub!(/\/avatar\/\d+\//, '/avatar/96/')
+              avatar_uri.gsub!(%r{/avatar/\d+/}, '/avatar/96/')
               logger.debug { "Found a repo: #{repository.name} whose avatar_uri was empty or nil. Setting it to the API value." }
               repository.update!(avatar_uri: avatar_uri)
             end
@@ -113,7 +114,6 @@ module Importers
               language = Word.find_or_create_by!(value: downcased_language)
               RepositoryLanguage.find_or_create_by(repository: repository, word: language)
             end
-
           rescue ActiveRecord::RecordNotUnique => e
             logger.error { "ActiveRecord returned an error for repository: #{repository.name}. Error: #{e}" }
             retry
@@ -125,10 +125,9 @@ module Importers
     def fetch_historical_commits(commits_to_grab_from_each_repo)
       commits_to_get = Integer(commits_to_grab_from_each_repo)
 
-      log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+      log_level = Rails.env.production? ? Logger::WARN : Logger::DEBUG
 
       ActiveRecord::Base.logger.silence(log_level) do
-
         repositories = Repository.all.shuffle
 
         repositories.each do |repository|
@@ -141,7 +140,6 @@ module Importers
             end
 
             grab_commits_from_bitbucket(commits_to_get, repository)
-
           rescue BitBucket::Error => error
             logger.error { "An error occurred trying to query the changesets for #{repository['slug']}. Error was #{error}" }
             next
@@ -162,9 +160,9 @@ module Importers
 
       if oldest_commit
         logger.debug { "A commit was found in repo: #{repository.name}. Using it to query history." }
-        params = {'limit': commits_to_get_from_api, 'start': oldest_commit}
+        params = { 'limit': commits_to_get_from_api, 'start': oldest_commit }
       else
-        params = {'limit': commits_to_get_from_api}
+        params = { 'limit': commits_to_get_from_api }
       end
 
       begin
@@ -180,7 +178,7 @@ module Importers
       process_changeset_list(changeset_list, repository)
 
       total_records_fetched = changeset_list['changesets'].count
-      #something still isn't quite right with this logic. It needs tests.
+      # something still isn't quite right with this logic. It needs tests.
       # if less than the desired amount are retrieved, it will query one at a time until it gets below 50. then it stops. broken.
       if (commits_to_get < 50) && (total_records_fetched < commits_to_get)
         logger.debug { "The number of records received: #{total_records_fetched} for repository: #{repository.name} was less than the number asked for: #{commits_to_get}. There are no more commits to grab." }
@@ -239,9 +237,9 @@ module Importers
     def find_or_create_new_user(changeset)
       account_name = changeset['author'].to_s
       begin
-        user = User.find_or_create_by!(account_name: account_name) #do |create_user| #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
-          # create_user.resource_uri = changeset['resource_uri'].to_s
-          #end
+        user = User.find_or_create_by!(account_name: account_name) # do |create_user| #Don't cache this because it will cause excess api calls for a new user's avatar_uri until it expires
+      # create_user.resource_uri = changeset['resource_uri'].to_s
+      # end
       rescue ActiveRecord::RecordNotUnique
         retry
       end
@@ -261,8 +259,7 @@ module Importers
 
         begin
           user_to_query = URI.encode(user.account_name)
-          user_profile= @bitbucket.users.account.profile(user_to_query)
-
+          user_profile = @bitbucket.users.account.profile(user_to_query)
         rescue BitBucket::Error::NotFound
           logger.warn { "Query looking for #{user_to_query} resulted in a 404. Setting avatar to the default." }
           user.update(avatar_uri: 'https://bitbucket.org/account/unknown/avatar/96/?ts=0')
@@ -270,7 +267,7 @@ module Importers
         end
 
         avatar_uri = user_profile['user']['avatar']
-        avatar_uri.gsub!(/\/avatar\/\d+\//, '/avatar/96/')
+        avatar_uri.gsub!(%r{/avatar/\d+/}, '/avatar/96/')
         logger.debug { "User #{user.account_name}'s avatar_uri is going to be updated with: #{avatar_uri}" }
         user.update!(avatar_uri: avatar_uri)
       end

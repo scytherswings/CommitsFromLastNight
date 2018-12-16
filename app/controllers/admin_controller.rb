@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class AdminController < ApplicationController
   skip_before_action :verify_authenticity_token
   http_basic_authenticate_with name: 'admin', password: ENV['ADMIN_PASSWORD']
 
   def update_env_from_s3
-    @rake_output = %x(rake fetch_s3_dotenv)
+    @rake_output = `rake fetch_s3_dotenv`
     respond_to do |format|
       format.json
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: filtersets
@@ -15,7 +17,7 @@
 #  index_filtersets_on_name         (name)
 #
 
-class Filterset < ActiveRecord::Base
+class Filterset < ApplicationRecord
   include ArelHelpers::ArelTable
   has_many :filter_words, dependent: :destroy
   has_many :filtered_messages, dependent: :destroy
@@ -23,14 +25,14 @@ class Filterset < ActiveRecord::Base
   has_many :words, through: :filter_words
   belongs_to :category
 
-  validates_presence_of :name, :category
+  validates :name, :category, presence: true
 
   # If this proves to be too slow it might be worth it to investigate querying the database for each word in the message
   # against instead of comparing the whole set to every word in the message. That might allow indexes to be leveraged.
   # That being said, I don't think querying the database is very efficient when the keyword set is very small
   # e.g. < 800 words
   def execute(commit)
-    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+    log_level = Rails.env.production? ? Logger::WARN : Logger::DEBUG
 
     ActiveRecord::Base.logger.silence(log_level) do
       filter_word_id_and_word_values = Rails.cache.fetch("filtersets/#{id}/keywords", expires_in: 24.hours) do
@@ -38,7 +40,7 @@ class Filterset < ActiveRecord::Base
       end
 
       filter_word_id_and_word_values.each do |filter_word_id_and_word_value|
-        if commit.message =~ /\b#{Regexp.escape(filter_word_id_and_word_value['value'])}\b/i
+        if /\b#{Regexp.escape(filter_word_id_and_word_value['value'])}\b/i.match?(commit.message)
           return FilteredMessage.create!(commit: commit, filterset: self, filter_word_id: filter_word_id_and_word_value['id'])
         end
       end
@@ -49,9 +51,11 @@ class Filterset < ActiveRecord::Base
     filterset_file_hash = convert_filterset_file_to_hash(filterset_file)
 
     if filterset_file_hash[:name] != name
-      logger.error { "Filterset file: #{filterset_file} contains a name: #{filterset_file_hash[:name]} which does not " +
-          "match this filterset's name: #{name}. " +
-          'If you need a new filterset then use an Importers::Filter script or something.' }
+      logger.error do
+        "Filterset file: #{filterset_file} contains a name: #{filterset_file_hash[:name]} which does not " \
+        "match this filterset's name: #{name}. " \
+        'If you need a new filterset then use an Importers::Filter script or something.'
+      end
       return
     end
 
@@ -60,18 +64,18 @@ class Filterset < ActiveRecord::Base
       category.update!(default: filterset_file_hash[:default])
     end
 
-    complete_list_of_new_words = Array.new
+    complete_list_of_new_words = []
     filterset_file_hash[:words].each do |filter_word|
       complete_list_of_new_words << Word.find_or_create_by!(value: filter_word)
     end
 
-    current_words = self.filter_words.map { |filter_word| filter_word.word.value }
+    current_words = filter_words.map { |filter_word| filter_word.word.value }
     removed_words = current_words - filterset_file_hash[:words]
     new_words = filterset_file_hash[:words] - current_words
 
     logger.debug { "Words being removed: #{removed_words}" }
 
-    self.filter_words.where(FilterWord[:word_id].in(Word.all.where(value: removed_words).map(&:id))).destroy_all
+    filter_words.where(FilterWord[:word_id].in(Word.all.where(value: removed_words).map(&:id))).destroy_all
 
     logger.debug { "Words being added: #{new_words}" }
     new_words.each { |new_word| FilterWord.create(word: Word.find_by(value: new_word), filterset: self) }
@@ -83,11 +87,9 @@ class Filterset < ActiveRecord::Base
   def convert_filterset_file_to_hash(filter_file)
     bl_file = YAML.load_file(filter_file)
 
-    if bl_file.blank?
-      raise ArgumentError.new("File: #{filter_file} was empty or unusable. Cannot import filterset.")
-    end
+    raise ArgumentError, "File: #{filter_file} was empty or unusable. Cannot import filterset." if bl_file.blank?
 
-    filterset_file_hash = Hash.new
+    filterset_file_hash = {}
     filterset_file_hash[:name] = bl_file['name']
     filterset_file_hash[:default] = bl_file.fetch('default', false)
     filterset_file_hash[:words] = bl_file['words']

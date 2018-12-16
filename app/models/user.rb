@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -15,11 +17,11 @@
 #  index_users_on_account_name  (account_name)
 #
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include ArelHelpers::ArelTable
   has_many :commits, dependent: :destroy
   has_many :email_addresses, dependent: :destroy
   has_many :repositories, through: :commits
 
-  validates_uniqueness_of :account_name
+  validates :account_name, uniqueness: true
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
-class RepositoriesControllerTest <  ActionDispatch::IntegrationTest
+class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @repository = repositories(:toy_app)
   end
@@ -15,5 +17,4 @@ class RepositoriesControllerTest <  ActionDispatch::IntegrationTest
     get repository_url(@repository)
     assert_response :success
   end
-
 end

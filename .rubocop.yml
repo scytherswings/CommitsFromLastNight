@@ -1,0 +1,66 @@
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - db/seeds.rb
+    - bin/**/*
+    - vendor/assets/**/*
+    - vendor/bundle/**/*
+
+Layout/ExtraSpacing:
+  Exclude:
+    - db/migrate/**/*
+
+Layout/IndentationConsistency:
+  EnforcedStyle: rails
+  Exclude:
+    - config/routes.rb
+
+Layout/SpaceBeforeFirstArg:
+  Exclude:
+    - config/routes.rb
+
+Lint/Debugger:
+  AutoCorrect: False
+
+Style/AndOr:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - test/test_helper.rb
+
+Style/Documentation:
+  Enabled: false
+
+Style/MethodDefParentheses:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Metrics/AbcSize:
+  Exclude:
+    - db/migrate/**/*
+  Max: 20
+
+Metrics/LineLength:
+  Max: 120
+  Exclude:
+    - Rakefile
+    - config/**/*
+    - lib/tasks/**/*
+
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/*
+
+Metrics/BlockLength:
+  Exclude:
+    - lib/tasks/auto_annotate_models.rake
+    - config/routes.rb
+
+Rails:
+  Enabled: true
+
+Rails/InverseOf:
+  Enabled: false

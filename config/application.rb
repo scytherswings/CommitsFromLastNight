@@ -1,4 +1,6 @@
-require File.expand_path('../boot', __FILE__)
+# frozen_string_literal: true
+
+require File.expand_path('boot', __dir__)
 
 require 'rails/all'
 require 'dotenv/load'
@@ -9,7 +11,7 @@ Bundler.require(*Rails.groups)
 
 module CommitsFromLastNight
   class Application < Rails::Application
-    Dotenv.load(Rails.root.join '.env')
+    Dotenv.load(Rails.root.join('.env'))
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -23,10 +25,10 @@ module CommitsFromLastNight
     # config.i18n.default_locale = :de
 
     Readthis.fault_tolerant = true
-    if Rails.env == 'production'
-      config.cache_store = :readthis_store, {expires_in: 24.hours.to_i, namespace: "cache/#{Rails.env}", redis: {url: 'redis://' + (ENV['REDIS_STORE_URI'] || '')}, driver: :hiredis}
+    if Rails.env.production?
+      config.cache_store = :readthis_store, { expires_in: 24.hours.to_i, namespace: "cache/#{Rails.env}", redis: { url: 'redis://' + (ENV['REDIS_STORE_URI'] || '') }, driver: :hiredis }
     else
-      config.cache_store = :readthis_store, {expires_in: 24.hours.to_i, namespace: "cache/#{Rails.env}", redis: {host: '127.0.0.1', port: 6379, db: 0}, driver: :hiredis}
+      config.cache_store = :readthis_store, { expires_in: 24.hours.to_i, namespace: "cache/#{Rails.env}", redis: { host: '127.0.0.1', port: 6379, db: 0 }, driver: :hiredis }
     end
   end
 end

@@ -1,13 +1,22 @@
-require 'coveralls'
-Coveralls.wear!('rails')
+# frozen_string_literal: true
+
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../../config/environment', __FILE__)
+
+require 'simplecov'
+require 'minitest/reporters'
+require 'minitest/ci'
+require 'vcr'
+
+Minitest::Ci.report_dir = Rails.root.join('tmp', 'test-results')
+SimpleCov.coverage_dir(Rails.root.join('tmp', 'coverage', 'backend'))
+
+Minitest::Reporters.use!
+SimpleCov.start 'rails'
+
+require File.expand_path('../config/environment', __dir__)
 require 'rails/test_help'
 require 'webmock'
 require 'webmock/minitest'
-require 'minitest/reporters'
-require 'vcr'
-Minitest::Reporters.use!
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
@@ -17,14 +26,13 @@ class ActiveSupport::TestCase
     config.cassette_library_dir = 'test/data/vcr_cassettes'
     config.hook_into :webmock
     config.default_cassette_options = {
-        :record => :new_episodes
+      record: :new_episodes
     }
-    config.filter_sensitive_data('<AUTHORIZATION>', :authorization) { ENV['BB_AUTH_TOKEN']}
+    config.filter_sensitive_data('<AUTHORIZATION>', :authorization) { ENV['BB_AUTH_TOKEN'] }
   end
 
   # VCR.turn_off!(ignore_cassettes: true)
   # WebMock.disable!
-
 
   def setup
     file = File.open('test/fixtures/JSON/bitbucket_commits_for_repo.json')

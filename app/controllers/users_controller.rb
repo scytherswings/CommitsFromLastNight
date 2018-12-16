@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'will_paginate/array'
 class UsersController < ApplicationController
   before_action :set_user, only: [:show]
@@ -6,7 +8,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     Rails.cache.clear
-    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+    log_level = Rails.env.production? ? Logger::WARN : Logger::DEBUG
     ActiveRecord::Base.logger.silence(log_level) do
       @users = User.all.order(:id).paginate(page: params[:page]).decorate
 
@@ -21,7 +23,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    log_level = Rails.env == 'production' ? Logger::WARN : Logger::DEBUG
+    log_level = Rails.env.production? ? Logger::WARN : Logger::DEBUG
     ActiveRecord::Base.logger.silence(log_level) do
       @commits = @user.commits.distinct(:id).order(utc_commit_time: :desc).paginate(page: params[:page]).decorate
 
@@ -33,8 +35,9 @@ class UsersController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_user
-    @user =  UserDecorator.find(params[:id])
-  end
+
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = UserDecorator.find(params[:id])
+    end
 end

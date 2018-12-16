@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReprocessCommits
   include Sidekiq::Worker
   sidekiq_options(queue: 'default', retry: false, backtrace: true)

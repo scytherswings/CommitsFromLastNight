@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
-class CategoriesControllerTest <  ActionDispatch::IntegrationTest
+class CategoriesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @category = categories(:profanity)
   end
@@ -15,5 +17,4 @@ class CategoriesControllerTest <  ActionDispatch::IntegrationTest
     get categories_url(@category)
     assert_response :success
   end
-
 end

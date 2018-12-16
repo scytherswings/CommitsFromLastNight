@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: words
@@ -12,11 +14,11 @@
 #  index_words_on_value  (value) UNIQUE
 #
 
-class Word < ActiveRecord::Base
+class Word < ApplicationRecord
   include ArelHelpers::ArelTable
   has_many :filter_words
   has_many :repository_languages
   has_many :repositories, through: :repository_languages
   has_many :filtersets, through: :filter_words
-  validates_presence_of :value, unique: true
+  validates :value, presence: { unique: true }
 end

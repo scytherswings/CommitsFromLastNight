@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 desc 'Run rake db:seed if ENV_TYPE is not "sidekiq"'
 task conditional_db_seed: :environment do
   if ENV['ENV_TYPE'] != 'sidekiq'

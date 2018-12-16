@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommitDecorator < Draper::Decorator
   include Draper::LazyHelpers
   delegate_all
@@ -7,9 +9,9 @@ class CommitDecorator < Draper::Decorator
     PaginationDecorator
   end
 
- def show_message
-   truncate(object.message, length: 500)
- end
+  def show_message
+    truncate(object.message, length: 500)
+  end
 
   def distance_of_time
     distance_of_time_in_words_to_now(commit.utc_commit_time) + ' ago'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: categories
@@ -14,11 +16,11 @@
 #  index_categories_on_name  (name) UNIQUE
 #
 
-class Category < ActiveRecord::Base
+class Category < ApplicationRecord
   include ArelHelpers::ArelTable
   has_many :filtersets, dependent: :destroy
   has_many :filtered_messages, through: :filtersets
   has_many :commits, through: :filtered_messages
 
-  validates_presence_of :name, unique: true
+  validates :name, presence: { unique: true }
 end

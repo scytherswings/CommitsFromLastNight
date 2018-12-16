@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserDecorator < Draper::Decorator
   include Draper::LazyHelpers
   delegate_all
@@ -8,7 +10,7 @@ class UserDecorator < Draper::Decorator
     PaginationDecorator
   end
 
-  def make_link(style=nil)
+  def make_link(style = nil)
     link_to(show_name, user_path(object.id), style: style)
   end
 
@@ -16,7 +18,7 @@ class UserDecorator < Draper::Decorator
     truncate(object.account_name, length: 20)
   end
 
-  def make_avatar_link(css_class='avatar_wrapper')
+  def make_avatar_link(css_class = 'avatar_wrapper')
     link_to(image_tag(object.avatar_uri, class: css_class), user_path(object.id))
   end
 end

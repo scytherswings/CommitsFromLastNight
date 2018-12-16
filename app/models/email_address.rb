@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: email_addresses
@@ -14,8 +16,8 @@
 #  index_email_addresses_on_user_id  (user_id)
 #
 
-class EmailAddress < ActiveRecord::Base
+class EmailAddress < ApplicationRecord
   include ArelHelpers::ArelTable
   belongs_to :user
-  validates_presence_of :email, unique: true
+  validates :email, presence: { unique: true }
 end

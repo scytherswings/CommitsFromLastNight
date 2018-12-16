@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.current_page @commits.current_page
 json.per_page @commits.per_page
 json.total @commits.total_entries

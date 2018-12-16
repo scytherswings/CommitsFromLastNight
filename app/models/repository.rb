@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: repositories
@@ -18,12 +20,12 @@
 #  index_repositories_on_name  (name) UNIQUE
 #
 
-class Repository < ActiveRecord::Base
+class Repository < ApplicationRecord
   include ArelHelpers::ArelTable
   has_many :commits, dependent: :destroy
   has_many :repository_languages, dependent: :destroy
   has_many :users, through: :commits
 
-  validates_presence_of :name
-  validates_uniqueness_of :name
+  validates :name, presence: true
+  validates :name, uniqueness: true
 end

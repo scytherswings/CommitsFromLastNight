@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: repository_languages
@@ -15,9 +17,9 @@
 #  index_repository_languages_on_word_id                    (word_id)
 #
 
-class RepositoryLanguage < ActiveRecord::Base
+class RepositoryLanguage < ApplicationRecord
   include ArelHelpers::ArelTable
   belongs_to :repository
   belongs_to :word
-  validates_presence_of :word, :repository
+  validates :word, :repository, presence: true
 end

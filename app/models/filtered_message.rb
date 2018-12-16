@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: filtered_messages
@@ -16,10 +18,10 @@
 #  index_filtered_messages_on_filterset_id    (filterset_id)
 #
 
-class FilteredMessage < ActiveRecord::Base
+class FilteredMessage < ApplicationRecord
   include ArelHelpers::ArelTable
   belongs_to :commit
   belongs_to :filterset
   belongs_to :filter_word
-  validates_presence_of :commit, :filterset, :filter_word
+  validates :commit, :filterset, :filter_word, presence: true
 end

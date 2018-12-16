@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
@@ -10,7 +12,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_not_nil assigns(:users)
   end
-
 
   test "should show user" do
     get user_url(@user)

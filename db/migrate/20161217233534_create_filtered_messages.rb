@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateFilteredMessages < ActiveRecord::Migration[4.2]
   def change
     create_table :filtered_messages do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 desc 'Pull .env file with environment variables'
 task fetch_s3_dotenv: :environment do
   FetchDotenvFromS3.fetch_dotenv

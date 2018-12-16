@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RepositoryDecorator < Draper::Decorator
   include Draper::LazyHelpers
   delegate_all
@@ -20,15 +22,15 @@ class RepositoryDecorator < Draper::Decorator
     object.first_commit_sha.present? ? 'Complete' : 'Incomplete'
   end
 
-  def make_avatar_link(css_class='profile_avatar')
+  def make_avatar_link(css_class = 'profile_avatar')
     link_to(image_tag(object.avatar_uri, class: css_class), object.resource_uri)
   end
 
   def make_language_list
-    if object.repository_languages.size > 0
+    if !object.repository_languages.empty?
       object.repository_languages.map { |repository_language| repository_language.word.value.humanize }.join(', ')
     else
-       'No languages listed :('
+      'No languages listed :('
     end
   end
 end

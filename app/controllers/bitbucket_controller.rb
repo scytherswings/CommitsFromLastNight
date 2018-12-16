@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BitbucketController < ApplicationController
   skip_before_action :verify_authenticity_token
   http_basic_authenticate_with name: 'admin', password: ENV['ADMIN_PASSWORD']
@@ -15,9 +17,9 @@ class BitbucketController < ApplicationController
     BitbucketLatest.perform_async
     @jobs_in_queue = Sidekiq::Queue.new('bitbucket').size
     @jobs_in_progress =
-    respond_to do |format|
-      format.json
-    end
+      respond_to do |format|
+        format.json
+      end
   end
 
   def fetch_all_repositories

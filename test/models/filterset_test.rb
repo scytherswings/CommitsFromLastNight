@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: filtersets
@@ -48,5 +50,4 @@ class FiltersetTest < ActiveSupport::TestCase
       assert filtered_message.valid?
     end
   end
-
 end
