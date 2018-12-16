@@ -16,8 +16,8 @@
 
 class Word < ApplicationRecord
   include ArelHelpers::ArelTable
-  has_many :filter_words
-  has_many :repository_languages
+  has_many :filter_words, dependent: :destroy
+  has_many :repository_languages, dependent: :destroy
   has_many :repositories, through: :repository_languages
   has_many :filtersets, through: :filter_words
   validates :value, presence: { unique: true }

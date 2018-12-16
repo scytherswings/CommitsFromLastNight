@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class SquasherClean < ActiveRecord::Migration[5.2]
-  class SchemaMigration < ActiveRecord::Base
+  class SchemaMigration < ApplicationRecord
   end
 
   def up
@@ -8,6 +10,5 @@ class SquasherClean < ActiveRecord::Migration[5.2]
     SchemaMigration.where("version NOT IN (?)", versions).delete_all
   end
 
-  def down
-  end
+  def down; end
 end

@@ -41,7 +41,9 @@ class Filterset < ApplicationRecord
 
       filter_word_id_and_word_values.each do |filter_word_id_and_word_value|
         if /\b#{Regexp.escape(filter_word_id_and_word_value['value'])}\b/i.match?(commit.message)
-          return FilteredMessage.create!(commit: commit, filterset: self, filter_word_id: filter_word_id_and_word_value['id'])
+          return FilteredMessage.create!(commit: commit,
+                                         filterset: self,
+                                         filter_word_id: filter_word_id_and_word_value['id'])
         end
       end
     end
@@ -60,7 +62,10 @@ class Filterset < ApplicationRecord
     end
 
     if filterset_file_hash[:default] != category.default
-      logger.warn { "Filterset: #{name} is changing the default setting for category: #{category.name}! New value: #{filterset_file_hash[:default]}" }
+      logger.warn do
+        "Filterset: #{name} is changing the default setting for category: #{category.name}! "\
+          "New value: #{filterset_file_hash[:default]}"
+      end
       category.update!(default: filterset_file_hash[:default])
     end
 

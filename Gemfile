@@ -67,6 +67,7 @@ group :test do
   gem 'guard-rubocop'
   gem 'guard-shell'
   gem 'mini_backtrace'
+  gem 'minitest'
   gem 'minitest-ci'
   gem 'minitest-reporters'
   gem 'rubocop'

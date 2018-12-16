@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitSchema < ActiveRecord::Migration[5.2]
   def up
     # These are extensions that must be enabled in order to support this database
@@ -75,7 +77,7 @@ class InitSchema < ActiveRecord::Migration[5.2]
       t.integer "word_id", null: false
       t.datetime "created_at", null: false
       t.datetime "updated_at", null: false
-      t.index ["repository_id", "word_id"], name: "index_repository_languages_on_repository_id_and_word_id", unique: true
+      t.index %w[repository_id word_id], name: "index_repository_languages_on_repository_id_and_word_id", unique: true
       t.index ["repository_id"], name: "index_repository_languages_on_repository_id"
       t.index ["word_id"], name: "index_repository_languages_on_word_id"
     end

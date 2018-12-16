@@ -1120,6 +1120,7 @@ DEPENDENCIES
   lograge
   memory_profiler
   mini_backtrace
+  minitest
   minitest-ci
   minitest-reporters
   minitest-vcr
