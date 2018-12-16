@@ -91,27 +91,23 @@ class CommitsController < ApplicationController
       Category.where(id: list_of_category_ids).as_json
     end
 
-    @keywords = Rails.cache.fetch("highlight_keywords/#{cleaned_categories_params}", expires_in: 24.hours) do
-      Word.select(Word[:value])
-          .joins(
-            Word.arel_table.join(FilterWord.arel_table).on(Word[:id].eq(FilterWord[:word_id])).join_sources
-          )
-          .joins(
-            Word.arel_table.join(Filterset.arel_table).on(Filterset[:id].eq(FilterWord[:filterset_id])).join_sources
-          )
-          .where(Filterset[:category_id].in(list_of_category_ids))
-          .joins(
-            Word.arel_table.join(FilteredMessage.arel_table).on(FilteredMessage[:filterset_id].eq(Filterset[:id])).join_sources
-          )
-          .joins(
-            Word.arel_table.join(Commit.arel_table).on(FilteredMessage[:commit_id].eq(Commit[:id])).join_sources
-          )
-          .uniq
-          .flatten
-          .map(&:value)
-          .each { |word| Regexp.escape(word) }
-          .as_json
-    end
+    @keywords = Word.distinct
+                    .joins(
+                      Word.arel_table.join(FilterWord.arel_table).on(Word[:id].eq(FilterWord[:word_id])).join_sources
+                    )
+                    .joins(
+                      Word.arel_table.join(Filterset.arel_table).on(Filterset[:id].eq(FilterWord[:filterset_id])).join_sources
+                    )
+                    .where(Filterset[:category_id].in(list_of_category_ids))
+                    .joins(
+                      Word.arel_table.join(FilteredMessage.arel_table).on(FilteredMessage[:filterset_id].eq(Filterset[:id])).join_sources
+                    )
+                    .joins(
+                      Word.arel_table.join(Commit.arel_table).on(FilteredMessage[:commit_id].eq(Commit[:id])).join_sources
+                    )
+                    .pluck(:value)
+                    .each { |word| Regexp.escape(word) }
+                    .as_json
   end
 
   # GET /commits/1

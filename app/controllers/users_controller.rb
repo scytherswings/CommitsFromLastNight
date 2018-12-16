@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   def show
     log_level = Rails.env.production? ? Logger::WARN : Logger::DEBUG
     ActiveRecord::Base.logger.silence(log_level) do
-      @commits = @user.commits.distinct(:id).order(utc_commit_time: :desc).paginate(page: params[:page]).decorate
+      @commits = @user.commits.distinct.order(utc_commit_time: :desc).paginate(page: params[:page]).decorate
 
       respond_to do |format|
         format.html
