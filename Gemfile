@@ -45,7 +45,7 @@ group :development, :test do
   gem 'faker'
   gem 'pry'
   gem 'pry-byebug'
-  gem 'puma', '~> 3.6'
+  gem 'puma', '~> 3.12'
 end
 
 group :development do
