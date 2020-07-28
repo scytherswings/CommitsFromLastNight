@@ -841,7 +841,7 @@ GEM
       turbolinks
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.1.0)
+    json (2.3.1)
     jstz-rails3-plus (1.0.5)
       railties (>= 3.1)
     listen (3.1.5)
