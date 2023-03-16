@@ -914,7 +914,7 @@ GEM
       pry (~> 0.10)
     public_suffix (4.0.6)
     puma (3.12.0)
-    rack (2.2.3)
+    rack (2.2.6.4)
     rack-cache (1.8.0)
       rack (>= 0.4)
     rack-mini-profiler (1.0.1)
